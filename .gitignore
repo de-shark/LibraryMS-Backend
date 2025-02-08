@@ -42,5 +42,8 @@ bin/
 ### Mac OS ###
 .DS_Store
 
+### Docker ###
+Docker/PostgreSQL/postgresql_data
+
 ### Something ###
 usr/
