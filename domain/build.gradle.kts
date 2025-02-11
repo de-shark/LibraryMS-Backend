@@ -1,4 +1,6 @@
 dependencies {
     implementation(project(":common"))
-    implementation("org.springframework.boot:spring-boot-starter-validation")
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-security
+    implementation("org.springframework.boot:spring-boot-starter-security")
+
 } 

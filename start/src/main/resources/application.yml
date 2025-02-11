@@ -3,4 +3,10 @@ server:
 
 spring:
   application:
-    name: lms 
+    name: lms
+  datasource:
+    url: jdbc:postgresql://localhost:5432/lms
+    username: postgres
+    password: 123456
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
