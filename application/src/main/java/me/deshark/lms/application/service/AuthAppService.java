@@ -5,6 +5,8 @@ import me.deshark.lms.application.dto.RegisterResponse;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.domain.model.entity.AuthUser;
 import me.deshark.lms.domain.model.vo.Password;
+import me.deshark.lms.domain.model.vo.UserRole;
+import me.deshark.lms.domain.model.vo.UserStatus;
 import me.deshark.lms.domain.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -29,16 +31,17 @@ public class AuthAppService {
             throw new UsernameAlreadyExistedException("用户名已存在");
         }
 
-        // 2. 将 DTO 转换为领域对象（可能涉及密码加密）
-        AuthUser user = AuthUser.create(
-                request.email(),
-                request.username(),
-                // 密码加密（值对象）
-                Password.encrypt(request.password())
-        );
+        // 2. 将 DTO 转换为领域对象
+        AuthUser authUser = AuthUser.builder()
+                .username(request.username())
+                .password(new Password(request.password()))
+                .email(request.email())
+                .role(UserRole.READER)
+                .status(UserStatus.UNVERIFIED)
+                .build();
 
         // 3. 保存到数据库（通过 Repository）
-        AuthUser savedUser =  userRepository.save(user);
+        AuthUser savedUser =  userRepository.save(authUser);
         if (savedUser == null) {
             return new RegisterResponse(true);
         } else {

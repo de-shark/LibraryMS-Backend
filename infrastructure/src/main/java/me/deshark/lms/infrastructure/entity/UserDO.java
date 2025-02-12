@@ -2,6 +2,8 @@ package me.deshark.lms.infrastructure.entity;
 
 import lombok.Builder;
 import lombok.Data;
+import me.deshark.lms.domain.model.vo.UserRole;
+import me.deshark.lms.domain.model.vo.UserStatus;
 
 import java.sql.Timestamp;
 import java.util.UUID;
@@ -17,6 +19,6 @@ public class UserDO {
     private String password;
     private String email;
     private Timestamp createdAt;
-    private String role;
-    private String status;
+    private UserRole role;
+    private UserStatus status;
 }

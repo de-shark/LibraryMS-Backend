@@ -1,6 +1,8 @@
 package me.deshark.lms.domain.model.entity;
 
 import me.deshark.lms.domain.model.vo.Password;
+import me.deshark.lms.domain.model.vo.UserRole;
+import me.deshark.lms.domain.model.vo.UserStatus;
 
 /**
  * @author DE_SHARK
@@ -9,7 +11,8 @@ public class AuthUser {
     private String email;
     private String username;
     private Password password;
-    private String status;
+    private UserRole role;
+    private UserStatus status;
 
     public String getEmail() {
         return email;
@@ -23,7 +26,11 @@ public class AuthUser {
         return password;
     }
 
-    public String getStatus() {
+    public UserRole getRole() {
+        return role;
+    }
+
+    public UserStatus getStatus() {
         return status;
     }
 
@@ -36,7 +43,8 @@ public class AuthUser {
         private String email;
         private String username;
         private Password password;
-        private String status;
+        private UserRole role;
+        private UserStatus status;
 
         public Builder email(String email) {
             this.email = email;
@@ -53,7 +61,12 @@ public class AuthUser {
             return this;
         }
 
-        public Builder status(String status) {
+        public Builder role(UserRole role) {
+            this.role = role;
+            return this;
+        }
+
+        public Builder status(UserStatus status) {
             this.status = status;
             return this;
         }
@@ -63,17 +76,9 @@ public class AuthUser {
             user.email = this.email;
             user.username = this.username;
             user.password = this.password;
+            user.role = this.role;
             user.status = this.status;
             return user;
         }
-    }
-
-    // 静态工厂方法：创建用户
-    public static AuthUser create(String email, String username, Password password) {
-        AuthUser authUser = new AuthUser();
-        authUser.email = email;
-        authUser.username = username;
-        authUser.password = password;
-        return authUser;
     }
 }
