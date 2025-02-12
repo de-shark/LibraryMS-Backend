@@ -2,7 +2,7 @@ package me.deshark.lms.infrastructure.mapper;
 
 import me.deshark.lms.domain.model.entity.AuthUser;
 import me.deshark.lms.domain.model.vo.Password;
-import me.deshark.lms.infrastructure.entity.UserJpaEntity;
+import me.deshark.lms.infrastructure.entity.UserDO;
 import org.springframework.stereotype.Component;
 
 /**
@@ -12,8 +12,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class UserPersistenceMapper {
 
-    public UserJpaEntity toJpaEntity(AuthUser authUser) {
-        return UserJpaEntity.builder()
+    public UserDO toDataObject(AuthUser authUser) {
+        return UserDO.builder()
                 .username(authUser.getUsername())
                 .email(authUser.getEmail())
                 .password(authUser.getPassword().encryptedPassword())
@@ -21,12 +21,12 @@ public class UserPersistenceMapper {
                 .build();
     }
 
-    public AuthUser toDomainEntity(UserJpaEntity userJpaEntity) {
+    public AuthUser toDomainEntity(UserDO userDO) {
         return AuthUser.builder()
-                .username(userJpaEntity.getUsername())
-                .email(userJpaEntity.getEmail())
-                .password(new Password(userJpaEntity.getPassword()))
-                .status(userJpaEntity.getStatus())
+                .username(userDO.getUsername())
+                .email(userDO.getEmail())
+                .password(new Password(userDO.getPassword()))
+                .status(userDO.getStatus())
                 .build();
     }
 }
