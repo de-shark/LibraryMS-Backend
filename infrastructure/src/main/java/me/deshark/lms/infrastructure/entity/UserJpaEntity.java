@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import me.deshark.lms.infrastructure.persistence.UuidV7Generator;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.sql.Timestamp;
+import java.util.UUID;
 
 /**
  * @author DE_SHARK
@@ -20,8 +23,13 @@ import java.sql.Timestamp;
 public class UserJpaEntity {
 
     @Id
-    @GeneratedValue()
-    private int id;
+    @GeneratedValue(generator = "uuid-v7")
+    @GenericGenerator(
+        name = "uuid-v7",
+        type = UuidV7Generator.class
+    )
+    @Column(columnDefinition = "UUID", updatable = false, nullable = false)
+    private UUID uuid;
 
     @Column(unique = true, nullable = false)
     private String username;

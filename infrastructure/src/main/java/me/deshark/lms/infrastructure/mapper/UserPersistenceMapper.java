@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 /**
  * @author DE_SHARK
  */
-
+// 对象映射器
 @Component
 public class UserPersistenceMapper {
 
@@ -16,7 +16,7 @@ public class UserPersistenceMapper {
         return UserJpaEntity.builder()
                 .username(authUser.getUsername())
                 .email(authUser.getEmail())
-                .password(authUser.getPassword().getEncryptedPassword())
+                .password(authUser.getPassword().encryptedPassword())
                 .status(authUser.getStatus())
                 .build();
     }

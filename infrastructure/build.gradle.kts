@@ -10,4 +10,8 @@ dependencies {
     // https://mvnrepository.com/artifact/org.projectlombok/lombok
     compileOnly("org.projectlombok:lombok:1.18.36")
     annotationProcessor("org.projectlombok:lombok:1.18.36")
+
+    // https://mvnrepository.com/artifact/com.github.f4b6a3/uuid-creator
+    implementation("com.github.f4b6a3:uuid-creator:6.0.0")
+
 } 
