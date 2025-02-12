@@ -8,8 +8,8 @@
         #{username},
         #{password},
         #{email},
-        #{role}::user_role,
-        #{status}::user_status
+        #{role},
+        #{status}
         )
     </insert>
 </mapper>
