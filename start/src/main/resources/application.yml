@@ -13,3 +13,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
+
+# 添加 JWT 配置
+jwt:
+  secret: eW91ci1zZWNyZXQta2V5LXNob3VsZC1iZS12ZXJ5LWxvbmctYW5kLXNlY3VyZS1hdC1sZWFzdC0yNTYtYml0cw==

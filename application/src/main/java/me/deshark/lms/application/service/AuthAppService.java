@@ -12,6 +12,7 @@ import me.deshark.lms.domain.model.vo.UserRole;
 import me.deshark.lms.domain.model.vo.UserStatus;
 import me.deshark.lms.domain.repository.UserRepository;
 import me.deshark.lms.domain.service.AuthService;
+import me.deshark.lms.domain.service.TokenProvider;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,10 +24,14 @@ public class AuthAppService {
 
     // 领域层接口
     private final UserRepository userRepository;
+    private final TokenProvider tokenProvider;
+    private final AuthService authService;
 
     // 手动添加构造函数，Spring 会自动注入 userRepository
-    public AuthAppService(UserRepository userRepository) {
+    public AuthAppService(UserRepository userRepository, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
+        this.tokenProvider = tokenProvider;
+        this.authService = new AuthService(userRepository);
     }
 
     public RegisterResponse register(RegisterRequest request) {
@@ -60,14 +65,13 @@ public class AuthAppService {
     }
 
     public LoginResponse login(LoginRequest request) {
-
-        AuthService authService = new AuthService(userRepository);
         try {
             AuthUser authUser = authService.authenticate(request.username(), request.password());
-            return new LoginResponse(authUser.getUsername(), "token");
+            // 生成 Token
+            String token = tokenProvider.generateToken(authUser);
+            return new LoginResponse(authUser.getUsername(), token);
         } catch (AuthenticationException e) {
-            return null;
+            return new LoginResponse(null, null);
         }
-
     }
 }
