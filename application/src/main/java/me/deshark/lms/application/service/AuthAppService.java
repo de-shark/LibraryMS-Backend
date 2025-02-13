@@ -41,13 +41,18 @@ public class AuthAppService {
                 .build();
 
         // 3. 保存到数据库（通过 Repository）
-        int result = userRepository.save(authUser);
-        if (result == 0) {
-            return new RegisterResponse(false, "注册失败");
-        } else if (result == 1) {
-            return new RegisterResponse(true, "注册成功");
-        } else {
-            return new RegisterResponse(false, "出现插入行数大于1的异常情况");
+        try {
+            int result = userRepository.save(authUser);
+            if (result == 0) {
+                return new RegisterResponse(false, "注册失败");
+            } else if (result == 1) {
+                return new RegisterResponse(true, "注册成功");
+            } else {
+                return new RegisterResponse(false, "出现插入行数大于1的异常情况");
+            }
+        } catch (UsernameAlreadyExistedException e) {
+            return new RegisterResponse(false, e.getMessage());
         }
+
     }
 }
