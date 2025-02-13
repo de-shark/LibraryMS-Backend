@@ -34,7 +34,7 @@ public class AuthAppService {
         // 2. 将 DTO 转换为领域对象
         AuthUser authUser = AuthUser.builder()
                 .username(request.username())
-                .password(new Password(request.password()))
+                .password(Password.encrypt(request.password()))
                 .email(request.email())
                 .role(UserRole.READER)
                 .status(UserStatus.UNVERIFIED)
