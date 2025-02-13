@@ -1,4 +1,4 @@
-package me.deshark.lms.application.dto;
+package me.deshark.lms.interfaces.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
