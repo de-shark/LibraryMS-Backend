@@ -17,5 +17,5 @@ public interface UserMapper {
     @Select("SELECT * FROM users WHERE username = #{username}")
     UserDO findByUsername(@Param("username") String username);
 
-    void insert(UserDO user);
+    int insert(UserDO user);
 }

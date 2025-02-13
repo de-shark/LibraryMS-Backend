@@ -41,11 +41,13 @@ public class AuthAppService {
                 .build();
 
         // 3. 保存到数据库（通过 Repository）
-        AuthUser savedUser =  userRepository.save(authUser);
-        if (savedUser == null) {
-            return new RegisterResponse(true);
+        int result = userRepository.save(authUser);
+        if (result == 0) {
+            return new RegisterResponse(false, "注册失败");
+        } else if (result == 1) {
+            return new RegisterResponse(true, "注册成功");
         } else {
-            return new RegisterResponse(false);
+            return new RegisterResponse(false, "出现插入行数大于1的异常情况");
         }
     }
 }

@@ -25,12 +25,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public AuthUser save(AuthUser authUser) {
+    public int save(AuthUser authUser) {
         UserDO userDO = persistenceMapper.toDataObject(authUser);
         // 生成 UUID v7
         userDO.setUuid(GUID.v7().toUUID());
-        userMapper.insert(userDO);
-        return persistenceMapper.toDomainEntity(userDO);
+        return userMapper.insert(userDO);
     }
 
     @Override
