@@ -1,13 +1,17 @@
 package me.deshark.lms.application.service;
 
+import me.deshark.lms.application.dto.LoginRequest;
+import me.deshark.lms.application.dto.LoginResponse;
 import me.deshark.lms.application.dto.RegisterRequest;
 import me.deshark.lms.application.dto.RegisterResponse;
+import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.domain.model.entity.AuthUser;
 import me.deshark.lms.domain.model.vo.Password;
 import me.deshark.lms.domain.model.vo.UserRole;
 import me.deshark.lms.domain.model.vo.UserStatus;
 import me.deshark.lms.domain.repository.UserRepository;
+import me.deshark.lms.domain.service.AuthService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -52,6 +56,17 @@ public class AuthAppService {
             }
         } catch (UsernameAlreadyExistedException e) {
             return new RegisterResponse(false, e.getMessage());
+        }
+    }
+
+    public LoginResponse login(LoginRequest request) {
+
+        AuthService authService = new AuthService(userRepository);
+        try {
+            AuthUser authUser = authService.authenticate(request.username(), request.password());
+            return new LoginResponse(authUser.getUsername(), "token");
+        } catch (AuthenticationException e) {
+            return null;
         }
 
     }

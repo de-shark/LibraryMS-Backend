@@ -1,4 +1,4 @@
 package me.deshark.lms.application.dto;
 
-public record LoginResponse(int userId, String token) {
+public record LoginResponse(String username, String token) {
 }
