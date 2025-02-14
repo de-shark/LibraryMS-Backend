@@ -2,11 +2,12 @@ package me.deshark.lms.interfaces.controller;
 
 import me.deshark.lms.application.info.UserInfo;
 import me.deshark.lms.common.utils.Result;
+import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.LoginRequest;
-import me.deshark.lms.interfaces.dto.LoginResponse;
-import me.deshark.lms.interfaces.dto.RegisterRequest;
-import me.deshark.lms.interfaces.dto.RegisterResponse;
 import me.deshark.lms.application.service.AuthAppService;
+import me.deshark.lms.interfaces.dto.RegisterRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +27,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public RegisterResponse register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request) {
         UserInfo userInfo = UserInfo.builder()
                 .username(request.username())
                 .password(request.password())
@@ -34,23 +35,23 @@ public class AuthController {
                 .build();
         Result<String, String> result = authAppService.register(userInfo);
         if (result.isOk()) {
-            return new RegisterResponse(result.isOk(), result.getOk());
+            return ResponseEntity.ok(ApiResponse.success(null, "注册成功"));
         } else {
-            return new RegisterResponse(result.isOk(), result.getErr());
+            return new ResponseEntity<>(ApiResponse.error(result.getErr()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
+    public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginRequest request) {
         UserInfo userInfo = UserInfo.builder()
                 .username(request.username())
                 .password(request.password())
                 .build();
         Result<String, String> result = authAppService.login(userInfo);
         if (result.isOk()) {
-            return new LoginResponse(result.isOk(), result.getOk());
+            return ResponseEntity.ok(ApiResponse.success(result.getOk(), "登录成功"));
         } else {
-            return new LoginResponse(result.isOk(), result.getErr());
+            return new ResponseEntity<>(ApiResponse.error(result.getErr()), HttpStatus.BAD_REQUEST);
         }
     }
 }
