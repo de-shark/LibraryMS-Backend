@@ -1,5 +1,6 @@
 package me.deshark.lms.domain.model.entity;
 
+import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.domain.model.vo.Password;
 import me.deshark.lms.domain.model.vo.UserRole;
 import me.deshark.lms.domain.model.vo.UserStatus;
@@ -80,5 +81,31 @@ public class AuthUser {
             user.status = this.status;
             return user;
         }
+    }
+
+    // 创建新用户
+    public static AuthUser createUser(String username, String rawPassword, String email) {
+        return AuthUser.builder()
+                .email(email)
+                .username(username)
+                .password(Password.encrypt(rawPassword))
+                .role(UserRole.READER)
+                .status(UserStatus.UNVERIFIED)
+                .build();
+    }
+
+    // 业务行为方法
+    public void authenticate(String rawPassword) {
+        if (!password.matches(rawPassword)) {
+            throw new AuthenticationException("用户名或密码错误");
+        }
+        if (status != UserStatus.ACTIVE) {
+            throw new AuthenticationException("用户状态异常: " + status);
+        }
+    }
+
+    // 状态变更方法
+    public void activate() {
+        this.status = UserStatus.ACTIVE;
     }
 }

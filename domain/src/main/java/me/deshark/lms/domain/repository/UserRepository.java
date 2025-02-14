@@ -2,6 +2,7 @@ package me.deshark.lms.domain.repository;
 
 import me.deshark.lms.domain.model.entity.AuthUser;
 
+
 /**
  * @author DE_SHARK
  */
