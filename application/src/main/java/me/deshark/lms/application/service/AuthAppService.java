@@ -5,9 +5,6 @@ import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.domain.model.entity.AuthUser;
-import me.deshark.lms.domain.model.vo.Password;
-import me.deshark.lms.domain.model.vo.UserRole;
-import me.deshark.lms.domain.model.vo.UserStatus;
 import me.deshark.lms.domain.repository.UserRepository;
 import me.deshark.lms.domain.service.AuthService;
 import me.deshark.lms.domain.service.TokenProvider;
@@ -26,30 +23,24 @@ public class AuthAppService {
     private final AuthService authService;
 
     // 手动添加构造函数，Spring 会自动注入 userRepository
-    public AuthAppService(UserRepository userRepository, TokenProvider tokenProvider) {
+    public AuthAppService(UserRepository userRepository, TokenProvider tokenProvider, AuthService authService) {
         this.userRepository = userRepository;
         this.tokenProvider = tokenProvider;
-        this.authService = new AuthService(userRepository);
+        this.authService = authService;
     }
 
     public Result<String, String> register(UserInfo userInfo) {
-        // 1. 校验用户名唯一性（领域规则）
-        if (userRepository.existsByUsername(userInfo.username())) {
-            throw new UsernameAlreadyExistedException("用户名已存在");
+        final AuthUser newUser;
+        // 1. 请求领域实体
+        try {
+            newUser = authService.registerUser(userInfo.username(), userInfo.password(), userInfo.email());
+        } catch (UsernameAlreadyExistedException e) {
+            return Result.err(e.getMessage());
         }
 
-        // 2. 将 DTO 转换为领域对象
-        AuthUser authUser = AuthUser.builder()
-                .username(userInfo.username())
-                .password(Password.encrypt(userInfo.password()))
-                .email(userInfo.email())
-                .role(UserRole.READER)
-                .status(UserStatus.UNVERIFIED)
-                .build();
-
-        // 3. 保存到数据库（通过 Repository）
+        // 2. 保存新用户到数据库
         try {
-            int result = userRepository.save(authUser);
+            int result = userRepository.save(newUser);
             if (result == 1) {
                 return Result.ok("注册成功");
             } else {
