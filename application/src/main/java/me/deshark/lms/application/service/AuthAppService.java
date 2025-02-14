@@ -39,16 +39,9 @@ public class AuthAppService {
         }
 
         // 2. 保存新用户到数据库
-        try {
-            int result = userRepository.save(newUser);
-            if (result == 1) {
-                return Result.ok("注册成功");
-            } else {
-                return Result.err("注册失败，请询问管理员");
-            }
-        } catch (UsernameAlreadyExistedException e) {
-            return Result.err(e.getMessage());
-        }
+        boolean success = userRepository.save(newUser);
+        return success ? Result.ok("注册成功")
+                : Result.err("系统错误，请联系管理员");
     }
 
     public Result<String, String> login(UserInfo userInfo) {

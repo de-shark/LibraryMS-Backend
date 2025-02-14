@@ -2,11 +2,13 @@ package me.deshark.lms.infrastructure.repository;
 
 import com.github.f4b6a3.uuid.alt.GUID;
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.domain.model.entity.AuthUser;
 import me.deshark.lms.domain.repository.UserRepository;
 import me.deshark.lms.infrastructure.entity.UserDO;
 import me.deshark.lms.infrastructure.mapper.UserMapper;
 import me.deshark.lms.infrastructure.mapper.UserPersistenceMapper;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -25,11 +27,15 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public int save(AuthUser authUser) {
-        UserDO userDO = persistenceMapper.toDataObject(authUser);
-        // 生成 UUID v7
-        userDO.setUuid(GUID.v7().toUUID());
-        return userMapper.insert(userDO);
+    public boolean save(AuthUser authUser) {
+        try {
+            UserDO userDO = persistenceMapper.toDataObject(authUser);
+            // 生成 UUID v7
+            userDO.setUuid(GUID.v7().toUUID());
+            return userMapper.insert(userDO) == 1;
+        } catch (DuplicateKeyException e) {
+            throw new UsernameAlreadyExistedException(authUser.getUsername());
+        }
     }
 
     @Override
