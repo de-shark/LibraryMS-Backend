@@ -1,6 +1,6 @@
-package me.deshark.lms.domain.service;
+package me.deshark.lms.domain.service.auth;
 
-import me.deshark.lms.domain.model.entity.AuthUser;
+import me.deshark.lms.domain.model.auth.entity.AuthUser;
 
 /**
  * @author DE_SHARK

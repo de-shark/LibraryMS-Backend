@@ -1,9 +1,9 @@
-package me.deshark.lms.domain.model.entity;
+package me.deshark.lms.domain.model.auth.entity;
 
 import me.deshark.lms.common.exception.AuthenticationException;
-import me.deshark.lms.domain.model.vo.Password;
-import me.deshark.lms.domain.model.vo.UserRole;
-import me.deshark.lms.domain.model.vo.UserStatus;
+import me.deshark.lms.domain.model.auth.vo.Password;
+import me.deshark.lms.domain.model.auth.vo.UserRole;
+import me.deshark.lms.domain.model.auth.vo.UserStatus;
 
 /**
  * @author DE_SHARK

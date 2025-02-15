@@ -1,7 +1,7 @@
 package me.deshark.lms.infrastructure.mapper;
 
-import me.deshark.lms.domain.model.entity.AuthUser;
-import me.deshark.lms.domain.model.vo.Password;
+import me.deshark.lms.domain.model.auth.entity.AuthUser;
+import me.deshark.lms.domain.model.auth.vo.Password;
 import me.deshark.lms.infrastructure.entity.UserDO;
 import org.springframework.stereotype.Component;
 

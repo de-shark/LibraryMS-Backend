@@ -1,6 +1,6 @@
-package me.deshark.lms.domain.repository;
+package me.deshark.lms.domain.repository.auth;
 
-import me.deshark.lms.domain.model.entity.AuthUser;
+import me.deshark.lms.domain.model.auth.entity.AuthUser;
 
 
 /**

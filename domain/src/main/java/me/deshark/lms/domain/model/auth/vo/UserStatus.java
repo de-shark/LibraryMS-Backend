@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.model.vo;
+package me.deshark.lms.domain.model.auth.vo;
 
 /**
  * @author DE_SHARK

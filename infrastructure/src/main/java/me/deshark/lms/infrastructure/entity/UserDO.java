@@ -2,8 +2,8 @@ package me.deshark.lms.infrastructure.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import me.deshark.lms.domain.model.vo.UserRole;
-import me.deshark.lms.domain.model.vo.UserStatus;
+import me.deshark.lms.domain.model.auth.vo.UserRole;
+import me.deshark.lms.domain.model.auth.vo.UserStatus;
 
 import java.sql.Timestamp;
 import java.util.UUID;

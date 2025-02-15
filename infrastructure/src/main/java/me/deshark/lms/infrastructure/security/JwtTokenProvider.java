@@ -2,8 +2,8 @@ package me.deshark.lms.infrastructure.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import me.deshark.lms.domain.model.entity.AuthUser;
-import me.deshark.lms.domain.service.TokenProvider;
+import me.deshark.lms.domain.model.auth.entity.AuthUser;
+import me.deshark.lms.domain.service.auth.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 

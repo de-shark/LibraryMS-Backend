@@ -1,7 +1,7 @@
 package me.deshark.lms.infrastructure.config;
 
-import me.deshark.lms.domain.repository.UserRepository;
-import me.deshark.lms.domain.service.AuthService;
+import me.deshark.lms.domain.repository.auth.UserRepository;
+import me.deshark.lms.domain.service.auth.AuthService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 

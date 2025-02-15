@@ -4,10 +4,10 @@ import me.deshark.lms.application.info.UserInfo;
 import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.common.utils.Result;
-import me.deshark.lms.domain.model.entity.AuthUser;
-import me.deshark.lms.domain.repository.UserRepository;
-import me.deshark.lms.domain.service.AuthService;
-import me.deshark.lms.domain.service.TokenProvider;
+import me.deshark.lms.domain.model.auth.entity.AuthUser;
+import me.deshark.lms.domain.repository.auth.UserRepository;
+import me.deshark.lms.domain.service.auth.AuthService;
+import me.deshark.lms.domain.service.auth.TokenProvider;
 import org.springframework.stereotype.Service;
 
 /**

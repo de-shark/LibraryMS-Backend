@@ -1,8 +1,8 @@
-package me.deshark.lms.domain.service;
+package me.deshark.lms.domain.service.auth;
 
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
-import me.deshark.lms.domain.model.entity.AuthUser;
-import me.deshark.lms.domain.repository.UserRepository;
+import me.deshark.lms.domain.model.auth.entity.AuthUser;
+import me.deshark.lms.domain.repository.auth.UserRepository;
 
 /**
  * @author DE_SHARK
