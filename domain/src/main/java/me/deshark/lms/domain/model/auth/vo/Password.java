@@ -15,6 +15,7 @@ public record Password(String encryptedPassword) {
     }
 
     // 校验密码是否匹配
+    // TODO 将来需要移除对 BCrypt 的依赖
     public boolean matches(String rawPassword) {
         return BCrypt.checkpw(rawPassword, this.encryptedPassword);
     }
