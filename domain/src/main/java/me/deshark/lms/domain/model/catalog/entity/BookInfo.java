@@ -6,18 +6,19 @@ import me.deshark.lms.domain.model.catalog.vo.Isbn;
  * @author DE_SHARK
  * @date 2025/2/15 20:47
  */
-public class Book {
+// 图书基本信息
+public class BookInfo {
     private final Isbn isbn;
     private String title;
     private String author;
     private int countAvailableCopies;
 
 
-    public Book(Isbn isbn) {
+    public BookInfo(Isbn isbn) {
         this.isbn = isbn;
     }
 
-    public Book(Isbn isbn, String title, String author) {
+    public BookInfo(Isbn isbn, String title, String author) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;

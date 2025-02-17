@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.service;
 
-import me.deshark.lms.domain.model.catalog.entity.Book;
+import me.deshark.lms.domain.model.catalog.entity.BookInfo;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
 
@@ -16,7 +16,7 @@ public class BookSearchService {
         this.bookRepository = bookRepository;
     }
 
-    public Book searchByIsbn(String isbn) {
+    public BookInfo searchByIsbn(String isbn) {
         Isbn isbnChecked = new Isbn(isbn);
         // TODO 需要将图书副本的数量一起返回
         return bookRepository.findByIsbn(isbnChecked);

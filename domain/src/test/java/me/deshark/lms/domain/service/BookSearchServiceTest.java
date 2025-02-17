@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.service;
 
-import me.deshark.lms.domain.model.catalog.entity.Book;
+import me.deshark.lms.domain.model.catalog.entity.BookInfo;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,13 +40,13 @@ class BookSearchServiceTest {
         // 准备测试数据
         String isbnString = "9780000000000";
         Isbn validIsbn = new Isbn(isbnString);
-        Book mockBook = new Book(validIsbn, "Clean Code", "Robert C. Martin");
+        BookInfo mockBook = new BookInfo(validIsbn, "Clean Code", "Robert C. Martin");
 
         // 配置模拟行为
         when(bookRepository.findByIsbn(validIsbn)).thenReturn(mockBook);
 
         // 执行测试
-        Book result = bookSearchService.searchByIsbn(isbnString);
+        BookInfo result = bookSearchService.searchByIsbn(isbnString);
 
         // 验证结果
         assertNotNull(result);
@@ -70,7 +70,7 @@ class BookSearchServiceTest {
         when(bookRepository.findByIsbn(validIsbn)).thenReturn(null);
 
         // 执行测试
-        Book result = bookSearchService.searchByIsbn(isbnString);
+        BookInfo result = bookSearchService.searchByIsbn(isbnString);
 
         // 验证结果
         assertNull(result, "当找不到图书时应该返回 null");
