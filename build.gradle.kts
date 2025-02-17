@@ -23,9 +23,11 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_21
     }
 
-    dependencies {
-        implementation("org.springframework.boot:spring-boot-starter")
-        testImplementation("org.springframework.boot:spring-boot-starter-test")
+    if (project.name != "domain") {
+        dependencies {
+//            implementation("org.springframework.boot:spring-boot-starter")
+            testImplementation("org.springframework.boot:spring-boot-starter-test")
+        }
     }
 
     tasks.withType<Test> {
