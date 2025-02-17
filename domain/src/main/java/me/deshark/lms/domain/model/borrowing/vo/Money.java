@@ -18,6 +18,11 @@ public class Money {
         return new Money(amount, Currency.getInstance("CNY"));
     }
 
+    // 工厂方法 - 创建指定货币
+    public static Money money(BigDecimal amount, String currency) {
+        return new Money(amount, Currency.getInstance(currency));
+    }
+
     private Money(BigDecimal amount, Currency currency) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalArgumentException("金额不能为负数");
