@@ -4,6 +4,7 @@ import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.domain.model.auth.vo.Password;
 import me.deshark.lms.domain.model.auth.vo.UserRole;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
+import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 
 /**
  * @author DE_SHARK
@@ -84,19 +85,19 @@ public class AuthUser {
     }
 
     // 创建新用户
-    public static AuthUser createUser(String username, String rawPassword, String email) {
+    public static AuthUser createUser(String username, String rawPassword, String email, PasswordEncryptor encryptor) {
         return AuthUser.builder()
                 .email(email)
                 .username(username)
-                .password(Password.encrypt(rawPassword))
+                .password(Password.fromEncrypted(encryptor.encrypt(rawPassword)))
                 .role(UserRole.READER)
                 .status(UserStatus.UNVERIFIED)
                 .build();
     }
 
     // 业务行为方法
-    public void authenticate(String rawPassword) {
-        if (!password.matches(rawPassword)) {
+    public void authenticate(String rawPassword, PasswordEncryptor encryptor) {
+        if (!password.matches(rawPassword, encryptor)) {
             throw new AuthenticationException("用户名或密码错误");
         }
         if (status != UserStatus.ACTIVE) {

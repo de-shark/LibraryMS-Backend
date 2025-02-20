@@ -16,7 +16,7 @@ public class UserPersistenceMapper {
         return UserDO.builder()
                 .username(authUser.getUsername())
                 .email(authUser.getEmail())
-                .password(authUser.getPassword().encryptedPassword())
+                .password(authUser.getPassword().encryptedValue())
                 .role(authUser.getRole())
                 .status(authUser.getStatus())
                 .build();

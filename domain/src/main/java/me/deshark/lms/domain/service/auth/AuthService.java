@@ -10,9 +10,11 @@ import me.deshark.lms.domain.repository.auth.UserRepository;
 public class AuthService {
 
     private final UserRepository userRepository;
+    private final PasswordEncryptor encryptor;
 
-    public AuthService(UserRepository userRepository) {
+    public AuthService(UserRepository userRepository, PasswordEncryptor encryptor) {
         this.userRepository = userRepository;
+        this.encryptor = encryptor;
     }
 
     public AuthUser registerUser(String username, String password, String email) {
@@ -23,14 +25,14 @@ public class AuthService {
         }
 
         // 2. 注册新用户
-        AuthUser newUser = AuthUser.createUser(username, password, email);
+        AuthUser newUser = AuthUser.createUser(username, password, email, encryptor);
         userRepository.save(newUser);
         return newUser;
     }
 
     public AuthUser authenticate(String username, String rawPassword) {
         AuthUser user = userRepository.findByUsername(username);
-        user.authenticate(rawPassword);
+        user.authenticate(rawPassword, encryptor);
         return user;
     }
 }
