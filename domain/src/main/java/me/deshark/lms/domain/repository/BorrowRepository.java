@@ -2,7 +2,6 @@ package me.deshark.lms.domain.repository;
 
 import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
-import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
 import java.util.UUID;
 
@@ -11,8 +10,6 @@ import java.util.UUID;
  * @date 2025/2/16 15:17
  */
 public interface BorrowRepository {
-    // 查找可用的图书副本
-    BookCopy findAvailableBookCopy(Isbn isbn);
     
     // 保存借阅记录
     void save(BorrowTransaction transaction);

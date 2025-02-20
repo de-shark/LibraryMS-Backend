@@ -2,8 +2,10 @@ package me.deshark.lms.domain.service;
 
 import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
-import me.deshark.lms.domain.repository.BorrowRepository;
+import me.deshark.lms.domain.model.catalog.entity.BookCopy;
+import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.BorrowRepository;
 
 import java.util.Date;
 
@@ -28,13 +30,35 @@ public class BorrowService {
      * @return 借阅记录
      */
     public BorrowTransaction borrow(Patron patron, String isbn) {
+
         // 1. 检查用户是否可以借阅
+        if (!patron.canBorrow()) {
+            throw new IllegalArgumentException("Patron is not can borrow");
+        }
+
         // 2. 检查图书是否可借
+        Isbn vaildIsbn = new Isbn(isbn);
+        if (bookRepository.countAvailableCopies(vaildIsbn) < 1) {
+            throw new IllegalArgumentException("Book is not available");
+        }
+
         // 3. 获取可用的图书副本
+        BookCopy bookCopy = bookRepository.findAvailableBookCopy(vaildIsbn);
+
         // 4. 创建借阅记录
+        Date now = new Date();
+        BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getBookCopyId(), patron, now);
+        borrowTransaction.setStatus("BORROWED");
+        borrowTransaction.setDueDate(calculateDueDate(now));
+
         // 5. 保存借阅记录
+        borrowRepository.save(borrowTransaction);
+
         // 6. 更新图书副本状态
-        return null;
+        bookCopy.setStatus("BORROWED");
+        borrowRepository.updateBookCopyStatus(bookCopy);
+
+        return borrowTransaction;
     }
 
     /**
