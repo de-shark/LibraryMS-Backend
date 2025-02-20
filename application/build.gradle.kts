@@ -13,10 +13,6 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok:1.18.36")
 }
 
-tasks.named("bootJar") {
-    enabled = false
-}
-
 tasks.named("jar") {
     enabled = true
 }

@@ -7,10 +7,6 @@ dependencies {
     testImplementation("org.mockito:mockito-core:5.15.2")
 }
 
-tasks.named("bootJar") {
-    enabled = false
-}
-
 tasks.named("jar") {
     enabled = true
 }

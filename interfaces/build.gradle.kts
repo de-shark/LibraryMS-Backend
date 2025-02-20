@@ -8,10 +8,6 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-security")
 }
 
-tasks.named("bootJar") {
-    enabled = false
-}
-
 tasks.named("jar") {
     enabled = true
 }
