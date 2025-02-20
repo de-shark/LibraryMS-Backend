@@ -10,4 +10,8 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     // https://mvnrepository.com/artifact/org.mockito/mockito-core
     testImplementation("org.mockito:mockito-core:5.15.2")
-} 
+}
+
+tasks.named("bootJar") {
+    enabled = false
+}

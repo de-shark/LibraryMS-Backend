@@ -22,14 +22,4 @@ subprojects {
         sourceCompatibility = JavaVersion.VERSION_21
         targetCompatibility = JavaVersion.VERSION_21
     }
-
-    if (project.name != "domain") {
-        dependencies {
-            testImplementation("org.springframework.boot:spring-boot-starter-test")
-        }
-    }
-
-    tasks.withType<Test> {
-        useJUnitPlatform()
-    }
 }
