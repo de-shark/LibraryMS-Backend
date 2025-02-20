@@ -10,3 +10,7 @@ dependencies {
 tasks.named("jar") {
     enabled = true
 }
+
+tasks.test {
+    useJUnitPlatform()  // 让 Gradle 运行 JUnit 5 测试
+}

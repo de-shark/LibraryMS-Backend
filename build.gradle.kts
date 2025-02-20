@@ -22,8 +22,11 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    dependencies {
-        implementation("org.springframework.boot:spring-boot-starter")
-        implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:3.4.2"))
+    if (project.name != "domain") {
+        dependencies {
+            implementation("org.springframework.boot:spring-boot-starter")
+            implementation(enforcedPlatform("org.springframework.boot:spring-boot-dependencies:3.4.2"))
+        }
     }
+
 }
