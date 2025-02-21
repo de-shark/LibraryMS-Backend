@@ -86,9 +86,9 @@ public class BorrowService {
     }
 
     /**
-     * 计算到期时间（默认借阅期限为30天）
+     * 计算到期时间（默认借阅期限为14天）
      */
     private Date calculateDueDate(Date startDate) {
-        return new Date(startDate.getTime() + 30L * 24 * 60 * 60 * 1000);
+        return new Date(startDate.getTime() + 14L * 24 * 60 * 60 * 1000);
     }
 }
