@@ -77,12 +77,15 @@ public class BorrowService {
      * 归还图书
      * @return 更新后的借阅记录
      */
-    public BorrowTransaction returnBook() {
-        // 1. 获取借阅记录
-        // 2. 更新借阅记录状态
-        // 3. 更新图书副本状态
-        // 4. 更新借阅者状态
-        return null;
+    public BorrowTransaction returnBook(BorrowTransaction transaction) {
+        // 1. 更新借阅记录状态
+        transaction.setStatus("RETURNED");
+        transaction.setEndDate(new Date());
+        // 2. 更新图书副本状态
+        BookCopy bookCopy = bookRepository.findBookCopy(transaction.getBookCopyId());
+        bookCopy.setStatus("ACTIVATE");
+
+        return transaction;
     }
 
     /**
