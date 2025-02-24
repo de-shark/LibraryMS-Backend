@@ -65,12 +65,18 @@ public class BorrowService {
      * 续借图书
      * @return 更新后的借阅记录
      */
-    public BorrowTransaction renew() {
-        // 1. 获取借阅记录
-        // 2. 检查是否可以续借
-        // 3. 更新到期时间
+    public BorrowTransaction renew(BorrowTransaction transaction) {
+        // 1. 检查是否可以续借
+        if (!transaction.canRenew()) {
+            throw new IllegalArgumentException("Borrow is not can renew");
+        }
+        // 2. 更新到期时间
+        Date dueDate = transaction.getDueDate();
+        dueDate = calculateDueDate(dueDate);
+        transaction.setDueDate(dueDate);
         // 4. 保存更新后的借阅记录
-        return null;
+        borrowRepository.save(transaction);
+        return transaction;
     }
 
     /**
