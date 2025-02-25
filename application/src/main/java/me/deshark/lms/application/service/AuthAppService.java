@@ -5,7 +5,6 @@ import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
-import me.deshark.lms.domain.repository.auth.UserRepository;
 import me.deshark.lms.domain.service.auth.AuthService;
 import me.deshark.lms.domain.service.auth.TokenProvider;
 import org.springframework.stereotype.Service;
@@ -18,13 +17,11 @@ import org.springframework.stereotype.Service;
 public class AuthAppService {
 
     // 领域层接口
-    private final UserRepository userRepository;
     private final TokenProvider tokenProvider;
     private final AuthService authService;
 
     // 手动添加构造函数，Spring 会自动注入 userRepository
-    public AuthAppService(UserRepository userRepository, TokenProvider tokenProvider, AuthService authService) {
-        this.userRepository = userRepository;
+    public AuthAppService(TokenProvider tokenProvider, AuthService authService) {
         this.tokenProvider = tokenProvider;
         this.authService = authService;
     }
