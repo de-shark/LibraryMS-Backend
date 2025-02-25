@@ -31,17 +31,14 @@ public class AuthAppService {
 
     public Result<String, String> register(UserInfo userInfo) {
         final AuthUser newUser;
-        // 1. 请求领域实体
         try {
             newUser = authService.registerUser(userInfo.username(), userInfo.password(), userInfo.email());
+            return Result.ok("注册成功");
         } catch (UsernameAlreadyExistedException e) {
             return Result.err(e.getMessage());
+        } catch (Exception e) {
+            return Result.err("系统错误，请联系管理员");
         }
-
-        // 2. 保存新用户到数据库
-        boolean success = userRepository.save(newUser);
-        return success ? Result.ok("注册成功")
-                : Result.err("系统错误，请联系管理员");
     }
 
     public Result<String, String> login(UserInfo userInfo) {
