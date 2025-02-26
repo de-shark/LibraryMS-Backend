@@ -47,3 +47,7 @@ Docker/PostgreSQL/postgresql_data
 
 ### Something ###
 usr/
+.aider*
+/.cursorignore
+/.cursor/rules/lms-rules.mdc
+/.windsurfrules
