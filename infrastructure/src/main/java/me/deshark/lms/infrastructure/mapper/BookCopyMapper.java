@@ -7,5 +7,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @date 2025/2/26 19:28
  */
 @Mapper
-public class BookCopyMapper {
+public interface BookCopyMapper {
 }
