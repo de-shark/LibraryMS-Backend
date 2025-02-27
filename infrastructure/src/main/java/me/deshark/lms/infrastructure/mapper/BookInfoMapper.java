@@ -79,11 +79,7 @@ public interface BookInfoMapper {
         Objects.requireNonNull(bookInfoDO, "BookInfoDO不能为空");
         Objects.requireNonNull(bookInfoDO.getIsbn(), "ISBN不能为空");
 
-        BookInfo bookInfo = new BookInfo(new Isbn(bookInfoDO.getIsbn()));
-        bookInfo.setTitle(bookInfoDO.getTitle());
-        bookInfo.setAuthor(bookInfoDO.getAuthor());
-
-        return bookInfo;
+        return new BookInfo(new Isbn(bookInfoDO.getIsbn()), bookInfoDO.getTitle(), bookInfoDO.getAuthor());
     }
 
     /**
