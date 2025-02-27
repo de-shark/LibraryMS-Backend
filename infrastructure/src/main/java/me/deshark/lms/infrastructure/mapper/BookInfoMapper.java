@@ -1,9 +1,12 @@
 package me.deshark.lms.infrastructure.mapper;
 
+import me.deshark.lms.domain.model.catalog.entity.BookInfo;
+import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookInfoDO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -68,4 +71,32 @@ public interface BookInfoMapper {
      */
     @Select("SELECT COUNT(*) FROM book_info")
     long count();
+
+    /**
+     * 将DO转换为领域实体
+     */
+    default BookInfo toDomainEntity(BookInfoDO bookInfoDO) {
+        Objects.requireNonNull(bookInfoDO, "BookInfoDO不能为空");
+        Objects.requireNonNull(bookInfoDO.getIsbn(), "ISBN不能为空");
+
+        BookInfo bookInfo = new BookInfo(new Isbn(bookInfoDO.getIsbn()));
+        bookInfo.setTitle(bookInfoDO.getTitle());
+        bookInfo.setAuthor(bookInfoDO.getAuthor());
+
+        return bookInfo;
+    }
+
+    /**
+     * 将领域实体转换为DO
+     */
+    default BookInfoDO toDataObject(BookInfo bookInfo) {
+        Objects.requireNonNull(bookInfo, "BookInfo不能为空");
+        Objects.requireNonNull(bookInfo.getIsbn(), "ISBN不能为空");
+
+        return BookInfoDO.builder()
+                .isbn(bookInfo.getIsbn().getIsbn())
+                .title(bookInfo.getTitle())
+                .author(bookInfo.getAuthor())
+                .build();
+    }
 }
