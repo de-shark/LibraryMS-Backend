@@ -40,4 +40,8 @@ public class JwtTokenProvider implements TokenProvider {
                 .signWith(key)
                 .compact();
     }
+
+    public SecretKey getKey() {
+        return key;
+    }
 }
