@@ -22,12 +22,12 @@ public interface BookRepository {
     BookCopy findBookCopy(UUID bookCopyId);
 
     // 保存
-    void saveBookInfo(BookCatalog bookCatalog);
+    void saveBookCatalog(BookCatalog bookCatalog);
 
     void saveBookCopy(BookCopy bookCopy);
 
     // delete
-    void deleteBookInfo(Isbn isbn);
+    void deleteBookCatalog(Isbn isbn);
 
     void deleteBookCopy(UUID bookCopyId);
 }
