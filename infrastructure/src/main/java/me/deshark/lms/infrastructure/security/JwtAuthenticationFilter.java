@@ -6,6 +6,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,13 +20,10 @@ import java.util.List;
 /**
  * @author DE_SHARK
  */
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final SecretKey key;
 
-    public JwtAuthenticationFilter(SecretKey key) {
-        this.key = key;
-    }
-
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Override
     protected void doFilterInternal(
@@ -42,7 +40,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         String token = header.substring(7);
         try {
             Claims claims = Jwts.parser()
-                    .verifyWith(key)
+                    .verifyWith(jwtTokenProvider.getKey())
                     .build()
                     .parseSignedClaims(token)
                     .getPayload();
