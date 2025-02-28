@@ -50,4 +50,24 @@ public class BookRepositoryImpl implements BookRepository {
     public BookCopy findBookCopy(UUID bookCopyId) {
         return null;
     }
+
+    @Override
+    public void saveBookInfo(BookCatalog bookCatalog) {
+
+    }
+
+    @Override
+    public void saveBookCopy(BookCopy bookCopy) {
+
+    }
+
+    @Override
+    public void deleteBookInfo(Isbn isbn) {
+
+    }
+
+    @Override
+    public void deleteBookCopy(UUID bookCopyId) {
+
+    }
 }
