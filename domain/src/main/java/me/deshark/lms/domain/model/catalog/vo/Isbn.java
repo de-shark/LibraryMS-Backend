@@ -37,6 +37,11 @@ public class Isbn {
     }
 
     @Override
+    public String toString() {
+        return isbn;
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) {
             return true;
