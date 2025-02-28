@@ -19,3 +19,8 @@ mybatis:
 # openssl rand -base64 172 | tr -d '\n'
 jwt:
   secret: EKLUF4cU6FuytxSFpddH86/+YptlWf9vHBuWcg==MsPJfkUBpd25DCKvmCusPLAl
+
+logging:
+  level:
+    org:
+      springframework: debug
