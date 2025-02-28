@@ -20,4 +20,9 @@ public interface BookRepository {
     BookCopy findAvailableBookCopy(Isbn isbn);
 
     BookCopy findBookCopy(UUID bookCopyId);
+
+    // 保存
+    void saveBookInfo(BookInfo bookInfo);
+
+    void saveBookCopy(BookCopy bookCopy);
 }
