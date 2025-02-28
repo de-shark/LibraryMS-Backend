@@ -25,4 +25,9 @@ public interface BookRepository {
     void saveBookInfo(BookInfo bookInfo);
 
     void saveBookCopy(BookCopy bookCopy);
+
+    // delete
+    void deleteBookInfo(Isbn isbn);
+
+    void deleteBookCopy(UUID bookCopyId);
 }
