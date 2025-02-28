@@ -47,7 +47,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             String role = claims.get("role", String.class);
 
             // 创建认证对象
-            List<SimpleGrantedAuthority> authority = List.of(new SimpleGrantedAuthority(role));
+            List<SimpleGrantedAuthority> authority = List.of(new SimpleGrantedAuthority("ROLE_" + role));
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authority);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception e) {
