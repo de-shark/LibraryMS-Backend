@@ -44,10 +44,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .getPayload();
 
             String username = claims.getSubject();
-            String roles = claims.get("roles", String.class);
 
             // 创建认证对象
-            List<SimpleGrantedAuthority> authorities = List.of(new SimpleGrantedAuthority("ROLE_" + roles));
+            List<SimpleGrantedAuthority> authorities = ((List<?>) claims.get("roles"))
+                    .stream()
+                    .map(role -> new SimpleGrantedAuthority("ROLE_"+role.toString()))
+                    .toList();
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception e) {

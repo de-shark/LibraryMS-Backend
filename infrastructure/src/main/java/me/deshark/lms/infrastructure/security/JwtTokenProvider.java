@@ -2,6 +2,7 @@ package me.deshark.lms.infrastructure.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.Getter;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 import me.deshark.lms.domain.service.auth.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import java.util.Date;
  * JWT Token 提供者实现
  * @author DE_SHARK
  */
+@Getter
 @Component
 public class JwtTokenProvider implements TokenProvider {
 
@@ -34,14 +36,11 @@ public class JwtTokenProvider implements TokenProvider {
         return Jwts.builder()
                 .subject(authUser.getUsername())
 //                .claim("userId", authUser.getUserId())
-                .claim("roles", authUser.getRole())
+                .claim("roles", authUser.getRole().toString())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(24, ChronoUnit.HOURS)))
                 .signWith(key)
                 .compact();
     }
 
-    public SecretKey getKey() {
-        return key;
-    }
 }
