@@ -1,4 +1,4 @@
-package me.deshark.lms.interfaces.config;
+package me.deshark.lms.infrastructure.security;
 
 import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,7 +32,6 @@ public class SecurityConfig {
             .csrf(AbstractHttpConfigurer::disable)
             // 禁用 HTTP Basic 认证
             .httpBasic(AbstractHttpConfigurer::disable);
-
         return http.build();
     }
 
