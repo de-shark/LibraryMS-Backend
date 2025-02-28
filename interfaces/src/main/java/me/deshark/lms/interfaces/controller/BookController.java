@@ -1,6 +1,6 @@
 package me.deshark.lms.interfaces.controller;
 
-import me.deshark.lms.interfaces.dto.*;
+import me.deshark.lms.interfaces.dto.ApiResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -11,39 +11,32 @@ import org.springframework.web.bind.annotation.*;
 public class BookController {
 
     @PostMapping
-    public ApiResponse<Void> createBook(@RequestBody BookCreateRequest request) {
+    public ApiResponse<Void> createBook() {
         // 创建图书逻辑
-        return ApiResponse.success(null, "图书创建成功");
+        return ApiResponse.success(null, "该功能编写中");
     }
 
     @GetMapping("/{isbn}")
-    public ApiResponse<BookDetailResponse> getBook(@PathVariable String isbn) {
+    public ApiResponse<Void> getBook(@PathVariable String isbn) {
         // 获取图书详情逻辑
-        return ApiResponse.success(new BookDetailResponse(
-                null, null, null, null,
-                null, null, null, 0
-        ));
+        return ApiResponse.success(null, "该功能编写中");
     }
 
     @GetMapping
-    public ApiResponse<PageResponse<BookSummaryResponse>> listBooks(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+    public ApiResponse<Void> listBooks() {
         // 分页查询图书列表逻辑
-        return ApiResponse.success(new PageResponse<>(null, 0, 0, 0));
+        return ApiResponse.success(null, "该功能编写中");
     }
 
     @PutMapping("/{isbn}")
-    public ApiResponse<Void> updateBook(
-            @PathVariable String isbn,
-            @RequestBody BookUpdateRequest request) {
+    public ApiResponse<Void> updateBook(@PathVariable String isbn) {
         // 更新图书信息逻辑
-        return ApiResponse.success(null, "图书更新成功");
+        return ApiResponse.success(null, "该功能编写中");
     }
 
     @DeleteMapping("/{isbn}")
     public ApiResponse<Void> deleteBook(@PathVariable String isbn) {
         // 删除图书逻辑
-        return ApiResponse.success(null, "图书删除成功");
+        return ApiResponse.success(null, "该功能编写中");
     }
 }
