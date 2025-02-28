@@ -29,15 +29,14 @@ public class JwtTokenProvider implements TokenProvider {
 
     @Override
     public String generateToken(AuthUser authUser) {
-        Instant now = Instant.now();
-        
+        Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+
         return Jwts.builder()
                 .subject(authUser.getUsername())
-                // 设置签发时间
+//                .claim("userId", authUser.getUserId())
+                .claim("roles", authUser.getRole())
                 .issuedAt(Date.from(now))
-                // 设置过期时间（例如24小时后）
                 .expiration(Date.from(now.plus(24, ChronoUnit.HOURS)))
-                // 使用新的签名方法
                 .signWith(key)
                 .compact();
     }
