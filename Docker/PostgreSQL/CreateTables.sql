@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS borrowing_records;
 DROP TABLE IF EXISTS book_copy;
-DROP TABLE IF EXISTS book_info;
+DROP TABLE IF EXISTS book_catalog;
 DROP TABLE IF EXISTS users;
 
 -- 用户表
