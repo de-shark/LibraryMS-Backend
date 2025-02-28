@@ -1,15 +1,16 @@
 package me.deshark.lms.interfaces.config;
 
+import jakarta.servlet.*;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import javax.servlet.*;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
@@ -66,7 +67,8 @@ public class SecurityConfig {
                         res.getContentType());
             }
         });
-        registrationBean.setOrder(Integer.MIN_VALUE); // 设置最高优先级
+        // 设置最高优先级
+        registrationBean.setOrder(Integer.MIN_VALUE);
         return registrationBean;
     }
 }
