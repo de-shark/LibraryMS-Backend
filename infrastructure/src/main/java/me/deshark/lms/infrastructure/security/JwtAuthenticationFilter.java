@@ -44,13 +44,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .getPayload();
 
             String username = claims.getSubject();
+            String role = claims.get("role", String.class);
 
             // 创建认证对象
-            List<SimpleGrantedAuthority> authorities = ((List<?>) claims.get("roles"))
-                    .stream()
-                    .map(role -> new SimpleGrantedAuthority("ROLE_"+role.toString()))
-                    .toList();
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
+            List<SimpleGrantedAuthority> authority = List.of(new SimpleGrantedAuthority(role));
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authority);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception e) {
             logger.error("JWT解析失败: {" + e.getMessage() + "}", e);

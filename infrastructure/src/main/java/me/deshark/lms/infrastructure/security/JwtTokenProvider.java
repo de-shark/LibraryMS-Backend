@@ -36,7 +36,7 @@ public class JwtTokenProvider implements TokenProvider {
         return Jwts.builder()
                 .subject(authUser.getUsername())
 //                .claim("userId", authUser.getUserId())
-                .claim("roles", authUser.getRole().toString())
+                .claim("role", authUser.getRole().name())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(24, ChronoUnit.HOURS)))
                 .signWith(key)
