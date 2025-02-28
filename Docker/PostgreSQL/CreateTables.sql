@@ -32,7 +32,7 @@ COMMENT ON COLUMN users.updated_at IS '最后更新时间';
 
 
 -- 图书信息表
-CREATE TABLE book_info
+CREATE TABLE book_catalog
 (
     isbn         CHAR(13) PRIMARY KEY,
     title        VARCHAR(255) NOT NULL,
@@ -44,14 +44,14 @@ CREATE TABLE book_info
     created_at   TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN book_info.isbn IS '国际标准书号';
-COMMENT ON COLUMN book_info.title IS '图书标题';
-COMMENT ON COLUMN book_info.author IS '作者';
-COMMENT ON COLUMN book_info.publisher IS '出版社';
-COMMENT ON COLUMN book_info.publish_year IS '出版年份';
-COMMENT ON COLUMN book_info.description IS '图书简介';
-COMMENT ON COLUMN book_info.cover_url IS '封面图URL';
-COMMENT ON COLUMN book_info.created_at IS '录入时间';
+COMMENT ON COLUMN book_catalog.isbn IS '国际标准书号';
+COMMENT ON COLUMN book_catalog.title IS '图书标题';
+COMMENT ON COLUMN book_catalog.author IS '作者';
+COMMENT ON COLUMN book_catalog.publisher IS '出版社';
+COMMENT ON COLUMN book_catalog.publish_year IS '出版年份';
+COMMENT ON COLUMN book_catalog.description IS '图书简介';
+COMMENT ON COLUMN book_catalog.cover_url IS '封面图URL';
+COMMENT ON COLUMN book_catalog.created_at IS '录入时间';
 
 
 -- 图书副本表
@@ -68,7 +68,7 @@ CREATE TABLE book_copy
     last_maintain    TIMESTAMPTZ,
 
     CONSTRAINT fk_book_copy_bookinfo
-        FOREIGN KEY (isbn) REFERENCES book_info (isbn)
+        FOREIGN KEY (isbn) REFERENCES book_catalog (isbn)
             ON DELETE RESTRICT
 );
 
