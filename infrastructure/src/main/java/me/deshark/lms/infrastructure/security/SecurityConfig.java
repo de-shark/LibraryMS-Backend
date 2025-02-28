@@ -1,19 +1,11 @@
 package me.deshark.lms.infrastructure.security;
 
-import jakarta.servlet.*;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
-
-import java.io.IOException;
-import java.time.Duration;
-import java.time.Instant;
 
 /**
  * @author DE_SHARK
@@ -33,41 +25,5 @@ public class SecurityConfig {
             // 禁用 HTTP Basic 认证
             .httpBasic(AbstractHttpConfigurer::disable);
         return http.build();
-    }
-
-    @Bean
-    public FilterRegistrationBean<Filter> requestLoggingFilter() {
-        FilterRegistrationBean<Filter> registrationBean = new FilterRegistrationBean<>();
-        registrationBean.setFilter(new Filter() {
-            @Override
-            public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-                    throws IOException, ServletException {
-                Instant start = Instant.now();
-                HttpServletRequest req = (HttpServletRequest) request;
-                HttpServletResponse res = (HttpServletResponse) response;
-
-                // 记录请求信息
-                System.out.printf("\n=== 请求进入 ===\n时间: %s\n方法: %s\nURI: %s\n参数: %s\n用户: %s\n",
-                        Instant.now(),
-                        req.getMethod(),
-                        req.getRequestURI(),
-                        req.getQueryString(),
-                        req.getRemoteUser());
-
-                // 继续处理请求
-                chain.doFilter(request, response);
-
-                // 记录响应信息
-                long duration = Duration.between(start, Instant.now()).toMillis();
-                System.out.printf("\n=== 响应返回 ===\n时间: %s\n状态: %d\n耗时: %dms\n内容类型: %s\n",
-                        Instant.now(),
-                        res.getStatus(),
-                        duration,
-                        res.getContentType());
-            }
-        });
-        // 设置最高优先级
-        registrationBean.setOrder(Integer.MIN_VALUE);
-        return registrationBean;
     }
 }
