@@ -1,8 +1,8 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
-import me.deshark.lms.domain.model.catalog.entity.BookInfo;
 import me.deshark.lms.domain.model.catalog.exception.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
@@ -28,7 +28,7 @@ public class BookRepositoryImpl implements BookRepository {
     private final BookCopyMapper bookCopyMapper;
 
     @Override
-    public BookInfo findByIsbn(Isbn isbn) {
+    public BookCatalog findByIsbn(Isbn isbn) {
         Optional<BookInfoDO> bookInfoDO = bookInfoMapper.findByIsbn(isbn.getIsbn());
         if (bookInfoDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");

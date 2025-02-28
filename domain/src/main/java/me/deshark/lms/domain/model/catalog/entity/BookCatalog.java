@@ -7,18 +7,18 @@ import me.deshark.lms.domain.model.catalog.vo.Isbn;
  * @date 2025/2/15 20:47
  */
 // 图书基本信息
-public class BookInfo {
+public class BookCatalog {
     private final Isbn isbn;
     private String title;
     private String author;
     private int countAvailableCopies;
 
 
-    public BookInfo(Isbn isbn) {
+    public BookCatalog(Isbn isbn) {
         this.isbn = isbn;
     }
 
-    public BookInfo(Isbn isbn, String title, String author) {
+    public BookCatalog(Isbn isbn, String title, String author) {
         this.isbn = isbn;
         this.title = title;
         this.author = author;

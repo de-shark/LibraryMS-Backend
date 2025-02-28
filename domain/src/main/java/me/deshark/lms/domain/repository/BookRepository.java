@@ -1,7 +1,7 @@
 package me.deshark.lms.domain.repository;
 
+import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
-import me.deshark.lms.domain.model.catalog.entity.BookInfo;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
 import java.util.UUID;
@@ -12,7 +12,7 @@ import java.util.UUID;
  */
 public interface BookRepository {
 
-    BookInfo findByIsbn(Isbn isbn);
+    BookCatalog findByIsbn(Isbn isbn);
 
     int countAvailableCopies(Isbn isbn);
 
@@ -22,7 +22,7 @@ public interface BookRepository {
     BookCopy findBookCopy(UUID bookCopyId);
 
     // 保存
-    void saveBookInfo(BookInfo bookInfo);
+    void saveBookInfo(BookCatalog bookCatalog);
 
     void saveBookCopy(BookCopy bookCopy);
 

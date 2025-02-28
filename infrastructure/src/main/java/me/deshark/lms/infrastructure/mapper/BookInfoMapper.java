@@ -1,6 +1,6 @@
 package me.deshark.lms.infrastructure.mapper;
 
-import me.deshark.lms.domain.model.catalog.entity.BookInfo;
+import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookInfoDO;
 import org.apache.ibatis.annotations.*;
@@ -75,24 +75,24 @@ public interface BookInfoMapper {
     /**
      * 将DO转换为领域实体
      */
-    default BookInfo toDomainEntity(BookInfoDO bookInfoDO) {
+    default BookCatalog toDomainEntity(BookInfoDO bookInfoDO) {
         Objects.requireNonNull(bookInfoDO, "BookInfoDO不能为空");
         Objects.requireNonNull(bookInfoDO.getIsbn(), "ISBN不能为空");
 
-        return new BookInfo(new Isbn(bookInfoDO.getIsbn()), bookInfoDO.getTitle(), bookInfoDO.getAuthor());
+        return new BookCatalog(new Isbn(bookInfoDO.getIsbn()), bookInfoDO.getTitle(), bookInfoDO.getAuthor());
     }
 
     /**
      * 将领域实体转换为DO
      */
-    default BookInfoDO toDataObject(BookInfo bookInfo) {
-        Objects.requireNonNull(bookInfo, "BookInfo不能为空");
-        Objects.requireNonNull(bookInfo.getIsbn(), "ISBN不能为空");
+    default BookInfoDO toDataObject(BookCatalog bookCatalog) {
+        Objects.requireNonNull(bookCatalog, "BookInfo不能为空");
+        Objects.requireNonNull(bookCatalog.getIsbn(), "ISBN不能为空");
 
         return BookInfoDO.builder()
-                .isbn(bookInfo.getIsbn().getIsbn())
-                .title(bookInfo.getTitle())
-                .author(bookInfo.getAuthor())
+                .isbn(bookCatalog.getIsbn().getIsbn())
+                .title(bookCatalog.getTitle())
+                .author(bookCatalog.getAuthor())
                 .build();
     }
 }
