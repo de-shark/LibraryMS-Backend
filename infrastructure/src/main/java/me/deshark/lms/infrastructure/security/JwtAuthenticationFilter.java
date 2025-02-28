@@ -53,6 +53,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authorities);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception e) {
+            logger.error("JWT解析失败: {" + e.getMessage() + "}", e);
+            logger.debug("异常堆栈:", e);
             SecurityContextHolder.clearContext();
         }
 
