@@ -14,6 +14,8 @@ mybatis:
     map-underscore-to-camel-case: true
   mapper-locations: classpath:mapper/*.xml
 
-# 添加 JWT 配置
+# 理想情况下，HS512秘密是512个随机位(64个随机字节)
+# OpenSSL生成129个字节的秘密(172* 6) /8。
+# openssl rand -base64 172 | tr -d '\n'
 jwt:
-  secret: eW91ci1zZWNyZXQta2V5LXNob3VsZC1iZS12ZXJ5LWxvbmctYW5kLXNlY3VyZS1hdC1sZWFzdC0yNTYtYml0cw==
+  secret: EKLUF4cU6FuytxSFpddH86/+YptlWf9vHBuWcg==MsPJfkUBpd25DCKvmCusPLAl
