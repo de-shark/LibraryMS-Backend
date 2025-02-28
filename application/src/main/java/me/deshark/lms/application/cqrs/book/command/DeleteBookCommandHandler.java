@@ -16,6 +16,6 @@ public class DeleteBookCommandHandler {
 
     public void handle(DeleteBookCommand command) {
         Isbn isbn = new Isbn(command.isbn());
-        bookRepository.deleteBookInfo(isbn);
+        bookRepository.deleteBookCatalog(isbn);
     }
 }
