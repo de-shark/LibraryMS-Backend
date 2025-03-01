@@ -2,6 +2,7 @@ package me.deshark.lms.domain.service.auth;
 
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
+import me.deshark.lms.domain.model.auth.vo.TokenRequest;
 import me.deshark.lms.domain.repository.auth.UserRepository;
 
 /**
@@ -11,6 +12,7 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncryptor encryptor;
+    private TokenProvider tokenProvider;
 
     public AuthService(UserRepository userRepository, PasswordEncryptor encryptor) {
         this.userRepository = userRepository;
@@ -30,9 +32,13 @@ public class AuthService {
         return newUser;
     }
 
-    public AuthUser authenticate(String username, String rawPassword) {
+    public TokenRequest authenticate(String username, String rawPassword) {
         AuthUser user = userRepository.findByUsername(username);
         user.authenticate(rawPassword, encryptor);
-        return user;
+        return new TokenRequest(username, user.getRole().name());
+    }
+
+    public String generateToken() {
+        return tokenProvider.generateToken(null);
     }
 }
