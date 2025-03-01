@@ -23,6 +23,8 @@ import java.util.Date;
 public class JwtTokenProvider implements TokenProvider {
 
     private final SecretKey key;
+    private final int ACCESS_TOKEN_EXPIRATION_TIME = 15 * 60;
+    private final int REFRESH_TOKEN_EXPIRATION_TIME = 14 * 24 * 60 * 60;
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         // 使用 Keys 工具类来生成适当长度的密钥
@@ -38,7 +40,32 @@ public class JwtTokenProvider implements TokenProvider {
 //                .claim("userId", authUser.getUserId())
                 .claim("role", authUser.getRole().name())
                 .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plus(24, ChronoUnit.HOURS)))
+                .expiration(Date.from(now.plus(3, ChronoUnit.SECONDS)))
+                .signWith(key)
+                .compact();
+    }
+
+    // 生成访问令牌
+    @Override
+    public String generateAccessToken(String username, String role) {
+        Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        return Jwts.builder()
+                .subject(username)
+                .claim("role", role)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plus(ACCESS_TOKEN_EXPIRATION_TIME, ChronoUnit.SECONDS)))
+                .signWith(key)
+                .compact();
+    }
+
+    // 生成刷新令牌
+    @Override
+    public String generateRefreshToken(String username) {
+        Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
+        return Jwts.builder()
+                .subject(username)
+                .issuedAt(Date.from(now))
+                .expiration(Date.from(now.plus(REFRESH_TOKEN_EXPIRATION_TIME, ChronoUnit.SECONDS)))
                 .signWith(key)
                 .compact();
     }

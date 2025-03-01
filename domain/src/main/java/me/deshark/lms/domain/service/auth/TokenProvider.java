@@ -8,4 +8,10 @@ import me.deshark.lms.domain.model.auth.entity.AuthUser;
  */
 public interface TokenProvider {
     String generateToken(AuthUser authUser);
+
+    // 生成访问令牌
+    String generateAccessToken(String username, String role);
+
+    // 生成刷新令牌
+    String generateRefreshToken(String username);
 }
