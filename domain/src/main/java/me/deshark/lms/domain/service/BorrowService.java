@@ -4,7 +4,7 @@ import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.BookCopyRepository;
 import me.deshark.lms.domain.repository.BorrowRepository;
 
 import java.util.Date;
@@ -16,11 +16,14 @@ import java.util.Date;
 public class BorrowService {
 
     private final BorrowRepository borrowRepository;
-    private final BookRepository bookRepository;
+    private final BookCopyRepository bookCopyRepository;
 
-    public BorrowService(BorrowRepository borrowRepository, BookRepository bookRepository) {
+    public BorrowService(
+            BorrowRepository borrowRepository,
+            BookCopyRepository bookCopyRepository
+    ) {
         this.borrowRepository = borrowRepository;
-        this.bookRepository = bookRepository;
+        this.bookCopyRepository = bookCopyRepository;
     }
 
     /**
@@ -38,12 +41,12 @@ public class BorrowService {
 
         // 2. 检查图书是否可借
         Isbn vaildIsbn = new Isbn(isbn);
-        if (bookRepository.countAvailableCopies(vaildIsbn) < 1) {
+        if (bookCopyRepository.countAvailableCopies(vaildIsbn) < 1) {
             throw new IllegalArgumentException("Book is not available");
         }
 
         // 3. 获取可用的图书副本
-        BookCopy bookCopy = bookRepository.findAvailableBookCopy(vaildIsbn);
+        BookCopy bookCopy = bookCopyRepository.findAvailableBookCopy(vaildIsbn);
 
         // 4. 创建借阅记录
         Date now = new Date();
@@ -88,7 +91,7 @@ public class BorrowService {
         transaction.setStatus("RETURNED");
         transaction.setEndDate(new Date());
         // 2. 更新图书副本状态
-        BookCopy bookCopy = bookRepository.findBookCopy(transaction.getBookCopyId());
+        BookCopy bookCopy = bookCopyRepository.findBookCopy(transaction.getBookCopyId());
         bookCopy.setStatus("ACTIVATE");
 
         return transaction;

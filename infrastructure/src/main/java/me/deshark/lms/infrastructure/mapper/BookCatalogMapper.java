@@ -14,7 +14,7 @@ import java.util.Optional;
  * @author deshark
  */
 @Mapper
-public interface bookCatalogMapper {
+public interface BookCatalogMapper {
 
     @Select("SELECT EXISTS (SELECT 1 FROM book_catalog WHERE isbn = #{isbn})")
     boolean existsByIsbn(@Param("isbn") String isbn);

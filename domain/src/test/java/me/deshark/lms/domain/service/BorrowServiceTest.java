@@ -5,7 +5,7 @@ import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.BookCopyRepository;
 import me.deshark.lms.domain.repository.BorrowRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 class BorrowServiceTest {
 
     private BorrowRepository borrowRepository;
-    private BookRepository bookRepository;
+    private BookCopyRepository bookCopyRepository;
     private BorrowService borrowService;
 
     private Patron validPatron;
@@ -36,8 +36,8 @@ class BorrowServiceTest {
     @BeforeEach
     void setUp() {
         borrowRepository = Mockito.mock(BorrowRepository.class);
-        bookRepository = Mockito.mock(BookRepository.class);
-        borrowService = new BorrowService(borrowRepository, bookRepository);
+        bookCopyRepository = Mockito.mock(BookCopyRepository.class);
+        borrowService = new BorrowService(borrowRepository, bookCopyRepository);
 
         // 初始化有效/无效用户
         validPatron = new Patron(GUID.v7().toUUID(), 0, 90);
@@ -52,8 +52,8 @@ class BorrowServiceTest {
         mockBookCopy.setStatus("AVAILABLE");
 
         // 配置模拟行为
-        when(bookRepository.countAvailableCopies(isbn)).thenReturn(1);
-        when(bookRepository.findAvailableBookCopy(isbn)).thenReturn(mockBookCopy);
+        when(bookCopyRepository.countAvailableCopies(isbn)).thenReturn(1);
+        when(bookCopyRepository.findAvailableBookCopy(isbn)).thenReturn(mockBookCopy);
 
         // 执行测试
         BorrowTransaction result = borrowService.borrow(validPatron, validIsbn);

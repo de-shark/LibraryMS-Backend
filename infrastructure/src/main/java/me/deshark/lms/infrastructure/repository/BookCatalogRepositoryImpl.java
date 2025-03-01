@@ -2,30 +2,23 @@ package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
-import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.exception.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.BookCatalogRepository;
 import me.deshark.lms.infrastructure.entity.BookCatalogDO;
-import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
-import me.deshark.lms.infrastructure.mapper.bookCatalogMapper;
+import me.deshark.lms.infrastructure.mapper.BookCatalogMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
-import java.util.UUID;
 
 /**
  * @author DE_SHARK
- * @date 2025/2/26 19:01
  */
 @Repository
 @RequiredArgsConstructor
-@Transactional(readOnly = true)
-public class BookRepositoryImpl implements BookRepository {
+public class BookCatalogRepositoryImpl implements BookCatalogRepository {
 
-    private final bookCatalogMapper bookCatalogMapper;
-    private final BookCopyMapper bookCopyMapper;
+    private final BookCatalogMapper bookCatalogMapper;
 
     @Override
     public boolean existsByIsbn(String isbn) {
@@ -42,37 +35,12 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public int countAvailableCopies(Isbn isbn) {
-        return 0;
-    }
-
-    @Override
-    public BookCopy findAvailableBookCopy(Isbn isbn) {
-        return null;
-    }
-
-    @Override
-    public BookCopy findBookCopy(UUID bookCopyId) {
-        return null;
-    }
-
-    @Override
     public void saveBookCatalog(BookCatalog bookCatalog) {
 
     }
 
     @Override
-    public void saveBookCopy(BookCopy bookCopy) {
-
-    }
-
-    @Override
     public void deleteBookCatalog(Isbn isbn) {
-
-    }
-
-    @Override
-    public void deleteBookCopy(UUID bookCopyId) {
 
     }
 }

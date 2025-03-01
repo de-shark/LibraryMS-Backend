@@ -2,7 +2,7 @@ package me.deshark.lms.domain.service;
 
 import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.BookCatalogRepository;
 
 /**
  * @author DE_SHARK
@@ -10,15 +10,15 @@ import me.deshark.lms.domain.repository.BookRepository;
  */
 public class BookSearchService {
 
-    private final BookRepository bookRepository;
+    private final BookCatalogRepository bookCatalogRepository;
 
-    public BookSearchService(BookRepository bookRepository) {
-        this.bookRepository = bookRepository;
+    public BookSearchService(BookCatalogRepository bookCatalogRepository) {
+        this.bookCatalogRepository = bookCatalogRepository;
     }
 
     public BookCatalog searchByIsbn(String isbn) {
         Isbn isbnChecked = new Isbn(isbn);
         // TODO 需要将图书副本的数量一起返回
-        return bookRepository.findByIsbn(isbnChecked);
+        return bookCatalogRepository.findByIsbn(isbnChecked);
     }
 }

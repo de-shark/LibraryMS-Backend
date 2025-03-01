@@ -2,7 +2,7 @@ package me.deshark.lms.domain.service;
 
 import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.BookCatalogRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -17,14 +17,14 @@ import static org.mockito.Mockito.when;
  */
 class BookSearchServiceTest {
 
-    private BookRepository bookRepository;
+    private BookCatalogRepository bookCatalogRepository;
     private BookSearchService bookSearchService;
 
     @BeforeEach
     void setUp() {
         // 创建模拟对象
-        bookRepository = Mockito.mock(BookRepository.class);
-        bookSearchService = new BookSearchService(bookRepository);
+        bookCatalogRepository = Mockito.mock(BookCatalogRepository.class);
+        bookSearchService = new BookSearchService(bookCatalogRepository);
     }
 
     @Test
@@ -43,7 +43,7 @@ class BookSearchServiceTest {
         BookCatalog mockBook = new BookCatalog(validIsbn, "Clean Code", "Robert C. Martin");
 
         // 配置模拟行为
-        when(bookRepository.findByIsbn(validIsbn)).thenReturn(mockBook);
+        when(bookCatalogRepository.findByIsbn(validIsbn)).thenReturn(mockBook);
 
         // 执行测试
         BookCatalog result = bookSearchService.searchByIsbn(isbnString);
@@ -57,7 +57,7 @@ class BookSearchServiceTest {
 //        assertEquals(5, result.getCountAvailableCopies());
 
         // 验证 repository 方法是否被调用
-        verify(bookRepository).findByIsbn(validIsbn);
+        verify(bookCatalogRepository).findByIsbn(validIsbn);
     }
 
     @Test
@@ -67,7 +67,7 @@ class BookSearchServiceTest {
         Isbn validIsbn = new Isbn(isbnString);
 
         // 配置模拟行为 - 当找不到图书时返回 null
-        when(bookRepository.findByIsbn(validIsbn)).thenReturn(null);
+        when(bookCatalogRepository.findByIsbn(validIsbn)).thenReturn(null);
 
         // 执行测试
         BookCatalog result = bookSearchService.searchByIsbn(isbnString);
@@ -76,7 +76,7 @@ class BookSearchServiceTest {
         assertNull(result, "当找不到图书时应该返回 null");
 
         // 验证 repository 方法是否被调用
-        verify(bookRepository).findByIsbn(validIsbn);
+        verify(bookCatalogRepository).findByIsbn(validIsbn);
     }
 }
 
