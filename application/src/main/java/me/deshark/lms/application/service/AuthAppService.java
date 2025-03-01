@@ -1,10 +1,11 @@
 package me.deshark.lms.application.service;
 
+import me.deshark.lms.application.info.AuthToken;
 import me.deshark.lms.application.info.UserInfo;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
-import me.deshark.lms.domain.model.auth.vo.TokenRequest;
+import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
 import me.deshark.lms.domain.service.auth.AuthService;
 import org.springframework.stereotype.Service;
 
@@ -32,9 +33,11 @@ public class AuthAppService {
         }
     }
 
-    public Result<String, String> login(String username, String password) {
-        TokenRequest tokenRequest = authService.authenticate(username, password);
-        String token = authService.generateToken(tokenRequest);
-        return Result.ok(token);
+    public AuthToken login(String username, String password) {
+        AuthTokenPair authTokenPair = authService.authenticate(username, password);
+        return AuthToken.builder()
+                .accessToken(authTokenPair.getAccessToken())
+                .refreshToken(authTokenPair.getRefreshToken())
+                .build();
     }
 }

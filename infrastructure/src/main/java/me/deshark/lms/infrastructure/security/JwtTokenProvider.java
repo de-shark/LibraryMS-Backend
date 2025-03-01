@@ -3,6 +3,7 @@ package me.deshark.lms.infrastructure.security;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.Getter;
+import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
 import me.deshark.lms.domain.service.auth.TokenProvider;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -31,17 +32,11 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public String generateToken(String username, String role) {
-        Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
-
-        return Jwts.builder()
-                .subject(username)
-//                .claim("userId", authUser.getUserId())
-                .claim("role", role)
-                .issuedAt(Date.from(now))
-                .expiration(Date.from(now.plus(3, ChronoUnit.SECONDS)))
-                .signWith(key)
-                .compact();
+    public AuthTokenPair generateToken(String username, String role) {
+        return new AuthTokenPair(
+                generateAccessToken(username, role),
+                generateRefreshToken(username)
+        );
     }
 
     // 生成访问令牌

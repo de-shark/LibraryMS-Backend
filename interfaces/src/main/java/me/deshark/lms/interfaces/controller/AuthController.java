@@ -1,11 +1,13 @@
 package me.deshark.lms.interfaces.controller;
 
+import me.deshark.lms.application.info.AuthToken;
 import me.deshark.lms.application.info.UserInfo;
 import me.deshark.lms.application.service.AuthAppService;
 import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.LoginRequest;
 import me.deshark.lms.interfaces.dto.RegisterRequest;
+import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -42,12 +44,13 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginRequest request) {
-        Result<String, String> result = authAppService.login(request.username(), request.password());
-        if (result.isOk()) {
-            return ResponseEntity.ok(ApiResponse.success(result.getOk(), "登录成功"));
-        } else {
-            return new ResponseEntity<>(ApiResponse.error(result.getErr()), HttpStatus.BAD_REQUEST);
-        }
+    public ResponseEntity<ResultBody<Object>> login(@RequestBody LoginRequest request) {
+        AuthToken authToken = authAppService.login(request.username(), request.password());
+        ResultBody<Object> resultBody = ResultBody.builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.getReasonPhrase())
+                .data(authToken)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
 }
