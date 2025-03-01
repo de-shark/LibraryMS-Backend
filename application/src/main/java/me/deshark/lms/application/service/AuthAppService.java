@@ -40,4 +40,12 @@ public class AuthAppService {
                 .refreshToken(authTokenPair.getRefreshToken())
                 .build();
     }
+
+    public AuthToken refresh(String refreshToken) {
+        AuthTokenPair authTokenPair = authService.refreshToken(refreshToken);
+        return AuthToken.builder()
+                .accessToken(authTokenPair.getAccessToken())
+                .refreshToken(authTokenPair.getRefreshToken())
+                .build();
+    }
 }
