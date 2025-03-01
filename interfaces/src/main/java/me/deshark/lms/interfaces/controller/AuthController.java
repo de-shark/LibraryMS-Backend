@@ -1,5 +1,6 @@
 package me.deshark.lms.interfaces.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import me.deshark.lms.application.info.AuthToken;
 import me.deshark.lms.application.info.UserInfo;
 import me.deshark.lms.application.service.AuthAppService;
@@ -8,7 +9,9 @@ import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.LoginRequest;
 import me.deshark.lms.interfaces.dto.RegisterRequest;
 import me.deshark.lms.interfaces.dto.ResultBody;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -44,12 +47,29 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResultBody<Object>> login(@RequestBody LoginRequest request) {
-        AuthToken authToken = authAppService.login(request.username(), request.password());
+    public ResponseEntity<ResultBody<Object>> login(
+            @RequestBody LoginRequest request,
+            HttpServletResponse response
+    ) {
+        AuthToken tokens = authAppService.login(request.username(), request.password());
+
+        // 1. 将refreshToken写入HttpOnly Cookie
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", tokens.getRefreshToken())
+                .httpOnly(true)
+                // 生产环境开启
+                .secure(true)
+                .sameSite("Strict")
+                .maxAge(7 * 24 * 3600)
+                .path("/api/auth/refresh")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+
+        // 2. AccessToken通过响应体返回
         ResultBody<Object> resultBody = ResultBody.builder()
                 .code(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
-                .data(authToken)
+                .data(tokens)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
