@@ -3,6 +3,7 @@ package me.deshark.lms.infrastructure.config;
 import me.deshark.lms.domain.repository.auth.UserRepository;
 import me.deshark.lms.domain.service.auth.AuthService;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
+import me.deshark.lms.domain.service.auth.TokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,7 +15,11 @@ import org.springframework.context.annotation.Configuration;
 public class DomainConfig {
 
     @Bean
-    public AuthService authService(UserRepository userRepository, PasswordEncryptor passwordEncryptor) {
-        return new AuthService(userRepository, passwordEncryptor);
+    public AuthService authService(
+            UserRepository userRepository,
+            PasswordEncryptor passwordEncryptor,
+            TokenProvider tokenProvider
+    ) {
+        return new AuthService(userRepository, passwordEncryptor, tokenProvider);
     }
 }

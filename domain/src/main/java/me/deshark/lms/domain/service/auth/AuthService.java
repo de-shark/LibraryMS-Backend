@@ -12,11 +12,12 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncryptor encryptor;
-    private TokenProvider tokenProvider;
+    private final TokenProvider tokenProvider;
 
-    public AuthService(UserRepository userRepository, PasswordEncryptor encryptor) {
+    public AuthService(UserRepository userRepository, PasswordEncryptor encryptor, TokenProvider tokenProvider) {
         this.userRepository = userRepository;
         this.encryptor = encryptor;
+        this.tokenProvider = tokenProvider;
     }
 
     public AuthUser registerUser(String username, String password, String email) {
@@ -38,7 +39,7 @@ public class AuthService {
         return new TokenRequest(username, user.getRole().name());
     }
 
-    public String generateToken() {
-        return tokenProvider.generateToken(null);
+    public String generateToken(TokenRequest tokenRequest) {
+        return tokenProvider.generateToken(tokenRequest.getUsername(), tokenRequest.getRole());
     }
 }
