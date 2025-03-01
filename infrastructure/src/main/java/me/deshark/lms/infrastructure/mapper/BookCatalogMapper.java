@@ -30,7 +30,7 @@ public interface BookCatalogMapper {
      */
     @Insert("INSERT INTO book_catalog (isbn, title, author, publisher, publish_year, description, cover_url) " +
             "VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishYear}, #{description}, #{coverUrl})")
-    int insert(BookCatalogDO bookCatalogDO);
+    void insert(BookCatalogDO bookCatalogDO);
 
     /**
      * 更新图书信息

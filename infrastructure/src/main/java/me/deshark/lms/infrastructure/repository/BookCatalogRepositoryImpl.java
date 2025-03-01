@@ -36,7 +36,12 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
 
     @Override
     public void saveBookCatalog(BookCatalog bookCatalog) {
-
+        BookCatalogDO bookCatalogDO = BookCatalogDO.builder()
+                .isbn(bookCatalog.getIsbn().toString())
+                .title(bookCatalog.getTitle())
+                .author(bookCatalog.getAuthor())
+                .build();
+        bookCatalogMapper.insert(bookCatalogDO);
     }
 
     @Override
