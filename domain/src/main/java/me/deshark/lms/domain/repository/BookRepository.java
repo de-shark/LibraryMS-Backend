@@ -12,6 +12,8 @@ import java.util.UUID;
  */
 public interface BookRepository {
 
+    boolean existsByIsbn(String isbn);
+
     BookCatalog findByIsbn(Isbn isbn);
 
     int countAvailableCopies(Isbn isbn);

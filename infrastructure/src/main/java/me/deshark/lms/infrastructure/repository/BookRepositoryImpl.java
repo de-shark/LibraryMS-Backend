@@ -28,6 +28,11 @@ public class BookRepositoryImpl implements BookRepository {
     private final BookCopyMapper bookCopyMapper;
 
     @Override
+    public boolean existsByIsbn(String isbn) {
+        return bookCatalogMapper.existsByIsbn(isbn);
+    }
+
+    @Override
     public BookCatalog findByIsbn(Isbn isbn) {
         Optional<BookCatalogDO> bookInfoDO = bookCatalogMapper.findByIsbn(isbn.getIsbn());
         if (bookInfoDO.isEmpty()) {

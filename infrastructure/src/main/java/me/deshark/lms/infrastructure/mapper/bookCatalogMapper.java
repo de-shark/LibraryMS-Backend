@@ -16,6 +16,9 @@ import java.util.Optional;
 @Mapper
 public interface bookCatalogMapper {
 
+    @Select("SELECT EXISTS (SELECT 1 FROM book_catalog WHERE isbn = #{isbn})")
+    boolean existsByIsbn(@Param("isbn") String isbn);
+
     /**
      * 根据ISBN查询图书信息
      */
