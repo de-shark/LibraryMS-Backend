@@ -38,9 +38,9 @@ public class AuthAppService {
         }
     }
 
-    public Result<String, String> login(UserInfo userInfo) {
+    public Result<String, String> login(String username, String password) {
         try {
-            AuthUser authUser = authService.authenticate(userInfo.username(), userInfo.password());
+            AuthUser authUser = authService.authenticate(username, password);
             // 生成 Token
             String token = tokenProvider.generateToken(authUser);
             return Result.ok(token);

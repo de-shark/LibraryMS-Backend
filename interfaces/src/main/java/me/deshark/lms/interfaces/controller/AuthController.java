@@ -1,10 +1,10 @@
 package me.deshark.lms.interfaces.controller;
 
 import me.deshark.lms.application.info.UserInfo;
+import me.deshark.lms.application.service.AuthAppService;
 import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.LoginRequest;
-import me.deshark.lms.application.service.AuthAppService;
 import me.deshark.lms.interfaces.dto.RegisterRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,11 +43,7 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<String>> login(@RequestBody LoginRequest request) {
-        UserInfo userInfo = UserInfo.builder()
-                .username(request.username())
-                .password(request.password())
-                .build();
-        Result<String, String> result = authAppService.login(userInfo);
+        Result<String, String> result = authAppService.login(request.username(), request.password());
         if (result.isOk()) {
             return ResponseEntity.ok(ApiResponse.success(result.getOk(), "登录成功"));
         } else {
