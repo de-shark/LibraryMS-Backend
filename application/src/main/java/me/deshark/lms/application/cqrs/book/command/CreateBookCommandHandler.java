@@ -34,7 +34,7 @@ public class CreateBookCommandHandler {
         Isbn isbn = new Isbn(command.isbn());
 
         // 检查图书是否已存在
-        if (bookRepository.findByIsbn(isbn) != null) {
+        if (bookRepository.existsByIsbn(isbn.getIsbn())) {
             throw new BookAlreadyExistsException("ISBN为" + isbn.getIsbn() + "的图书已存在");
         }
 
