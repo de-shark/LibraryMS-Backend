@@ -13,10 +13,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author DE_SHARK
@@ -44,6 +41,30 @@ public class AuthController {
         } else {
             return new ResponseEntity<>(ApiResponse.error(result.getErr()), HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<ResultBody<Object>> refreshToken(
+            @CookieValue(name = "refresh_token", required = false) String refreshToken
+    ) {
+        if (refreshToken == null || refreshToken.isEmpty()) {
+            return new ResponseEntity<>(
+                    ResultBody.builder()
+                            .code(HttpStatus.UNAUTHORIZED.value())
+                            .message("缺少Refresh Token")
+                            .build(),
+                    HttpStatus.UNAUTHORIZED
+            );
+        }
+
+        AuthToken newToken = authAppService.refresh(refreshToken);
+        
+        ResultBody<Object> resultBody = ResultBody.builder()
+                .code(HttpStatus.OK.value())
+                .message(HttpStatus.OK.getReasonPhrase())
+                .data(newToken)
+                .build();
+        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
 
     @PostMapping("/login")
