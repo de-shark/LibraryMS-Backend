@@ -1,5 +1,6 @@
 package me.deshark.lms.domain.service.auth;
 
+import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
@@ -42,5 +43,19 @@ public class AuthService {
 
     public AuthTokenPair generateToken(TokenRequest tokenRequest) {
         return tokenProvider.generateToken(tokenRequest.getUsername(), tokenRequest.getRole());
+    }
+
+    public AuthTokenPair refreshToken(String refreshToken) {
+        // 1. 验证refresh token有效性
+        if (!tokenProvider.validateToken(refreshToken)) {
+            throw new AuthenticationException("无效的刷新令牌");
+        }
+        
+        // 2. 从refresh token中解析用户名和角色
+        String username = tokenProvider.getUsernameFromToken(refreshToken);
+        String role = tokenProvider.getRoleFromToken(refreshToken);
+        
+        // 3. 生成新的token pair
+        return tokenProvider.generateToken(username, role);
     }
 }

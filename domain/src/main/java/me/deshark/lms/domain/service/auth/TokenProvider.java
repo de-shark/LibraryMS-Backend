@@ -7,6 +7,8 @@ import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
  * @date 2025/2/13 18:01
  */
 public interface TokenProvider {
+
+    // 生成两个令牌
     AuthTokenPair generateToken(String username, String role);
 
     // 生成访问令牌
@@ -14,4 +16,12 @@ public interface TokenProvider {
 
     // 生成刷新令牌
     String generateRefreshToken(String username);
+
+    // 验证 Token 有效性
+    boolean validateToken(String refreshToken);
+
+    // 从refresh token中解析用户名和角色
+    String getUsernameFromToken(String refreshToken);
+
+    String getRoleFromToken(String refreshToken);
 }
