@@ -1,23 +1,27 @@
 package me.deshark.lms.interfaces.dto;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+import java.time.Instant;
+
 /**
  * @author DE_SHARK
  * @date 2025/2/14 13:03
  */
-public record ApiResponse<T>(
-        boolean success,
-        String message,
-        T data
-) {
+@Getter
+@RequiredArgsConstructor
+public class ApiResponse<T> {
+    private final int code;
+    private final String message;
+    private final T data;
+    private final Instant timestamp;
+
     public static <T> ApiResponse<T> success(T data) {
-        return new ApiResponse<>(true, "操作成功", data);
+        return new ApiResponse<>(200, "success", data, Instant.now());
     }
 
-    public static <T> ApiResponse<T> success(T data, String message) {
-        return new ApiResponse<>(true, message, data);
-    }
-
-    public static <T> ApiResponse<T> error(String message) {
-        return new ApiResponse<>(false, message, null);
+    public static <T> ApiResponse<T> error(int code, String message) {
+        return new ApiResponse<>(code, message, null, Instant.now());
     }
 }
