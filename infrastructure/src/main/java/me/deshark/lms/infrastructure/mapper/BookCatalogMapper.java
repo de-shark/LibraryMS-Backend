@@ -93,7 +93,7 @@ public interface BookCatalogMapper {
         Objects.requireNonNull(bookCatalog.getIsbn(), "ISBN不能为空");
 
         return BookCatalogDO.builder()
-                .isbn(bookCatalog.getIsbn().getIsbn())
+                .isbn(bookCatalog.getIsbn().toString())
                 .title(bookCatalog.getTitle())
                 .author(bookCatalog.getAuthor())
                 .build();

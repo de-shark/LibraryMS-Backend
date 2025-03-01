@@ -50,7 +50,7 @@ class BookSearchServiceTest {
 
         // 验证结果
         assertNotNull(result);
-        assertEquals(validIsbn.getIsbn(), result.getIsbn().getIsbn());
+        assertEquals(validIsbn.toString(), result.getIsbn().toString());
         assertEquals("978-0-000-00000-0", result.getIsbn().getFormattedIsbn());
         assertEquals("Clean Code", result.getTitle());
         assertEquals("Robert C. Martin", result.getAuthor());

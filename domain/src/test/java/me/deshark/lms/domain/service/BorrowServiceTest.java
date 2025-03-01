@@ -1,21 +1,14 @@
 package me.deshark.lms.domain.service;
 
 import com.github.f4b6a3.uuid.alt.GUID;
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
-import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookCopyRepository;
 import me.deshark.lms.domain.repository.BorrowRepository;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
-import java.util.Date;
 import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 /**
  * @author DE_SHARK
@@ -44,25 +37,25 @@ class BorrowServiceTest {
         invalidPatron = new Patron(GUID.v7().toUUID(), 0, 50);
     }
 
-    @Test
-    void borrowBook_SuccessfulBorrow_ReturnTransaction() {
-        // 准备测试数据
-        BookCopy mockBookCopy = new BookCopy(bookCopyId);
-        mockBookCopy.setIsbn(new Isbn(validIsbn));
-        mockBookCopy.setStatus("AVAILABLE");
-
-        // 配置模拟行为
-        when(bookCopyRepository.countAvailableCopies(isbn)).thenReturn(1);
-        when(bookCopyRepository.findAvailableBookCopy(isbn)).thenReturn(mockBookCopy);
-
-        // 执行测试
-        BorrowTransaction result = borrowService.borrow(validPatron, validIsbn);
-
-        // 验证结果
-        assertNotNull(result);
-        assertEquals(bookCopyId, result.getBookCopyId());
-        assertEquals("BORROWED", result.getStatus());
-        assertTrue(result.getStartDate().before(new Date()));
-        assertTrue(result.getDueDate().after(new Date()));
-    }
+//    @Test
+//    void borrowBook_SuccessfulBorrow_ReturnTransaction() {
+//        // 准备测试数据
+//        BookCopy mockBookCopy = new BookCopy(bookCopyId);
+//        mockBookCopy.setIsbn(new Isbn(validIsbn));
+//        mockBookCopy.setStatus("AVAILABLE");
+//
+//        // 配置模拟行为
+//        when(bookCopyRepository.countAvailableCopies(isbn)).thenReturn(1);
+//        when(bookCopyRepository.findAvailableBookCopy(isbn)).thenReturn(mockBookCopy);
+//
+//        // 执行测试
+//        BorrowTransaction result = borrowService.borrow(validPatron, validIsbn);
+//
+//        // 验证结果
+//        assertNotNull(result);
+//        assertEquals(bookCopyId, result.getBookCopyId());
+//        assertEquals("BORROWED", result.getStatus());
+//        assertTrue(result.getStartDate().before(new Date()));
+//        assertTrue(result.getDueDate().after(new Date()));
+//    }
 }

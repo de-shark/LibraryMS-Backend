@@ -27,7 +27,7 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
 
     @Override
     public BookCatalog findByIsbn(Isbn isbn) {
-        Optional<BookCatalogDO> bookInfoDO = bookCatalogMapper.findByIsbn(isbn.getIsbn());
+        Optional<BookCatalogDO> bookInfoDO = bookCatalogMapper.findByIsbn(isbn.toString());
         if (bookInfoDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");
         }

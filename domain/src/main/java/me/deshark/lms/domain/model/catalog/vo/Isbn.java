@@ -28,10 +28,6 @@ public class Isbn {
                 isbn.substring(12);
     }
 
-    public String getIsbn() {
-        return isbn;
-    }
-
     public String getFormattedIsbn() {
         return formattedIsbn;
     }
