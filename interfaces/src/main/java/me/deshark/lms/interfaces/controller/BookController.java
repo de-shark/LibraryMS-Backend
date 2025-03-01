@@ -1,5 +1,8 @@
 package me.deshark.lms.interfaces.controller;
 
+import lombok.RequiredArgsConstructor;
+import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
+import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import org.springframework.web.bind.annotation.*;
 
@@ -8,12 +11,15 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/books")
+@RequiredArgsConstructor
 public class BookController {
 
+    private final CreateBookCommandHandler createBookCommandHandler;
+
     @PostMapping
-    public ApiResponse<Void> createBook() {
-        // 创建图书逻辑
-        return ApiResponse.error(500, "该功能编写中");
+    public ApiResponse<Void> createBook(@RequestBody CreateBookCommand command) {
+        createBookCommandHandler.handle(command);
+        return ApiResponse.success(null);
     }
 
     @GetMapping("/{isbn}")
