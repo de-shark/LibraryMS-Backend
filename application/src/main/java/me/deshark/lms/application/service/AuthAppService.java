@@ -1,7 +1,6 @@
 package me.deshark.lms.application.service;
 
 import me.deshark.lms.application.info.UserInfo;
-import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
 import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
@@ -39,13 +38,9 @@ public class AuthAppService {
     }
 
     public Result<String, String> login(String username, String password) {
-        try {
             AuthUser authUser = authService.authenticate(username, password);
             // 生成 Token
             String token = tokenProvider.generateToken(authUser);
             return Result.ok(token);
-        } catch (AuthenticationException e) {
-            return Result.err(e.getMessage());
-        }
     }
 }
