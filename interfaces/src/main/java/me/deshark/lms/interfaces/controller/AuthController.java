@@ -29,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<String>> register(@RequestBody RegisterRequest request) {
         UserInfo userInfo = UserInfo.builder()
                 .username(request.username())
                 .password(request.password())
@@ -37,9 +37,11 @@ public class AuthController {
                 .build();
         Result<String, String> result = authAppService.register(userInfo);
         if (result.isOk()) {
-            return ResponseEntity.ok(ApiResponse.success(null, "注册成功"));
+            return ResponseEntity.ok(ApiResponse.success(null));
         } else {
-            return new ResponseEntity<>(ApiResponse.error(result.getErr()), HttpStatus.INTERNAL_SERVER_ERROR);
+            return ResponseEntity
+                    .status(HttpStatus.UNAUTHORIZED)
+                    .body(ApiResponse.error(500, result.getErr()));
         }
     }
 
