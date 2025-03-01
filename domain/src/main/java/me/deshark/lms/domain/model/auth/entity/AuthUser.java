@@ -6,15 +6,22 @@ import me.deshark.lms.domain.model.auth.vo.UserRole;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 
+import java.util.UUID;
+
 /**
  * @author DE_SHARK
  */
 public class AuthUser {
-    private String email;
+    private UUID uuid;
     private String username;
     private Password password;
+    private String email;
     private UserRole role;
     private UserStatus status;
+
+    public UUID getUuid() {
+        return uuid;
+    }
 
     public String getEmail() {
         return email;
@@ -42,14 +49,15 @@ public class AuthUser {
     }
 
     public static class Builder {
-        private String email;
+        private UUID uuid;
         private String username;
         private Password password;
+        private String email;
         private UserRole role;
         private UserStatus status;
 
-        public Builder email(String email) {
-            this.email = email;
+        public Builder uuid(UUID uuid) {
+            this.uuid = uuid;
             return this;
         }
 
@@ -60,6 +68,11 @@ public class AuthUser {
 
         public Builder password(Password password) {
             this.password = password;
+            return this;
+        }
+
+        public Builder email(String email) {
+            this.email = email;
             return this;
         }
 
