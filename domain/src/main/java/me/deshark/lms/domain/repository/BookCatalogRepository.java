@@ -15,4 +15,6 @@ public interface BookCatalogRepository {
     void save(BookCatalog bookCatalog);
 
     void delete(Isbn isbn);
+
+    void update(BookCatalog bookCatalog);
 }

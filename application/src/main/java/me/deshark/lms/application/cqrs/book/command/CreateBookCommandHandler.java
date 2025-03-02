@@ -39,7 +39,11 @@ public class CreateBookCommandHandler {
         }
 
         // 创建图书信息
-        BookCatalog bookCatalog = new BookCatalog(isbn, command.title(), command.author());
+        BookCatalog bookCatalog = BookCatalog.builder()
+                .isbn(isbn)
+                .title(command.title())
+                .author(command.author())
+                .build();
 
         // 保存到仓库
         bookCatalogRepository.save(bookCatalog);

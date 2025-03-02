@@ -27,11 +27,15 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
 
     @Override
     public BookCatalog findByIsbn(Isbn isbn) {
-        Optional<BookCatalogDO> bookInfoDO = bookCatalogMapper.findByIsbn(isbn.toString());
-        if (bookInfoDO.isEmpty()) {
+        Optional<BookCatalogDO> bookCatalogDO = bookCatalogMapper.findByIsbn(isbn.toString());
+        if (bookCatalogDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");
         }
-        return bookCatalogMapper.toDomainEntity(bookInfoDO.get());
+        return BookCatalog.builder()
+                .isbn(isbn)
+                .title(bookCatalogDO.get().getTitle())
+                .author(bookCatalogDO.get().getAuthor())
+                .build();
     }
 
     @Override
@@ -47,5 +51,10 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
     @Override
     public void delete(Isbn isbn) {
         bookCatalogMapper.delete(isbn.toString());
+    }
+
+    @Override
+    public void update(BookCatalog bookCatalog) {
+
     }
 }
