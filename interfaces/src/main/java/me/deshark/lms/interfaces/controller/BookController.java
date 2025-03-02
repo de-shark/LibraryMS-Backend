@@ -3,11 +3,14 @@ package me.deshark.lms.interfaces.controller;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
+import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
+import me.deshark.lms.application.cqrs.book.command.DeleteBookCommandHandler;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.BookResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -51,9 +54,11 @@ public class BookController {
         return ApiResponse.error(500, "该功能编写中");
     }
 
+    private final DeleteBookCommandHandler deleteBookCommandHandler;
+
     @DeleteMapping("/{isbn}")
-    public ApiResponse<Void> deleteBook(@PathVariable String isbn) {
-        // 删除图书逻辑
-        return ApiResponse.error(500, "该功能编写中");
+    public ResponseEntity<Void> deleteBook(@PathVariable("isbn") String isbn) {
+        deleteBookCommandHandler.handle(new DeleteBookCommand(isbn));
+        return ResponseEntity.noContent().build();
     }
 }
