@@ -28,6 +28,6 @@ public class GlobalExceptionHandler {
         log.error("Unexpected error", e);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(ApiResponse.<Void>builder().error(e.getMessage()).build());
+                .body(ApiResponse.<Void>builder().error("出现意外错误，请联系管理员").build());
     }
 }
