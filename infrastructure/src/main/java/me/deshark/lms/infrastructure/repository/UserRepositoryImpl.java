@@ -1,6 +1,5 @@
 package me.deshark.lms.infrastructure.repository;
 
-import com.github.f4b6a3.uuid.alt.GUID;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 import me.deshark.lms.domain.repository.auth.UserRepository;
@@ -27,8 +26,6 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean save(AuthUser authUser) {
         UserDO userDO = persistenceMapper.toDataObject(authUser);
-        // 生成 UUID v7
-        userDO.setUuid(GUID.v7().toUUID());
         return userMapper.insert(userDO) == 1;
     }
 

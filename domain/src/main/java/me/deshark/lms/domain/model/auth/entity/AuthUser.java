@@ -88,6 +88,7 @@ public class AuthUser {
 
         public AuthUser build() {
             AuthUser user = new AuthUser();
+            user.uuid = this.uuid != null ? this.uuid : me.deshark.lms.common.utils.GUID.v7();
             user.email = this.email;
             user.username = this.username;
             user.password = this.password;

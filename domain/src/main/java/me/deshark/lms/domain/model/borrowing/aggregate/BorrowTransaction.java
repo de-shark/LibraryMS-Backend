@@ -1,6 +1,7 @@
 package me.deshark.lms.domain.model.borrowing.aggregate;
 
-import com.github.f4b6a3.uuid.alt.GUID;
+
+import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 
 import java.util.Date;
@@ -22,7 +23,7 @@ public class BorrowTransaction {
 
     // 构造方法（创建借阅记录）
     public BorrowTransaction(UUID bookCopyId, Patron patron, Date startDate) {
-        this.transactionId = GUID.v7().toUUID();
+        this.transactionId = GUID.v7();
         this.bookCopyId = bookCopyId;
         this.patron = patron;
         this.startDate = startDate;

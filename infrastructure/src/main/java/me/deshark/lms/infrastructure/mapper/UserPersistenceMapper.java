@@ -14,6 +14,7 @@ public class UserPersistenceMapper {
 
     public UserDO toDataObject(AuthUser authUser) {
         return UserDO.builder()
+                .uuid(authUser.getUuid())
                 .username(authUser.getUsername())
                 .email(authUser.getEmail())
                 .password(authUser.getPassword().encryptedValue())
@@ -24,6 +25,7 @@ public class UserPersistenceMapper {
 
     public AuthUser toDomainEntity(UserDO userDO) {
         return AuthUser.builder()
+                .uuid(userDO.getUuid())
                 .username(userDO.getUsername())
                 .email(userDO.getEmail())
                 .password(new Password(userDO.getPassword()))
