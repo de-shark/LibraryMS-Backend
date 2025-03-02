@@ -47,7 +47,8 @@ public class AuthController {
 
     @PostMapping("/refresh")
     public ResponseEntity<ResultBody<Object>> refreshToken(
-            @CookieValue(name = "refresh_token", required = false) String refreshToken
+            @CookieValue(name = "refresh_token", required = false) String refreshToken,
+            HttpServletResponse response
     ) {
         if (refreshToken == null || refreshToken.isEmpty()) {
             return new ResponseEntity<>(
@@ -59,12 +60,25 @@ public class AuthController {
             );
         }
 
-        AuthToken newToken = authAppService.refresh(refreshToken);
-        
+        AuthToken newTokens = authAppService.refresh(refreshToken);
+
+        // 1. 将refreshToken写入HttpOnly Cookie
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", newTokens.getRefreshToken())
+                .httpOnly(true)
+                // 生产环境开启
+                .secure(true)
+                .sameSite("Strict")
+                .maxAge(7 * 24 * 3600)
+                .path("/api/auth/refresh")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
+
+        // 2. AccessToken通过响应体返回
         ResultBody<Object> resultBody = ResultBody.builder()
                 .code(HttpStatus.OK.value())
                 .message(HttpStatus.OK.getReasonPhrase())
-                .data(newToken)
+                .data(newTokens)
                 .build();
         return ResponseEntity.status(HttpStatus.OK).body(resultBody);
     }
