@@ -46,6 +46,6 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
 
     @Override
     public void delete(Isbn isbn) {
-
+        bookCatalogMapper.delete(isbn.toString());
     }
 }

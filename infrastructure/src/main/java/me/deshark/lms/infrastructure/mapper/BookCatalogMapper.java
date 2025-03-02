@@ -49,7 +49,7 @@ public interface BookCatalogMapper {
      * 删除图书信息
      */
     @Delete("DELETE FROM book_catalog WHERE isbn = #{isbn}")
-    int deleteByIsbn(@Param("isbn") String isbn);
+    void delete(@Param("isbn") String isbn);
 
     /**
      * 查询所有图书信息
