@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.service;
 
-import com.github.f4b6a3.uuid.alt.GUID;
+import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookCopyRepository;
@@ -24,7 +24,7 @@ class BorrowServiceTest {
     private Patron invalidPatron;
     private final String validIsbn = "9780000000000";
     private final Isbn isbn = new Isbn(validIsbn);
-    private final UUID bookCopyId = GUID.v7().toUUID();
+    private final UUID bookCopyId = GUID.v7();
 
     @BeforeEach
     void setUp() {
@@ -33,8 +33,8 @@ class BorrowServiceTest {
         borrowService = new BorrowService(borrowRepository, bookCopyRepository);
 
         // 初始化有效/无效用户
-        validPatron = new Patron(GUID.v7().toUUID(), 0, 90);
-        invalidPatron = new Patron(GUID.v7().toUUID(), 0, 50);
+        validPatron = new Patron(GUID.v7(), 0, 90);
+        invalidPatron = new Patron(GUID.v7(), 0, 50);
     }
 
 //    @Test

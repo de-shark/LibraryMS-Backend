@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.model.borrowing.entity;
 
-import com.github.f4b6a3.uuid.alt.GUID;
+import me.deshark.lms.common.utils.GUID;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +10,7 @@ class PatronTest {
     @Test
     void canBorrow_WithValidConditions_ShouldReturnTrue() {
         // Arrange
-        Patron patron = new Patron(GUID.v7().toUUID(), 2, 80);
+        Patron patron = new Patron(GUID.v7(), 2, 80);
 
         // Act & Assert
         assertTrue(patron.canBorrow());
@@ -19,7 +19,7 @@ class PatronTest {
     @Test
     void canBorrow_WithMaxBorrows_ShouldReturnFalse() {
         // Arrange
-        Patron patron = new Patron(GUID.v7().toUUID(), 5, 80);
+        Patron patron = new Patron(GUID.v7(), 5, 80);
 
         // Act & Assert
         assertFalse(patron.canBorrow());
@@ -28,7 +28,7 @@ class PatronTest {
     @Test
     void canBorrow_WithLowCreditScore_ShouldReturnFalse() {
         // Arrange
-        Patron patron = new Patron(GUID.v7().toUUID(), 2, 50);
+        Patron patron = new Patron(GUID.v7(), 2, 50);
 
         // Act & Assert
         assertFalse(patron.canBorrow());
@@ -37,7 +37,7 @@ class PatronTest {
     @Test
     void incrementCurrentBorrows_ShouldIncreaseBorrowCount() {
         // Arrange
-        Patron patron = new Patron(GUID.v7().toUUID(), 2, 80);
+        Patron patron = new Patron(GUID.v7(), 2, 80);
         int initialBorrows = patron.getCurrentBorrows();
 
         // Act
@@ -50,7 +50,7 @@ class PatronTest {
     @Test
     void decrementCurrentBorrows_ShouldDecreaseBorrowCount() {
         // Arrange
-        Patron patron = new Patron(GUID.v7().toUUID(), 2, 80);
+        Patron patron = new Patron(GUID.v7(), 2, 80);
         int initialBorrows = patron.getCurrentBorrows();
 
         // Act

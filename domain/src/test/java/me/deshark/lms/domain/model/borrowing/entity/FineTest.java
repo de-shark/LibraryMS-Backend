@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.model.borrowing.entity;
 
-import com.github.f4b6a3.uuid.alt.GUID;
+import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrowing.vo.Money;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,7 +19,7 @@ class FineTest {
 
     @BeforeEach
     void setup() {
-        fine = new Fine(GUID.v7().toUUID());
+        fine = new Fine(GUID.v7());
     }
 
     @Test
