@@ -15,6 +15,6 @@ public class PermissionTestController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<Void>> test() {
-        return ResponseEntity.ok(ApiResponse.success(null));
+        return ResponseEntity.ok(ApiResponse.<Void>builder().build());
     }
 }

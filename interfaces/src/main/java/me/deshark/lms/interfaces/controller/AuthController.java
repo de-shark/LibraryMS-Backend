@@ -15,6 +15,8 @@ import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
+
 /**
  * @author DE_SHARK
  */
@@ -29,7 +31,7 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<ApiResponse<String>> register(@RequestBody RegisterRequest request) {
+    public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request) {
         UserInfo userInfo = UserInfo.builder()
                 .username(request.username())
                 .password(request.password())
@@ -37,11 +39,17 @@ public class AuthController {
                 .build();
         Result<String, String> result = authAppService.register(userInfo);
         if (result.isOk()) {
-            return ResponseEntity.ok(ApiResponse.success(null));
+            URI location = URI.create("/api/user");
+            return ResponseEntity.created(location)
+                    .body(ApiResponse.<Void>builder()
+                            .message("Registered Successfully")
+                            .build());
         } else {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.error(500, result.getErr()));
+                    .body(ApiResponse.<Void>builder()
+                            .error(result.getErr())
+                            .build());
         }
     }
 

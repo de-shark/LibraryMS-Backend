@@ -38,7 +38,9 @@ public class BookController {
         URI location = URI.create("/api/books/" + command.isbn());
         
         return ResponseEntity.created(location)
-                .body(ApiResponse.success(book));
+                .body(ApiResponse.<BookResponse>builder()
+                        .data(book)
+                        .build());
     }
 
     private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
@@ -51,13 +53,13 @@ public class BookController {
                 .title(bookInfo.getTitle())
                 .author(bookInfo.getAuthor())
                 .build();
-        return ResponseEntity.ok(ApiResponse.success(book));
+        return ResponseEntity.ok(ApiResponse.<BookResponse>builder().data(book).build());
     }
 
     @GetMapping
     public ApiResponse<Void> listBooks() {
         // 分页查询图书列表逻辑
-        return ApiResponse.error(500, "该功能编写中");
+        return ApiResponse.<Void>builder().message("该功能编写中").build();
     }
 
     private final UpdateBookCommandHandler updateBookCommandHandler;
@@ -84,7 +86,7 @@ public class BookController {
                 .author(bookInfo.getAuthor())
                 .build();
 
-        return ResponseEntity.ok(ApiResponse.success(book));
+        return ResponseEntity.ok(ApiResponse.<BookResponse>builder().data(book).build());
     }
 
     private final DeleteBookCommandHandler deleteBookCommandHandler;
