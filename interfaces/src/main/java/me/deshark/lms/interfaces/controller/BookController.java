@@ -3,7 +3,11 @@ package me.deshark.lms.interfaces.controller;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
+import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
+import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
+import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.interfaces.dto.ApiResponse;
+import me.deshark.lms.interfaces.dto.BookResponse;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -22,10 +26,17 @@ public class BookController {
         return ApiResponse.success(null);
     }
 
+    private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
+
     @GetMapping("/{isbn}")
-    public ApiResponse<Void> getBook(@PathVariable String isbn) {
-        // 获取图书详情逻辑
-        return ApiResponse.success(null);
+    public ApiResponse<BookResponse> getBook(@PathVariable String isbn) {
+        BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(isbn));
+        BookResponse book = BookResponse.builder()
+                .isbn(bookInfo.getIsbn())
+                .title(bookInfo.getTitle())
+                .author(bookInfo.getAuthor())
+                .build();
+        return ApiResponse.success(book);
     }
 
     @GetMapping
