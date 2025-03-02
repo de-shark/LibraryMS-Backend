@@ -10,6 +10,7 @@ import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.BookResponse;
+import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,9 +25,22 @@ public class BookController {
     private final CreateBookCommandHandler createBookCommandHandler;
 
     @PostMapping
-    public ApiResponse<Void> createBook(@RequestBody CreateBookCommand command) {
+    public ResponseEntity<ApiResponse<BookResponse>> createBook(@RequestBody CreateBookCommand command) {
         createBookCommandHandler.handle(command);
-        return ApiResponse.success(null);
+        
+        // 获取新创建的图书信息
+        BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(command.isbn()));
+        BookResponse book = BookResponse.builder()
+                .isbn(bookInfo.getIsbn())
+                .title(bookInfo.getTitle())
+                .author(bookInfo.getAuthor())
+                .build();
+                
+        // 构建Location header
+        URI location = URI.create("/api/books/" + command.isbn());
+        
+        return ResponseEntity.created(location)
+                .body(ApiResponse.success(book));
     }
 
     private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
