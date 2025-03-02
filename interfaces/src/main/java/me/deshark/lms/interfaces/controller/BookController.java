@@ -1,18 +1,16 @@
 package me.deshark.lms.interfaces.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
-import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
-import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
-import me.deshark.lms.application.cqrs.book.command.DeleteBookCommandHandler;
+import me.deshark.lms.application.cqrs.book.command.*;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.BookResponse;
-import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.net.URI;
 
 /**
  * @author DE_SHARK
@@ -62,10 +60,31 @@ public class BookController {
         return ApiResponse.error(500, "该功能编写中");
     }
 
-    @PutMapping("/{isbn}")
-    public ApiResponse<Void> updateBook(@PathVariable String isbn) {
-        // 更新图书信息逻辑
-        return ApiResponse.error(500, "该功能编写中");
+    private final UpdateBookCommandHandler updateBookCommandHandler;
+
+    @PatchMapping("/{isbn}")
+    public ResponseEntity<ApiResponse<BookResponse>> updateBook(
+            @PathVariable("isbn") String isbn,
+            @RequestBody UpdateBookCommand command
+    ) {
+
+        // 验证路径参数和请求体中的ISBN是否一致
+        if (!isbn.equals(command.isbn())) {
+            throw new IllegalArgumentException("Path variable ISBN does not match request body ISBN");
+        }
+
+        // 执行更新操作
+        updateBookCommandHandler.handle(command);
+
+        // 获取更新后的图书信息
+        BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(isbn));
+        BookResponse book = BookResponse.builder()
+                .isbn(bookInfo.getIsbn())
+                .title(bookInfo.getTitle())
+                .author(bookInfo.getAuthor())
+                .build();
+
+        return ResponseEntity.ok(ApiResponse.success(book));
     }
 
     private final DeleteBookCommandHandler deleteBookCommandHandler;
