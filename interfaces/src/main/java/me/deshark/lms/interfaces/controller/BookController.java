@@ -29,7 +29,7 @@ public class BookController {
     private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
 
     @GetMapping("/{isbn}")
-    public ApiResponse<BookResponse> getBook(@PathVariable String isbn) {
+    public ApiResponse<BookResponse> getBook(@PathVariable("isbn") String isbn) {
         BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(isbn));
         BookResponse book = BookResponse.builder()
                 .isbn(bookInfo.getIsbn())
