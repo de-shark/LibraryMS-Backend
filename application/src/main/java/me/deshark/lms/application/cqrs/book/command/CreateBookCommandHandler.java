@@ -42,6 +42,6 @@ public class CreateBookCommandHandler {
         BookCatalog bookCatalog = new BookCatalog(isbn, command.title(), command.author());
 
         // 保存到仓库
-        bookCatalogRepository.saveBookCatalog(bookCatalog);
+        bookCatalogRepository.save(bookCatalog);
     }
 }

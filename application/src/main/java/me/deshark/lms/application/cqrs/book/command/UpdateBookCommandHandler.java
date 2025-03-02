@@ -22,6 +22,6 @@ public class UpdateBookCommandHandler {
         // 更新图书信息
 
         // 保存更新
-        bookCatalogRepository.saveBookCatalog(bookCatalog);
+        bookCatalogRepository.save(bookCatalog);
     }
 }

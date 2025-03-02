@@ -12,7 +12,7 @@ public interface BookCatalogRepository {
 
     BookCatalog findByIsbn(Isbn isbn);
 
-    void saveBookCatalog(BookCatalog bookCatalog);
+    void save(BookCatalog bookCatalog);
 
-    void deleteBookCatalog(Isbn isbn);
+    void delete(Isbn isbn);
 }

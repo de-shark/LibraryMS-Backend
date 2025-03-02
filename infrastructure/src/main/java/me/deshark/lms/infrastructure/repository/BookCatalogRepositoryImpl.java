@@ -35,7 +35,7 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
     }
 
     @Override
-    public void saveBookCatalog(BookCatalog bookCatalog) {
+    public void save(BookCatalog bookCatalog) {
         BookCatalogDO bookCatalogDO = BookCatalogDO.builder()
                 .isbn(bookCatalog.getIsbn().toString())
                 .title(bookCatalog.getTitle())
@@ -45,7 +45,7 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
     }
 
     @Override
-    public void deleteBookCatalog(Isbn isbn) {
+    public void delete(Isbn isbn) {
 
     }
 }
