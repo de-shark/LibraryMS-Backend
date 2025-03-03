@@ -14,4 +14,16 @@ public class BookCatalog {
     private final Isbn isbn;
     private String title;
     private String author;
+    private String publisher;
+    private int publishedYear;
+    private String description;
+    private String coverUrl;
+
+    public void updateDetails(String title, String author, String publisher, int publishedYear, String description) {
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.publishedYear = publishedYear;
+        this.description = description;
+    }
 }

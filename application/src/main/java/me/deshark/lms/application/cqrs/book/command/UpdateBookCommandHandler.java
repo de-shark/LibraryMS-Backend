@@ -17,11 +17,19 @@ public class UpdateBookCommandHandler {
 
     public void handle(UpdateBookCommand command) {
         Isbn isbn = new Isbn(command.isbn());
+
         BookCatalog bookCatalog = bookCatalogRepository.findByIsbn(isbn);
 
-        // 更新图书信息
+        // 执行领域对象更新
+        bookCatalog.updateDetails(
+                command.title(),
+                command.author(),
+                command.publisher(),
+                command.publishYear(),
+                command.description()
+        );
 
         // 保存更新
-        bookCatalogRepository.save(bookCatalog);
+        bookCatalogRepository.update(bookCatalog);
     }
 }
