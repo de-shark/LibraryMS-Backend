@@ -1,112 +1,129 @@
-DROP TABLE IF EXISTS borrowing_records;
+DROP TABLE IF EXISTS loan_record;
 DROP TABLE IF EXISTS book_copy;
-DROP TABLE IF EXISTS book_catalog;
+DROP TABLE IF EXISTS book;
+DROP TABLE IF EXISTS borrower_info;
+DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS users;
 
--- 用户表
-DROP TYPE IF EXISTS user_role;
-DROP TYPE IF EXISTS user_status;
-CREATE TYPE user_role AS ENUM ('READER', 'LIBRARIAN', 'ADMIN');
-CREATE TYPE user_status AS ENUM ('UNVERIFIED', 'ACTIVE', 'BANNED');
-CREATE TABLE "users" (
-    uuid UUID PRIMARY KEY,
-    username VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    role user_role NOT NULL DEFAULT 'READER',
-    status       user_status NOT NULL DEFAULT 'UNVERIFIED',
-    credit_score INT         NOT NULL DEFAULT 100 CHECK (credit_score BETWEEN 0 AND 100),
-    created_at   TIMESTAMPTZ          DEFAULT CURRENT_TIMESTAMP,
-    updated_at   TIMESTAMPTZ          DEFAULT CURRENT_TIMESTAMP
-);
+DROP TYPE IF EXISTS user_status_type;
+DROP TYPE IF EXISTS user_role_type;
+DROP TYPE IF EXISTS copy_status_type;
+DROP TYPE IF EXISTS loan_status_type;
 
+-- Users表
+CREATE TYPE user_status_type AS ENUM ('UNVERIFIED', 'ACTIVE', 'BANNED');
+CREATE TABLE "users" (
+                         uuid          UUID PRIMARY KEY,
+                         username      VARCHAR(50)      NOT NULL UNIQUE,
+                         password_hash VARCHAR(255)     NOT NULL,
+                         email         VARCHAR(100)     NOT NULL UNIQUE,
+                         status        user_status_type NOT NULL DEFAULT 'ACTIVE',
+                         created_at    TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP,
+                         updated_at    TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP
+);
 COMMENT ON COLUMN users.uuid IS '用户唯一标识';
 COMMENT ON COLUMN users.username IS '登录用户名';
-COMMENT ON COLUMN users.password IS '密码哈希值';
+COMMENT ON COLUMN users.password_hash IS '密码哈希值';
 COMMENT ON COLUMN users.email IS '邮箱';
-COMMENT ON COLUMN users.role IS '用户角色';
-COMMENT ON COLUMN users.status IS '账户状态';
-COMMENT ON COLUMN users.credit_score IS '信用分';
 COMMENT ON COLUMN users.created_at IS '账户创建时间';
 COMMENT ON COLUMN users.updated_at IS '最后更新时间';
 
 
--- 图书信息表
-CREATE TABLE book_catalog
+-- UserRole表
+CREATE TYPE user_role_type AS ENUM ('USER', 'LIBRARIAN', 'ADMIN');
+CREATE TABLE user_role
 (
-    isbn         CHAR(13) PRIMARY KEY,
-    title        VARCHAR(255) NOT NULL,
-    author       VARCHAR(255) NOT NULL,
-    publisher    VARCHAR(100),
-    publish_year SMALLINT,
-    description  TEXT,
-    cover_url    VARCHAR(512),
-    created_at   TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+    user_role_id UUID PRIMARY KEY,
+    user_id      UUID           NOT NULL,
+    role         user_role_type NOT NULL DEFAULT 'USER',
+    assigned_at  TIMESTAMPTZ             DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT fk_user_role_user
+        FOREIGN KEY (user_id) REFERENCES users (uuid)
+            ON DELETE CASCADE
 );
-
-COMMENT ON COLUMN book_catalog.isbn IS '国际标准书号';
-COMMENT ON COLUMN book_catalog.title IS '图书标题';
-COMMENT ON COLUMN book_catalog.author IS '作者';
-COMMENT ON COLUMN book_catalog.publisher IS '出版社';
-COMMENT ON COLUMN book_catalog.publish_year IS '出版年份';
-COMMENT ON COLUMN book_catalog.description IS '图书简介';
-COMMENT ON COLUMN book_catalog.cover_url IS '封面图URL';
-COMMENT ON COLUMN book_catalog.created_at IS '录入时间';
+COMMENT ON COLUMN user_role.assigned_at IS '授权时间';
 
 
--- 图书副本表
-DROP TYPE IF EXISTS copy_status;
-CREATE TYPE copy_status AS ENUM ('AVAILABLE', 'BORROWED', 'UNDER_MAINTENANCE');
-CREATE TABLE book_copy
+-- 普通用户扩展表
+CREATE TABLE borrower_info
 (
-    copy_id          UUID PRIMARY KEY,
-    isbn             CHAR(13)    NOT NULL,
-    status           copy_status NOT NULL DEFAULT 'AVAILABLE',
-    location         VARCHAR(50),
-    acquisition_date DATE,
-    condition_rating SMALLINT CHECK (condition_rating BETWEEN 1 AND 5),
-    last_maintain    TIMESTAMPTZ,
+    user_id          UUID PRIMARY KEY,
+    max_borrow_limit INT            DEFAULT 5,
+    current_loans    INT NOT NULL   DEFAULT 0,
+    total_fines      DECIMAL(10, 2) DEFAULT 0.00,
 
-    CONSTRAINT fk_book_copy_bookinfo
-        FOREIGN KEY (isbn) REFERENCES book_catalog (isbn)
-            ON DELETE RESTRICT
-);
-
-COMMENT ON COLUMN book_copy.copy_id IS '副本唯一标识';
-COMMENT ON COLUMN book_copy.isbn IS '所属图书ISBN';
-COMMENT ON COLUMN book_copy.status IS '当前状态';
-COMMENT ON COLUMN book_copy.location IS '馆藏位置';
-COMMENT ON COLUMN book_copy.acquisition_date IS '购入日期';
-COMMENT ON COLUMN book_copy.condition_rating IS '保存状况评分（1-5）';
-COMMENT ON COLUMN book_copy.last_maintain IS '最近维护时间';
-
-
--- 借阅记录表
-DROP TYPE IF EXISTS borrow_status;
-CREATE TYPE borrow_status AS ENUM ('BORROWED', 'RETURNED', 'OVERDUE');
-CREATE TABLE borrowing_records
-(
-    record_id   UUID PRIMARY KEY,
-    copy_id     UUID          NOT NULL,
-    patron_id   UUID          NOT NULL,
-    borrow_date TIMESTAMPTZ            DEFAULT CURRENT_TIMESTAMP,
-    due_date    TIMESTAMPTZ   NOT NULL,
-    return_date TIMESTAMPTZ,
-    fine_amount NUMERIC(10, 2)         DEFAULT 0.00,
-    status      borrow_status NOT NULL DEFAULT 'BORROWED',
-
-    CONSTRAINT fk_borrow_record_copy
-        FOREIGN KEY (copy_id) REFERENCES book_copy (copy_id)
-            ON DELETE CASCADE,
-    CONSTRAINT fk_borrow_record_user
-        FOREIGN KEY (patron_id) REFERENCES users (uuid)
+    CONSTRAINT fk_borrower_info_user
+        FOREIGN KEY (user_id) REFERENCES users (uuid)
             ON DELETE CASCADE
 );
 
-COMMENT ON COLUMN borrowing_records.copy_id IS '关联书籍副本';
-COMMENT ON COLUMN borrowing_records.patron_id IS '关联借阅者';
-COMMENT ON COLUMN borrowing_records.due_date IS '应归还日期';
-COMMENT ON COLUMN borrowing_records.fine_amount IS '累计罚款金额';
+-- 图书信息表
+CREATE TABLE book
+(
+    isbn           CHAR(13) PRIMARY KEY,
+    title          VARCHAR(255),
+    author         VARCHAR(255),
+    publisher      VARCHAR(100),
+    published_date DATE,
+    created_at     TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
+);
+
+COMMENT ON COLUMN book.isbn IS '国际标准书号';
+COMMENT ON COLUMN book.title IS '图书标题';
+COMMENT ON COLUMN book.author IS '作者';
+COMMENT ON COLUMN book.publisher IS '出版社';
+COMMENT ON COLUMN book.published_date IS '出版日期';
+COMMENT ON COLUMN book.created_at IS '录入时间';
+
+
+-- 图书副本表
+CREATE TYPE copy_status_type AS ENUM ('AVAILABLE', 'BORROWED');
+CREATE TABLE book_copy
+(
+    copy_id          UUID PRIMARY KEY,
+    isbn             CHAR(13)         NOT NULL,
+    location         VARCHAR(100),
+    status           copy_status_type NOT NULL DEFAULT 'AVAILABLE',
+    loan_count       SMALLINT         NOT NULL DEFAULT 0,
+    acquisition_date DATE,
+
+    CONSTRAINT fk_book_copy_bookinfo
+        FOREIGN KEY (isbn) REFERENCES book (isbn)
+            ON DELETE CASCADE
+);
+COMMENT ON COLUMN book_copy.copy_id IS '副本唯一标识';
+COMMENT ON COLUMN book_copy.location IS '馆藏位置';
+COMMENT ON COLUMN book_copy.status IS '当前状态';
+COMMENT ON COLUMN book_copy.loan_count IS '借出次数';
+COMMENT ON COLUMN book_copy.acquisition_date IS '购入日期';
+
+
+-- 借阅记录表
+CREATE TYPE loan_status_type AS ENUM ('BORROWED', 'RETURNED', 'OVERDUE');
+CREATE TABLE loan_record
+(
+    record_id   UUID PRIMARY KEY,
+    copy_id     UUID             NOT NULL,
+    user_id     UUID             NOT NULL,
+    loan_date   TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP,
+    due_date    TIMESTAMPTZ      NOT NULL,
+    return_date TIMESTAMPTZ,
+    status      loan_status_type NOT NULL DEFAULT 'BORROWED',
+
+    CONSTRAINT fk_loan_record_book_copy
+        FOREIGN KEY (copy_id) REFERENCES book_copy (copy_id)
+            ON DELETE CASCADE,
+    CONSTRAINT fk_loan_record_user
+        FOREIGN KEY (user_id) REFERENCES users (uuid)
+            ON DELETE CASCADE
+);
+COMMENT ON COLUMN loan_record.copy_id IS '关联书籍副本';
+COMMENT ON COLUMN loan_record.user_id IS '关联借阅者';
+COMMENT ON COLUMN loan_record.loan_date IS '借出日期';
+COMMENT ON COLUMN loan_record.due_date IS '应归还日期';
+COMMENT ON COLUMN loan_record.return_date IS '实际归还日期';
+COMMENT ON COLUMN loan_record.status IS '记录状态';
 
 
 -- 触发器函数
