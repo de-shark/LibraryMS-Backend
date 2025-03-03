@@ -1,8 +1,8 @@
 package me.deshark.lms.domain.service;
 
-import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
+import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookCatalogRepository;
+import me.deshark.lms.domain.repository.BookRepository;
 
 /**
  * @author DE_SHARK
@@ -10,15 +10,15 @@ import me.deshark.lms.domain.repository.BookCatalogRepository;
  */
 public class BookSearchService {
 
-    private final BookCatalogRepository bookCatalogRepository;
+    private final BookRepository bookRepository;
 
-    public BookSearchService(BookCatalogRepository bookCatalogRepository) {
-        this.bookCatalogRepository = bookCatalogRepository;
+    public BookSearchService(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
     }
 
-    public BookCatalog searchByIsbn(String isbn) {
+    public BookMetadata searchByIsbn(String isbn) {
         Isbn isbnChecked = new Isbn(isbn);
         // TODO 需要将图书副本的数量一起返回
-        return bookCatalogRepository.findByIsbn(isbnChecked);
+        return bookRepository.findByIsbn(isbnChecked);
     }
 }

@@ -1,10 +1,10 @@
 package me.deshark.lms.application.cqrs.book.command;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
+import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.exception.BookAlreadyExistsException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookCatalogRepository;
+import me.deshark.lms.domain.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -22,7 +22,9 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CreateBookCommandHandler {
 
-    private final BookCatalogRepository bookCatalogRepository;
+    private final BookRepository bookRepository;
+
+    private final BookMetadataProvider bookMetadataProvider;
 
     /**
      * 处理图书创建命令
@@ -35,16 +37,11 @@ public class CreateBookCommandHandler {
         Isbn isbn = new Isbn(command.isbn());
 
         // 检查图书是否已存在
-        if (bookCatalogRepository.existsByIsbn(isbn.toString())) {
+        if (bookRepository.existsByIsbn(isbn.toString())) {
             throw new BookAlreadyExistsException("ISBN为" + isbn + "的图书已存在");
         }
 
         // 调用 API 获取图书信息
-
-        // 创建图书信息
-        BookCatalog bookCatalog = BookCatalog.builder()
-                .isbn(isbn)
-                .build();
 
         // 保存到仓库
         bookCatalogRepository.save(bookCatalog);

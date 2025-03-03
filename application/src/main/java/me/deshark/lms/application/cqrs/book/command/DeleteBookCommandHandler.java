@@ -2,7 +2,7 @@ package me.deshark.lms.application.cqrs.book.command;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookCatalogRepository;
+import me.deshark.lms.domain.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
 /**
@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class DeleteBookCommandHandler {
 
-    private final BookCatalogRepository bookCatalogRepository;
+    private final BookRepository bookRepository;
 
     public void handle(DeleteBookCommand command) {
         Isbn isbn = new Isbn(command.isbn());
-        bookCatalogRepository.delete(isbn);
+        bookRepository.delete(isbn);
     }
 }

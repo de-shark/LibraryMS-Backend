@@ -1,10 +1,10 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.catalog.entity.BookCatalog;
+import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.exception.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookCatalogRepository;
+import me.deshark.lms.domain.repository.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookCatalogDO;
 import me.deshark.lms.infrastructure.mapper.BookCatalogMapper;
 import org.springframework.stereotype.Repository;
@@ -16,7 +16,7 @@ import java.util.Optional;
  */
 @Repository
 @RequiredArgsConstructor
-public class BookCatalogRepositoryImpl implements BookCatalogRepository {
+public class BookRepositoryImpl implements BookRepository {
 
     private final BookCatalogMapper bookCatalogMapper;
 
@@ -26,12 +26,12 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
     }
 
     @Override
-    public BookCatalog findByIsbn(Isbn isbn) {
+    public BookMetadata findByIsbn(Isbn isbn) {
         Optional<BookCatalogDO> bookCatalogDO = bookCatalogMapper.findByIsbn(isbn.toString());
         if (bookCatalogDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");
         }
-        return BookCatalog.builder()
+        return BookMetadata.builder()
                 .isbn(isbn)
                 .title(bookCatalogDO.get().getTitle())
                 .author(bookCatalogDO.get().getAuthor())
@@ -39,11 +39,11 @@ public class BookCatalogRepositoryImpl implements BookCatalogRepository {
     }
 
     @Override
-    public void save(BookCatalog bookCatalog) {
+    public void save(BookMetadata bookMetadata) {
         BookCatalogDO bookCatalogDO = BookCatalogDO.builder()
-                .isbn(bookCatalog.getIsbn().toString())
-                .title(bookCatalog.getTitle())
-                .author(bookCatalog.getAuthor())
+                .isbn(bookMetadata.getIsbn().toString())
+                .title(bookMetadata.getTitle())
+                .author(bookMetadata.getAuthor())
                 .build();
         bookCatalogMapper.insert(bookCatalogDO);
     }

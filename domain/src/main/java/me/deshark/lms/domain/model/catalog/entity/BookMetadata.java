@@ -10,7 +10,7 @@ import me.deshark.lms.domain.model.catalog.vo.Isbn;
  */
 @Getter
 @Builder
-public class BookCatalog {
+public class BookMetadata {
     private final Isbn isbn;
     private String title;
     private String author;
