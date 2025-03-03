@@ -12,8 +12,9 @@ import org.springframework.stereotype.Service;
  * 
  * <p>处理图书创建业务逻辑，包括：
  * 1. ISBN格式校验
- * 2. 图书信息创建
- * 3. 图书信息持久化
+ * 2. 调用API查询信息
+ * 3. 图书信息创建
+ * 4. 图书信息持久化
  * 
  * @author DE_SHARK
  */
@@ -38,11 +39,11 @@ public class CreateBookCommandHandler {
             throw new BookAlreadyExistsException("ISBN为" + isbn + "的图书已存在");
         }
 
+        // 调用 API 获取图书信息
+
         // 创建图书信息
         BookCatalog bookCatalog = BookCatalog.builder()
                 .isbn(isbn)
-                .title(command.title())
-                .author(command.author())
                 .build();
 
         // 保存到仓库
