@@ -24,3 +24,8 @@ logging:
   level:
     org:
       springframework: debug
+
+google:
+  books:
+    api:
+      key: api-key
