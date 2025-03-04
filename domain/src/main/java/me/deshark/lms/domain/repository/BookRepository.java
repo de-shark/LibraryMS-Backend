@@ -15,6 +15,4 @@ public interface BookRepository {
     void save(BookMetadata bookMetadata);
 
     void delete(Isbn isbn);
-
-    void update(BookCatalog bookCatalog);
 }

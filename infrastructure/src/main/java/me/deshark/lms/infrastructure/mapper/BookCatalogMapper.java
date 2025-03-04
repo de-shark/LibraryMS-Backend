@@ -30,19 +30,6 @@ public interface BookCatalogMapper {
     void insert(BookCatalogDO bookCatalogDO);
 
     /**
-     * 更新图书信息
-     */
-    @Update("UPDATE book_catalog SET " +
-            "title = #{title}, " +
-            "author = #{author}, " +
-            "publisher = #{publisher}, " +
-            "publish_year = #{publishYear}, " +
-            "description = #{description}, " +
-            "cover_url = #{coverUrl} " +
-            "WHERE isbn = #{isbn}")
-    int update(BookCatalogDO bookCatalogDO);
-
-    /**
      * 删除图书信息
      */
     @Delete("DELETE FROM book_catalog WHERE isbn = #{isbn}")

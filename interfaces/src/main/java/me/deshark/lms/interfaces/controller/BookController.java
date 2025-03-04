@@ -1,7 +1,10 @@
 package me.deshark.lms.interfaces.controller;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.application.cqrs.book.command.*;
+import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
+import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
+import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
+import me.deshark.lms.application.cqrs.book.command.DeleteBookCommandHandler;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
@@ -60,33 +63,6 @@ public class BookController {
     public ApiResponse<Void> listBooks() {
         // 分页查询图书列表逻辑
         return ApiResponse.<Void>builder().message("该功能编写中").build();
-    }
-
-    private final UpdateBookCommandHandler updateBookCommandHandler;
-
-    @PatchMapping("/{isbn}")
-    public ResponseEntity<ApiResponse<BookResponse>> updateBook(
-            @PathVariable("isbn") String isbn,
-            @RequestBody UpdateBookCommand command
-    ) {
-
-        // 验证路径参数和请求体中的ISBN是否一致
-        if (!isbn.equals(command.isbn())) {
-            throw new IllegalArgumentException("Path variable ISBN does not match request body ISBN");
-        }
-
-        // 执行更新操作
-        updateBookCommandHandler.handle(command);
-
-        // 获取更新后的图书信息
-        BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(isbn));
-        BookResponse book = BookResponse.builder()
-                .isbn(bookInfo.getIsbn())
-                .title(bookInfo.getTitle())
-                .author(bookInfo.getAuthor())
-                .build();
-
-        return ResponseEntity.ok(ApiResponse.<BookResponse>builder().data(book).build());
     }
 
     private final DeleteBookCommandHandler deleteBookCommandHandler;
