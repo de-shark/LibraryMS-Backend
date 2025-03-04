@@ -11,52 +11,52 @@ import java.util.Optional;
  * @author deshark
  */
 @Mapper
-public interface BookCatalogMapper {
+public interface BookMapper {
 
-    @Select("SELECT EXISTS (SELECT 1 FROM book_catalog WHERE isbn = #{isbn})")
+    @Select("SELECT EXISTS (SELECT 1 FROM book WHERE isbn = #{isbn})")
     boolean existsByIsbn(@Param("isbn") String isbn);
 
     /**
      * 根据ISBN查询图书信息
      */
-    @Select("SELECT * FROM book_catalog WHERE isbn = #{isbn}")
+    @Select("SELECT * FROM book WHERE isbn = #{isbn}")
     Optional<BookCatalogDO> findByIsbn(@Param("isbn") String isbn);
 
     /**
      * 插入图书信息
      */
-    @Insert("INSERT INTO book_catalog (isbn, title, author, publisher, publish_year, description, cover_url) " +
-            "VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishYear}, #{description}, #{coverUrl})")
+    @Insert("INSERT INTO book (isbn, title, author, publisher, published_date) " +
+            "VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishedDate})")
     void insert(BookCatalogDO bookCatalogDO);
 
     /**
      * 删除图书信息
      */
-    @Delete("DELETE FROM book_catalog WHERE isbn = #{isbn}")
+    @Delete("DELETE FROM book WHERE isbn = #{isbn}")
     void delete(@Param("isbn") String isbn);
 
     /**
      * 查询所有图书信息
      */
-    @Select("SELECT * FROM book_catalog ORDER BY created_at DESC")
+    @Select("SELECT * FROM book ORDER BY created_at DESC")
     List<BookCatalogDO> findAll();
 
     /**
      * 根据标题模糊查询图书信息
      */
-    @Select("SELECT * FROM book_catalog WHERE title LIKE CONCAT('%', #{title}, '%')")
+    @Select("SELECT * FROM book WHERE title LIKE CONCAT('%', #{title}, '%')")
     List<BookCatalogDO> findByTitleContaining(@Param("title") String title);
 
     /**
      * 根据作者查询图书信息
      */
-    @Select("SELECT * FROM book_catalog WHERE author = #{author}")
+    @Select("SELECT * FROM book WHERE author = #{author}")
     List<BookCatalogDO> findByAuthor(@Param("author") String author);
 
     /**
      * 统计图书数量
      */
-    @Select("SELECT COUNT(*) FROM book_catalog")
+    @Select("SELECT COUNT(*) FROM book")
     long count();
 
 }

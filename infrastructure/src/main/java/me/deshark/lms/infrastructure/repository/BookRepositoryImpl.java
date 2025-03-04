@@ -6,7 +6,7 @@ import me.deshark.lms.domain.model.catalog.exception.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookCatalogDO;
-import me.deshark.lms.infrastructure.mapper.BookCatalogMapper;
+import me.deshark.lms.infrastructure.mapper.BookMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -18,16 +18,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class BookRepositoryImpl implements BookRepository {
 
-    private final BookCatalogMapper bookCatalogMapper;
+    private final BookMapper bookMapper;
 
     @Override
     public boolean existsByIsbn(String isbn) {
-        return bookCatalogMapper.existsByIsbn(isbn);
+        return bookMapper.existsByIsbn(isbn);
     }
 
     @Override
     public BookMetadata findByIsbn(Isbn isbn) {
-        Optional<BookCatalogDO> bookCatalogDO = bookCatalogMapper.findByIsbn(isbn.toString());
+        Optional<BookCatalogDO> bookCatalogDO = bookMapper.findByIsbn(isbn.toString());
         if (bookCatalogDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");
         }
@@ -45,11 +45,11 @@ public class BookRepositoryImpl implements BookRepository {
                 .title(bookMetadata.getTitle())
                 .author(bookMetadata.getAuthor())
                 .build();
-        bookCatalogMapper.insert(bookCatalogDO);
+        bookMapper.insert(bookCatalogDO);
     }
 
     @Override
     public void delete(Isbn isbn) {
-        bookCatalogMapper.delete(isbn.toString());
+        bookMapper.delete(isbn.toString());
     }
 }
