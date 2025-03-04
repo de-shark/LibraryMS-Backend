@@ -5,6 +5,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Optional;
+
 /**
  * @author DE_SHARK
  */
@@ -15,7 +17,7 @@ public interface UserMapper {
     boolean existsByUsername(@Param("username") String username);
 
     @Select("SELECT * FROM users WHERE username = #{username}")
-    UserDO findByUsername(@Param("username") String username);
+    Optional<UserDO> findByUsername(@Param("username") String username);
 
     int insert(UserDO user);
 }

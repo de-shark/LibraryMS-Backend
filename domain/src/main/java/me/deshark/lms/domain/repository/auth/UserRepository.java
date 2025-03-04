@@ -12,7 +12,7 @@ public interface UserRepository {
     boolean existsByUsername(String username);
 
     // 保存用户聚合根
-    boolean save(AuthUser authUser);
+    void save(AuthUser authUser);
 
     // 根据用户名查找用户（用于登录验证）
     AuthUser findByUsername(String username);

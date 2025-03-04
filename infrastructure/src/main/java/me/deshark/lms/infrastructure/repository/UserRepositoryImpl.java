@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 import me.deshark.lms.domain.repository.auth.UserRepository;
 import me.deshark.lms.infrastructure.entity.UserDO;
+import me.deshark.lms.infrastructure.entity.UserRoleDO;
 import me.deshark.lms.infrastructure.mapper.UserMapper;
 import me.deshark.lms.infrastructure.mapper.UserPersistenceMapper;
+import me.deshark.lms.infrastructure.mapper.UserRoleMapper;
 import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
 
 /**
  * @author DE_SHARK
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Repository;
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserMapper userMapper;
+    private final UserRoleMapper userRoleMapper;
     private final UserPersistenceMapper persistenceMapper;
 
     @Override
@@ -24,14 +29,24 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public boolean save(AuthUser authUser) {
+    public void save(AuthUser authUser) {
         UserDO userDO = persistenceMapper.toDataObject(authUser);
-        return userMapper.insert(userDO) == 1;
+        if (userMapper.insert(userDO) != 1) {
+            throw new IllegalArgumentException("User not saved");
+        }
+        ;
     }
 
     @Override
     public AuthUser findByUsername(String username) {
-        UserDO userDO = userMapper.findByUsername(username);
-        return userDO != null ? persistenceMapper.toDomainEntity(userDO) : null;
+        Optional<UserDO> userDO = userMapper.findByUsername(username);
+        if (userDO.isEmpty()) {
+            throw new IllegalArgumentException("User not found");
+        }
+        Optional<UserRoleDO> userRoleDO = userRoleMapper.findByUserId(userDO.get().getUuid());
+
+        AuthUser authUser = persistenceMapper.toDomainEntity(userDO.get());
+        authUser.setUserRoleType(userRoleDO.map(UserRoleDO::getRole).orElse(null));
+        return authUser;
     }
 }
