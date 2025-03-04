@@ -12,14 +12,15 @@ DROP TYPE IF EXISTS loan_status_type;
 
 -- Users表
 CREATE TYPE user_status_type AS ENUM ('UNVERIFIED', 'ACTIVE', 'BANNED');
-CREATE TABLE "users" (
-                         uuid          UUID PRIMARY KEY,
-                         username      VARCHAR(50)      NOT NULL UNIQUE,
-                         password_hash VARCHAR(255)     NOT NULL,
-                         email         VARCHAR(100)     NOT NULL UNIQUE,
-                         status        user_status_type NOT NULL DEFAULT 'ACTIVE',
-                         created_at    TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP,
-                         updated_at    TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE "users"
+(
+    uuid          UUID PRIMARY KEY,
+    username      VARCHAR(50)      NOT NULL UNIQUE,
+    password_hash VARCHAR(255)     NOT NULL,
+    email         VARCHAR(100)     NOT NULL UNIQUE,
+    status        user_status_type NOT NULL DEFAULT 'ACTIVE',
+    created_at    TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP,
+    updated_at    TIMESTAMPTZ               DEFAULT CURRENT_TIMESTAMP
 );
 COMMENT ON COLUMN users.uuid IS '用户唯一标识';
 COMMENT ON COLUMN users.username IS '登录用户名';
