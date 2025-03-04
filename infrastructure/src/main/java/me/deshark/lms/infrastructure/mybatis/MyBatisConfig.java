@@ -1,6 +1,6 @@
 package me.deshark.lms.infrastructure.mybatis;
 
-import me.deshark.lms.domain.model.auth.vo.UserRole;
+import me.deshark.lms.domain.model.auth.vo.UserRoleType;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -18,8 +18,8 @@ public class MyBatisConfig {
             // 注册 UUID 处理器
             configuration.getTypeHandlerRegistry().register(UuidTypeHandler.class);
 
-            // 批量注册通用枚举处理器
-            configuration.getTypeHandlerRegistry().register(UserRole.class, GenericEnumTypeHandler.class);
+            // 注册通用枚举处理器
+            configuration.getTypeHandlerRegistry().register(UserRoleType.class, GenericEnumTypeHandler.class);
             configuration.getTypeHandlerRegistry().register(UserStatus.class, GenericEnumTypeHandler.class);
         };
     }

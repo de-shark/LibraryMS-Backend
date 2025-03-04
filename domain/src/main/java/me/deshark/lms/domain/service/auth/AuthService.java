@@ -38,7 +38,7 @@ public class AuthService {
     public AuthTokenPair authenticate(String username, String rawPassword) {
         AuthUser user = userRepository.findByUsername(username);
         user.authenticate(rawPassword, encryptor);
-        return generateToken(new TokenRequest(username, user.getRole().name()));
+        return generateToken(new TokenRequest(username, user.getUserRoleType().name()));
     }
 
     public AuthTokenPair generateToken(TokenRequest tokenRequest) {

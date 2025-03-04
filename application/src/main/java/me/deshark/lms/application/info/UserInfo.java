@@ -1,7 +1,7 @@
 package me.deshark.lms.application.info;
 
 import lombok.Builder;
-import me.deshark.lms.domain.model.auth.vo.UserRole;
+import me.deshark.lms.domain.model.auth.vo.UserRoleType;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
 
 import java.util.UUID;
@@ -16,7 +16,7 @@ public record UserInfo(
         String username,
         String password,
         String email,
-        UserRole role,
+        UserRoleType role,
         UserStatus status
 ) {
 }
