@@ -9,9 +9,7 @@ import me.deshark.lms.application.service.AuthAppService;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.LoginRequest;
 import me.deshark.lms.interfaces.dto.RegisterRequest;
-import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -51,20 +49,7 @@ public class AuthController {
             HttpServletResponse response
     ) {
         AuthToken newTokens = authAppService.refresh(refreshToken);
-
-        // 1. 将refreshToken写入HttpOnly Cookie
-        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", newTokens.getRefreshToken())
-                .httpOnly(true)
-                // 生产环境开启
-                .secure(true)
-                .sameSite("Strict")
-                .maxAge(7 * 24 * 3600)
-                .path("/api/auth/refresh")
-                .build();
-
-        response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
-
-        // 2. AccessToken通过响应体返回
+        setRefreshTokenCookie(response, newTokens.getRefreshToken());
         return ResponseEntity.ok().body(ApiResponse.<AuthToken>builder().data(newTokens).build());
     }
 
@@ -74,9 +59,12 @@ public class AuthController {
             HttpServletResponse response
     ) {
         AuthToken tokens = authAppService.login(request.username(), request.password());
+        setRefreshTokenCookie(response, tokens.getRefreshToken());
+        return ResponseEntity.ok().body(ApiResponse.<AuthToken>builder().data(tokens).build());
+    }
 
-        // 1. 将refreshToken写入HttpOnly Cookie
-        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", tokens.getRefreshToken())
+    private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
+        ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", refreshToken)
                 .httpOnly(true)
                 // 生产环境开启
                 .secure(true)
@@ -85,8 +73,5 @@ public class AuthController {
                 .path("/api/auth/refresh")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
-
-        // 2. AccessToken通过响应体返回
-        return ResponseEntity.ok().body(ApiResponse.<AuthToken>builder().data(tokens).build());
     }
 }
