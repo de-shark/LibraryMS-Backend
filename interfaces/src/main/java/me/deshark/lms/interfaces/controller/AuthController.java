@@ -1,10 +1,11 @@
 package me.deshark.lms.interfaces.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import me.deshark.lms.application.cqrs.auth.command.CreateUserCommand;
+import me.deshark.lms.application.cqrs.auth.command.CreateUserCommandHandler;
 import me.deshark.lms.application.info.AuthToken;
-import me.deshark.lms.application.info.UserInfo;
 import me.deshark.lms.application.service.AuthAppService;
-import me.deshark.lms.common.utils.Result;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import me.deshark.lms.interfaces.dto.LoginRequest;
 import me.deshark.lms.interfaces.dto.RegisterRequest;
@@ -22,35 +23,26 @@ import java.net.URI;
  */
 @RestController
 @RequestMapping("/api/auth")
+@RequiredArgsConstructor
 public class AuthController {
 
     private final AuthAppService authAppService;
-
-    public AuthController(AuthAppService authAppService) {
-        this.authAppService = authAppService;
-    }
+    private final CreateUserCommandHandler createUserCommandHandler;
 
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request) {
-        UserInfo userInfo = UserInfo.builder()
-                .username(request.username())
-                .password(request.password())
-                .email(request.email())
-                .build();
-        Result<String, String> result = authAppService.register(userInfo);
-        if (result.isOk()) {
-            URI location = URI.create("/api/user");
-            return ResponseEntity.created(location)
-                    .body(ApiResponse.<Void>builder()
-                            .message("Registered Successfully")
-                            .build());
-        } else {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body(ApiResponse.<Void>builder()
-                            .error(result.getErr())
-                            .build());
-        }
+        CreateUserCommand command = new CreateUserCommand(
+                request.username(),
+                request.password(),
+                request.email()
+        );
+        createUserCommandHandler.handle(command);
+
+        URI location = URI.create("/api/user");
+        return ResponseEntity.created(location)
+                .body(ApiResponse.<Void>builder()
+                        .message("Registered Successfully")
+                        .build());
     }
 
     @PostMapping("/refresh")
