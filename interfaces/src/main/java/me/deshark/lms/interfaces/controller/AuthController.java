@@ -46,20 +46,10 @@ public class AuthController {
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<ResultBody<Object>> refreshToken(
-            @CookieValue(name = "refresh_token", required = false) String refreshToken,
+    public ResponseEntity<ApiResponse<AuthToken>> refreshToken(
+            @CookieValue(name = "refresh_token") String refreshToken,
             HttpServletResponse response
     ) {
-        if (refreshToken == null || refreshToken.isEmpty()) {
-            return new ResponseEntity<>(
-                    ResultBody.builder()
-                            .code(HttpStatus.UNAUTHORIZED.value())
-                            .message("缺少Refresh Token")
-                            .build(),
-                    HttpStatus.UNAUTHORIZED
-            );
-        }
-
         AuthToken newTokens = authAppService.refresh(refreshToken);
 
         // 1. 将refreshToken写入HttpOnly Cookie
@@ -75,16 +65,11 @@ public class AuthController {
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         // 2. AccessToken通过响应体返回
-        ResultBody<Object> resultBody = ResultBody.builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .data(newTokens)
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
+        return ResponseEntity.ok().body(ApiResponse.<AuthToken>builder().data(newTokens).build());
     }
 
     @PostMapping("/login")
-    public ResponseEntity<ResultBody<Object>> login(
+    public ResponseEntity<ApiResponse<AuthToken>> login(
             @RequestBody LoginRequest request,
             HttpServletResponse response
     ) {
@@ -99,15 +84,9 @@ public class AuthController {
                 .maxAge(7 * 24 * 3600)
                 .path("/api/auth/refresh")
                 .build();
-
         response.addHeader(HttpHeaders.SET_COOKIE, refreshCookie.toString());
 
         // 2. AccessToken通过响应体返回
-        ResultBody<Object> resultBody = ResultBody.builder()
-                .code(HttpStatus.OK.value())
-                .message(HttpStatus.OK.getReasonPhrase())
-                .data(tokens)
-                .build();
-        return ResponseEntity.status(HttpStatus.OK).body(resultBody);
+        return ResponseEntity.ok().body(ApiResponse.<AuthToken>builder().data(tokens).build());
     }
 }

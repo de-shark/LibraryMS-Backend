@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.interfaces.dto.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MissingRequestCookieException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -15,6 +16,14 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
+
+    // 缺少Refresh Token
+    @ExceptionHandler(MissingRequestCookieException.class)
+    public ResponseEntity<ApiResponse<Void>> handleMissingCookie() {
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(ApiResponse.<Void>builder().error("缺少Refresh Token").build());
+    }
 
     // 400 Bad Request
     @ExceptionHandler(IllegalArgumentException.class)
