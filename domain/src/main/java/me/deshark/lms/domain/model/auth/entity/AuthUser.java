@@ -3,6 +3,7 @@ package me.deshark.lms.domain.model.auth.entity;
 import lombok.Builder;
 import lombok.Data;
 import me.deshark.lms.common.exception.AuthenticationException;
+import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.auth.vo.Password;
 import me.deshark.lms.domain.model.auth.vo.UserRoleType;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
@@ -26,9 +27,10 @@ public class AuthUser {
     // 创建新用户
     public static AuthUser createUser(String username, String rawPassword, String email, PasswordEncryptor encryptor) {
         return AuthUser.builder()
-                .email(email)
+                .uuid(GUID.v7())
                 .username(username)
                 .passwordHash(Password.fromEncrypted(encryptor.encrypt(rawPassword)))
+                .email(email)
                 .status(UserStatus.UNVERIFIED)
                 .build();
     }

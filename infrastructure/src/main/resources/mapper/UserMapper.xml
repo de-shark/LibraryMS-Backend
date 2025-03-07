@@ -2,13 +2,12 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="me.deshark.lms.infrastructure.mapper.UserMapper">
     <insert id="insert">
-        INSERT INTO users (uuid, username, password, email, role, status)
+        INSERT INTO users (uuid, username, password_hash, email, status)
         VALUES (
         #{uuid},
         #{username},
-        #{password},
+        #{passwordHash},
         #{email},
-        #{role},
         #{status}
         )
     </insert>
