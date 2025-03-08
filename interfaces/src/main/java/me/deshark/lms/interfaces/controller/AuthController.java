@@ -1,5 +1,9 @@
 package me.deshark.lms.interfaces.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.cqrs.auth.command.CreateUserCommand;
@@ -27,6 +31,27 @@ public class AuthController {
     private final AuthAppService authAppService;
     private final CreateUserCommandHandler createUserCommandHandler;
 
+    @Operation(summary = "用户注册", description = "注册新用户到系统")
+    @ApiResponses(value = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "201",
+                    description = "注册成功",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ApiResponse.class)
+                    )
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "400",
+                    description = "请求参数错误",
+                    content = @Content
+            ),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(
+                    responseCode = "409",
+                    description = "用户名或邮箱已存在",
+                    content = @Content
+            )
+    })
     @PostMapping("/register")
     public ResponseEntity<ApiResponse<Void>> register(@RequestBody RegisterRequest request) {
         CreateUserCommand command = new CreateUserCommand(
