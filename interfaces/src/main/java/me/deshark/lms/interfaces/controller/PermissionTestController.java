@@ -1,6 +1,6 @@
 package me.deshark.lms.interfaces.controller;
 
-import me.deshark.lms.interfaces.dto.ApiResponse;
+import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class PermissionTestController {
 
     @GetMapping
-    public ResponseEntity<ApiResponse<Void>> test() {
-        return ResponseEntity.ok(ApiResponse.<Void>builder().build());
+    public ResponseEntity<ResultBody<Void>> test() {
+        return ResponseEntity.ok(ResultBody.<Void>builder().build());
     }
 }

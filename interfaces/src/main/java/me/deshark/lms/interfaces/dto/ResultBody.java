@@ -13,7 +13,7 @@ import java.time.Instant;
 @Data
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class ApiResponse<T> {
+public class ResultBody<T> {
     private String message;
     private String error;
     private T data;
