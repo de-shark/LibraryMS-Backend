@@ -23,7 +23,7 @@ jwt:
 logging:
   level:
     org:
-      springframework: debug
+#      springframework: debug
 
 google:
   books:
