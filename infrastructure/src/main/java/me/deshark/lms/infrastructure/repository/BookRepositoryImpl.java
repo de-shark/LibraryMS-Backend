@@ -44,6 +44,8 @@ public class BookRepositoryImpl implements BookRepository {
                 .isbn(bookMetadata.getIsbn().toString())
                 .title(bookMetadata.getTitle())
                 .author(bookMetadata.getAuthor())
+                .publisher(bookMetadata.getPublisher())
+                .publishedDate(bookMetadata.getPublishedDate())
                 .build();
         bookMapper.insert(bookDO);
     }

@@ -4,7 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * @author DE_SHARK
@@ -17,5 +17,5 @@ public class BookMetadata {
     private String title;
     private String author;
     private String publisher;
-    private Date publishedDate;
+    private LocalDate publishedDate;
 }
