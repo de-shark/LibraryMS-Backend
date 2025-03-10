@@ -71,6 +71,27 @@ public class AuthController {
                         .build());
     }
 
+    @Operation(summary = "刷新访问令牌", description = "使用刷新令牌获取新的访问令牌")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "令牌刷新成功",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ResultBody.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "无效的刷新令牌",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "未授权访问",
+                    content = @Content
+            )
+    })
     @PostMapping("/refresh")
     public ResponseEntity<ResultBody<AuthToken>> refreshToken(
             @CookieValue(name = "refresh_token") String refreshToken,
@@ -81,6 +102,27 @@ public class AuthController {
         return ResponseEntity.ok().body(ResultBody.<AuthToken>builder().data(newTokens).build());
     }
 
+    @Operation(summary = "用户登录", description = "使用用户名和密码进行登录认证")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "登录成功",
+                    content = @Content(
+                            mediaType = "application/json",
+                            schema = @Schema(implementation = ResultBody.class)
+                    )
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "请求参数错误",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "用户名或密码错误",
+                    content = @Content
+            )
+    })
     @PostMapping("/login")
     public ResponseEntity<ResultBody<AuthToken>> login(
             @RequestBody LoginRequest request,
