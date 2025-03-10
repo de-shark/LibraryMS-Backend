@@ -15,7 +15,7 @@ public interface TokenProvider {
     String generateAccessToken(String username, String role);
 
     // 生成刷新令牌
-    String generateRefreshToken(String username);
+    String generateRefreshToken(String username, String role);
 
     // 验证 Token 有效性
     boolean validateToken(String refreshToken);

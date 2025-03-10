@@ -35,7 +35,7 @@ public class JwtTokenProvider implements TokenProvider {
     public AuthTokenPair generateToken(String username, String role) {
         return new AuthTokenPair(
                 generateAccessToken(username, role),
-                generateRefreshToken(username)
+                generateRefreshToken(username, role)
         );
     }
 
@@ -54,10 +54,11 @@ public class JwtTokenProvider implements TokenProvider {
 
     // 生成刷新令牌
     @Override
-    public String generateRefreshToken(String username) {
+    public String generateRefreshToken(String username, String role) {
         Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         return Jwts.builder()
                 .subject(username)
+                .claim("role", role)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(REFRESH_TOKEN_EXPIRATION_TIME, ChronoUnit.SECONDS)))
                 .signWith(key)
