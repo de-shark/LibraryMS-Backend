@@ -1,15 +1,19 @@
 package me.deshark.lms.infrastructure.external.google;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.service.catalog.BookMetadataProvider;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 
@@ -24,6 +28,22 @@ public class GoogleBooksClient implements BookMetadataProvider {
     private final RestTemplate restTemplate;
     @Value("${google.books.api.key}")
     private String apiKey;
+
+    @Value("${proxy.host:}")
+    private String proxyHost;
+
+    @Value("${proxy.port:0}")
+    private int proxyPort;
+
+    @PostConstruct
+    public void init() {
+        if (!proxyHost.isEmpty() && proxyPort > 0) {
+            SimpleClientHttpRequestFactory requestFactory = new SimpleClientHttpRequestFactory();
+            Proxy proxy = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+            requestFactory.setProxy(proxy);
+            restTemplate.setRequestFactory(requestFactory);
+        }
+    }
 
     @Override
     public BookMetadata fetch(Isbn isbn) {
