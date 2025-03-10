@@ -1,6 +1,7 @@
 package me.deshark.lms.application.cqrs.book.command;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.exception.BookAlreadyExistsException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
@@ -42,8 +43,9 @@ public class CreateBookCommandHandler {
         }
 
         // 调用 API 获取图书信息
+        BookMetadata bookMetadata = bookMetadataProvider.fetch(isbn);
 
         // 保存到仓库
-        bookRepository.save(null);
+        bookRepository.save(bookMetadata);
     }
 }
