@@ -1,7 +1,3 @@
-plugins {
-    id("org.springframework.boot")
-}
-
 dependencies {
     implementation(project(":interfaces"))
     implementation(project(":infrastructure"))
@@ -12,12 +8,4 @@ dependencies {
 
 springBoot {
     mainClass.set("me.deshark.lms.LmsApplication")
-}
-
-tasks.named("bootJar") {
-    enabled = true
-}
-
-tasks.named("jar") {
-    enabled = false
 }

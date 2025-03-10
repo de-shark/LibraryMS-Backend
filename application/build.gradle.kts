@@ -14,7 +14,3 @@ dependencies {
 
     implementation("org.springframework:spring-tx")
 }
-
-tasks.named("jar") {
-    enabled = true
-}
