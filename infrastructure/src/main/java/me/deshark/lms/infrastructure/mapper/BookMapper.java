@@ -1,6 +1,6 @@
 package me.deshark.lms.infrastructure.mapper;
 
-import me.deshark.lms.infrastructure.entity.BookCatalogDO;
+import me.deshark.lms.infrastructure.entity.BookDO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -20,14 +20,14 @@ public interface BookMapper {
      * 根据ISBN查询图书信息
      */
     @Select("SELECT * FROM book WHERE isbn = #{isbn}")
-    Optional<BookCatalogDO> findByIsbn(@Param("isbn") String isbn);
+    Optional<BookDO> findByIsbn(@Param("isbn") String isbn);
 
     /**
      * 插入图书信息
      */
     @Insert("INSERT INTO book (isbn, title, author, publisher, published_date) " +
             "VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishedDate})")
-    void insert(BookCatalogDO bookCatalogDO);
+    void insert(BookDO bookDO);
 
     /**
      * 删除图书信息
@@ -39,19 +39,19 @@ public interface BookMapper {
      * 查询所有图书信息
      */
     @Select("SELECT * FROM book ORDER BY created_at DESC")
-    List<BookCatalogDO> findAll();
+    List<BookDO> findAll();
 
     /**
      * 根据标题模糊查询图书信息
      */
     @Select("SELECT * FROM book WHERE title LIKE CONCAT('%', #{title}, '%')")
-    List<BookCatalogDO> findByTitleContaining(@Param("title") String title);
+    List<BookDO> findByTitleContaining(@Param("title") String title);
 
     /**
      * 根据作者查询图书信息
      */
     @Select("SELECT * FROM book WHERE author = #{author}")
-    List<BookCatalogDO> findByAuthor(@Param("author") String author);
+    List<BookDO> findByAuthor(@Param("author") String author);
 
     /**
      * 统计图书数量

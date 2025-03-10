@@ -5,7 +5,7 @@ import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.exception.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
-import me.deshark.lms.infrastructure.entity.BookCatalogDO;
+import me.deshark.lms.infrastructure.entity.BookDO;
 import me.deshark.lms.infrastructure.mapper.BookMapper;
 import org.springframework.stereotype.Repository;
 
@@ -27,7 +27,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public BookMetadata findByIsbn(Isbn isbn) {
-        Optional<BookCatalogDO> bookCatalogDO = bookMapper.findByIsbn(isbn.toString());
+        Optional<BookDO> bookCatalogDO = bookMapper.findByIsbn(isbn.toString());
         if (bookCatalogDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");
         }
@@ -40,12 +40,12 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public void save(BookMetadata bookMetadata) {
-        BookCatalogDO bookCatalogDO = BookCatalogDO.builder()
+        BookDO bookDO = BookDO.builder()
                 .isbn(bookMetadata.getIsbn().toString())
                 .title(bookMetadata.getTitle())
                 .author(bookMetadata.getAuthor())
                 .build();
-        bookMapper.insert(bookCatalogDO);
+        bookMapper.insert(bookDO);
     }
 
     @Override

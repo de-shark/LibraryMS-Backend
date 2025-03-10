@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  */
 @Data
 @Builder
-public class BookCatalogDO {
+public class BookDO {
     private String isbn;
     private String title;
     private String author;
