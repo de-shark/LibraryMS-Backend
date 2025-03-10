@@ -51,3 +51,4 @@ usr/
 /.cursorignore
 /.cursor/rules/lms-rules.mdc
 /.windsurfrules
+start/src/main/resources/secrets.properties

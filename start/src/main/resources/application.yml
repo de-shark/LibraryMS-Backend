@@ -28,7 +28,7 @@ logging:
 google:
   books:
     api:
-      key: api-key
+      key: ${google.books.api.key.origin}
 
 springdoc:
   swagger-ui:
