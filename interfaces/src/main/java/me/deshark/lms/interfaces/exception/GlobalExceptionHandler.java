@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestCookieException;
 import me.deshark.lms.common.exception.book.BookAlreadyExistsException;
+import me.deshark.lms.common.exception.book.BookNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -37,6 +38,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResultBody<Void>> handleBookAlreadyExistsException(BookAlreadyExistsException e) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)
+                .body(ResultBody.<Void>builder().error(e.getMessage()).build());
+    }
+
+    // 处理图书未找到异常
+    @ExceptionHandler(BookNotFoundException.class)
+    public ResponseEntity<ResultBody<Void>> handleBookNotFoundException(BookNotFoundException e) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)
                 .body(ResultBody.<Void>builder().error(e.getMessage()).build());
     }
 
