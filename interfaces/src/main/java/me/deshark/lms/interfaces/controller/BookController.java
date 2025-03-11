@@ -14,13 +14,19 @@ import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
 import me.deshark.lms.application.cqrs.book.command.DeleteBookCommandHandler;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
+import me.deshark.lms.application.cqrs.book.query.SearchBooksQuery;
+import me.deshark.lms.application.cqrs.book.query.SearchBooksQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.interfaces.dto.BookResponse;
+import me.deshark.lms.application.dto.PageResult;
+import me.deshark.lms.interfaces.dto.PageResponse;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author DE_SHARK
@@ -32,6 +38,7 @@ import java.net.URI;
 public class BookController {
 
     private final CreateBookCommandHandler createBookCommandHandler;
+    private final SearchBooksQueryHandler searchBooksQueryHandler;
 
     @Operation(summary = "创建图书", description = "添加一本新图书到图书馆目录")
     @ApiResponses(value = {
@@ -113,13 +120,38 @@ public class BookController {
             )
     })
     @GetMapping
-    public ResultBody<Void> listBooks(
+    public ResponseEntity<ResultBody<PageResponse<BookResponse>>> listBooks(
+            @Parameter(description = "搜索关键词", example = "Java")
+            @RequestParam(required = false) String keyword,
             @Parameter(description = "页码", example = "1")
             @RequestParam(defaultValue = "1") int page,
             @Parameter(description = "每页数量", example = "20")
             @RequestParam(defaultValue = "20") int size) {
-        // 分页查询图书列表逻辑
-        return ResultBody.<Void>builder().message("该功能编写中").build();
+        
+        // 执行查询
+        PageResult<BookInfo> pageResult = searchBooksQueryHandler.handle(
+            new SearchBooksQuery(keyword, page, size)
+        );
+
+        // 转换为响应DTO
+        List<BookResponse> books = pageResult.data().stream()
+            .map(book -> BookResponse.builder()
+                .isbn(book.getIsbn())
+                .title(book.getTitle())
+                .author(book.getAuthor())
+                .build())
+            .collect(Collectors.toList());
+
+        PageResponse<BookResponse> response = PageResponse.of(
+            books,
+            pageResult.currentPage(),
+            pageResult.totalPages(),
+            pageResult.totalItems()
+        );
+
+        return ResponseEntity.ok(ResultBody.<PageResponse<BookResponse>>builder()
+            .data(response)
+            .build());
     }
 
     private final DeleteBookCommandHandler deleteBookCommandHandler;
