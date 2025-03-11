@@ -79,7 +79,16 @@ public class AuthController {
                     description = "令牌刷新成功",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ResultBody.class)
+                            schema = @Schema(
+                                    implementation = ResultBody.class,
+                                    example = """
+                                                {
+                                                    "data": {
+                                                        "accessToken": "eyJhbGciOiJIUzUxMiJ9..."
+                                                    }
+                                                }
+                                 """
+                            )
                     )
             ),
             @ApiResponse(
@@ -110,7 +119,18 @@ public class AuthController {
                     description = "登录成功",
                     content = @Content(
                             mediaType = "application/json",
-                            schema = @Schema(implementation = ResultBody.class)
+                            schema = @Schema(
+                                implementation = ResultBody.class,
+                                example = """
+                                            {
+                                                "message": "登录成功",
+                                                "data": {
+                                                    "accessToken": "eyJhbGciOiJIUzUxMiJ9..."
+                                                },
+                                                "timestamp": "2025-03-11T09:48:49.716Z"
+                                            }
+                                        """
+                            )
                     )
             ),
             @ApiResponse(
