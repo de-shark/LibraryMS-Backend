@@ -55,7 +55,7 @@ public class BookController {
             )
     })
     @PostMapping
-    public ResponseEntity<ResultBody<BookResponse>> createBook(
+    public ResponseEntity<ResultBody<Void>> createBook(
             @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "图书创建请求体",
                     required = true,
@@ -63,21 +63,11 @@ public class BookController {
             ) CreateBookCommand command) {
         createBookCommandHandler.handle(command);
 
-        // 获取新创建的图书信息
-        BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(command.isbn()));
-        BookResponse book = BookResponse.builder()
-                .isbn(bookInfo.getIsbn())
-                .title(bookInfo.getTitle())
-                .author(bookInfo.getAuthor())
-                .build();
-
         // 构建Location header
         URI location = URI.create("/api/books/" + command.isbn());
 
         return ResponseEntity.created(location)
-                .body(ResultBody.<BookResponse>builder()
-                        .data(book)
-                        .build());
+                .body(ResultBody.<Void>builder().message("入库成功").build());
     }
 
     private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
