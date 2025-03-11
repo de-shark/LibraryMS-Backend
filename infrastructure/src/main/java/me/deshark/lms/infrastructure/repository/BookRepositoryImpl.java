@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
+import me.deshark.lms.domain.model.common.Page;
 import me.deshark.lms.domain.repository.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookDO;
 import me.deshark.lms.infrastructure.mapper.BookMapper;
@@ -12,10 +13,6 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 
 /**
  * @author DE_SHARK
@@ -62,11 +59,11 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public Page<BookMetadata> searchBooks(String keyword, Pageable pageable) {
+    public Page<BookMetadata> searchBooks(String keyword, int pageNumber, int pageSize) {
         // 根据关键词查询
         List<BookDO> bookDOs;
         long total;
-        
+
         if (keyword == null || keyword.isBlank()) {
             // 无关键词时查询全部
             bookDOs = bookMapper.findAll();
@@ -78,21 +75,21 @@ public class BookRepositoryImpl implements BookRepository {
         }
 
         // 分页处理
-        int start = (int) pageable.getOffset();
-        int end = Math.min((start + pageable.getPageSize()), bookDOs.size());
+        int start = pageNumber * pageSize;
+        int end = Math.min((start + pageSize), bookDOs.size());
         List<BookDO> pagedDOs = bookDOs.subList(start, end);
 
         // 转换为领域模型
         List<BookMetadata> bookMetadatas = pagedDOs.stream()
-            .map(bookDO -> BookMetadata.builder()
-                .isbn(new Isbn(bookDO.getIsbn()))
-                .title(bookDO.getTitle())
-                .author(bookDO.getAuthor())
-                .publisher(bookDO.getPublisher())
-                .publishedDate(bookDO.getPublishedDate())
-                .build())
-            .collect(Collectors.toList());
+                .map(bookDO -> BookMetadata.builder()
+                        .isbn(new Isbn(bookDO.getIsbn()))
+                        .title(bookDO.getTitle())
+                        .author(bookDO.getAuthor())
+                        .publisher(bookDO.getPublisher())
+                        .publishedDate(bookDO.getPublishedDate())
+                        .build())
+                .collect(Collectors.toList());
 
-        return new PageImpl<>(bookMetadatas, pageable, total);
+        return new Page<>(bookMetadatas, pageNumber, pageSize, total);
     }
 }
