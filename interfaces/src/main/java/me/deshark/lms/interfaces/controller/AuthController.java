@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.time.Instant;
 
 /**
  * @author DE_SHARK
@@ -130,7 +131,11 @@ public class AuthController {
     ) {
         AuthToken tokens = authAppService.login(request.username(), request.password());
         setRefreshTokenCookie(response, tokens.getRefreshToken());
-        return ResponseEntity.ok().body(ResultBody.<AuthToken>builder().data(tokens).build());
+        return ResponseEntity.ok().body(ResultBody.<AuthToken>builder()
+                .message("登录成功")
+                .data(tokens)
+                .timestamp(Instant.now())
+                .build());
     }
 
     private void setRefreshTokenCookie(HttpServletResponse response, String refreshToken) {
