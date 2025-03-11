@@ -15,4 +15,6 @@ public interface BookRepository {
     void save(BookMetadata bookMetadata);
 
     void delete(Isbn isbn);
+
+    Page<BookMetadata> searchBooks(String keyword, Pageable pageable);
 }
