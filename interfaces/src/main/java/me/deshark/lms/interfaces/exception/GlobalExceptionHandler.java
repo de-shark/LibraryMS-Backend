@@ -6,6 +6,7 @@ import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestCookieException;
+import me.deshark.lms.common.exception.book.BookAlreadyExistsException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,6 +30,14 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ResultBody<Void>> handleIllegalArgumentException(IllegalArgumentException e) {
         return ResponseEntity.badRequest().body(ResultBody.<Void>builder().error(e.getMessage()).build());
+    }
+
+    // 处理图书已存在异常
+    @ExceptionHandler(BookAlreadyExistsException.class)
+    public ResponseEntity<ResultBody<Void>> handleBookAlreadyExistsException(BookAlreadyExistsException e) {
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(ResultBody.<Void>builder().error(e.getMessage()).build());
     }
 
     // 处理其他未捕获异常
