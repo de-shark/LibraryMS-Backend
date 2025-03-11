@@ -37,11 +37,11 @@ public class SearchBooksQueryHandler {
                 .build())
             .collect(Collectors.toList());
 
-        return PageResult.of(
-            bookInfos,
-            query.page(),
-            page.getTotalPages(),
-            page.getTotalElements()
+        return PageResult.createPageResult(
+                bookInfos,
+                query.page(),
+                page.getTotalPages(),
+                page.getTotalElements()
         );
     }
 }
