@@ -122,11 +122,11 @@ public class BookController {
     @GetMapping
     public ResponseEntity<ResultBody<PageResponse<BookResponse>>> listBooks(
             @Parameter(description = "搜索关键词", example = "Java")
-            @RequestParam(required = false) String keyword,
+            @RequestParam(name = "keyword", required = false) String keyword,
             @Parameter(description = "页码", example = "1")
-            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(name = "page", defaultValue = "1") int page,
             @Parameter(description = "每页数量", example = "20")
-            @RequestParam(defaultValue = "20") int size) {
+            @RequestParam(name = "size", defaultValue = "20") int size) {
         
         // 执行查询
         PageResult<BookInfo> pageResult = searchBooksQueryHandler.handle(
