@@ -1,8 +1,8 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
-import me.deshark.lms.domain.model.catalog.exception.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookDO;

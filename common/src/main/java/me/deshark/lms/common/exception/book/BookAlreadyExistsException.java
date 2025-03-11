@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.model.catalog.exception;
+package me.deshark.lms.common.exception.book;
 
 /**
  * @author DE_SHARK
