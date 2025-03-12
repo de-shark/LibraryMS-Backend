@@ -1,8 +1,8 @@
 package me.deshark.lms.application.cqrs.book.query;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.application.dto.PageResult;
 import me.deshark.lms.application.info.BookInfo;
+import me.deshark.lms.application.info.PageResult;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.common.Page;
 import me.deshark.lms.domain.repository.BookRepository;
