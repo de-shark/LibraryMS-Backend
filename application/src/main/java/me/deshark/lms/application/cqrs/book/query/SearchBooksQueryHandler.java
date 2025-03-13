@@ -37,7 +37,7 @@ public class SearchBooksQueryHandler {
                 .build())
             .collect(Collectors.toList());
 
-        return PageResult.createPageResult(
+        return PageResult.of(
                 bookInfos,
                 query.page(),
                 page.getTotalPages(),
