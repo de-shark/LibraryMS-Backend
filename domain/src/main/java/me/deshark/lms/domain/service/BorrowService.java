@@ -7,6 +7,7 @@ import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.BookCopyRepository;
 import me.deshark.lms.domain.repository.BorrowRepository;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -49,7 +50,7 @@ public class BorrowService {
         BookCopy bookCopy = bookCopyRepository.findAvailableBookCopy(vaildIsbn);
 
         // 4. 创建借阅记录
-        Date now = new Date();
+        LocalDate now = LocalDate.now();
         BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getBookCopyId(), patron, now);
         borrowTransaction.initializeDueDate();
 
@@ -80,7 +81,7 @@ public class BorrowService {
     public BorrowTransaction returnBook(BorrowTransaction transaction) {
         // 1. 更新借阅记录状态
         transaction.setStatus("RETURNED");
-        transaction.setEndDate(new Date());
+        transaction.setEndDate(LocalDate.now());
         // 2. 更新图书副本状态
         BookCopy bookCopy = bookCopyRepository.findBookCopy(transaction.getBookCopyId());
         bookCopy.setStatus("ACTIVATE");
