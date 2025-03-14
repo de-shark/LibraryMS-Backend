@@ -24,11 +24,12 @@ public class BorrowTransaction {
     private String status;
 
     // 构造方法（创建借阅记录）
-    public BorrowTransaction(UUID bookCopyId, Patron patron, LocalDate startDate) {
+    public BorrowTransaction(UUID bookCopyId, Patron patron) {
         this.transactionId = GUID.v7();
         this.bookCopyId = bookCopyId;
         this.patron = patron;
-        this.startDate = startDate;
+        this.startDate = LocalDate.now();
+        initializeTransaction();
     }
 
     // 检查是否可以续借
@@ -36,7 +37,7 @@ public class BorrowTransaction {
         return "BORROWED".equals(status) && LocalDate.now().isBefore(dueDate);
     }
 
-    public void initializeDueDate() {
+    public void initializeTransaction() {
         this.dueDate = calculateDueDate(startDate);
         this.status = "BORROWED";
     }

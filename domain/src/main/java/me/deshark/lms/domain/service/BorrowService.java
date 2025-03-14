@@ -50,9 +50,7 @@ public class BorrowService {
         BookCopy bookCopy = bookCopyRepository.findAvailableBookCopy(vaildIsbn);
 
         // 4. 创建借阅记录
-        LocalDate now = LocalDate.now();
-        BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getBookCopyId(), patron, now);
-        borrowTransaction.initializeDueDate();
+        BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getBookCopyId(), patron);
 
         // 5. 保存借阅记录
         borrowRepository.save(borrowTransaction);
