@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class RenewBookCommandHandler {
+public class RenewBorrowCommandHandler {
 
     /**
      * 处理续借图书命令
@@ -27,7 +27,7 @@ public class RenewBookCommandHandler {
      * @throws IllegalArgumentException 当借阅记录不存在或不满足续借条件时抛出
      */
     @Transactional
-    public BorrowTransactionInfo handle(RenewBookCommand command) {
+    public BorrowTransactionInfo handle(RenewBorrowCommand command) {
         log.info("处理续借图书命令: {}", command);
 
         // 1. 获取借阅记录

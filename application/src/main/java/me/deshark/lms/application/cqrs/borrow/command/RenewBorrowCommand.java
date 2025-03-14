@@ -16,7 +16,7 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RenewBookCommand {
+public class RenewBorrowCommand {
     /**
      * 借阅记录ID
      */

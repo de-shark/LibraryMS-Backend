@@ -43,7 +43,7 @@ public class BorrowController {
 
     private final BorrowBookCommandHandler borrowBookCommandHandler;
     private final ReturnBookCommandHandler returnBookCommandHandler;
-    private final RenewBookCommandHandler renewBookCommandHandler;
+    private final RenewBorrowCommandHandler renewBorrowCommandHandler;
     private final GetBorrowTransactionQueryHandler getBorrowTransactionQueryHandler;
     private final ListPatronBorrowsQueryHandler listPatronBorrowsQueryHandler;
 
@@ -148,8 +148,8 @@ public class BorrowController {
     public ResponseEntity<ResultBody<BorrowTransactionResponse>> renewBook(
             @Parameter(description = "借阅记录ID", required = true)
             @PathVariable("transactionId") UUID transactionId) {
-        RenewBookCommand command = new RenewBookCommand(transactionId);
-        BorrowTransactionInfo transactionInfo = renewBookCommandHandler.handle(command);
+        RenewBorrowCommand command = new RenewBorrowCommand(transactionId);
+        BorrowTransactionInfo transactionInfo = renewBorrowCommandHandler.handle(command);
         BorrowTransactionResponse response = convertToResponse(transactionInfo);
         
         return ResponseEntity.ok(ResultBody.<BorrowTransactionResponse>builder()
