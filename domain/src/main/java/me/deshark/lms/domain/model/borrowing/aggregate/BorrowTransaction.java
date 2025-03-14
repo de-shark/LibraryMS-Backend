@@ -1,6 +1,7 @@
 package me.deshark.lms.domain.model.borrowing.aggregate;
 
 
+import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
  * @date 2025/2/16 14:42
  */
 // 借阅记录聚合根 (包含借阅记录和归还逻辑)
+@Data
 public class BorrowTransaction {
     private final UUID transactionId;
     private final UUID bookCopyId;
@@ -34,45 +36,5 @@ public class BorrowTransaction {
         return "BORROWED".equals(status) && 
                new Date().before(endDate) && 
                patron.canBorrow();
-    }
-
-    public UUID getTransactionId() {
-        return transactionId;
-    }
-
-    public UUID getBookCopyId() {
-        return bookCopyId;
-    }
-
-    public Patron getPatron() {
-        return patron;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public Date getDueDate() {
-        return dueDate;
-    }
-
-    public Date getEndDate() {
-        return endDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setDueDate(Date dueDate) {
-        this.dueDate = dueDate;
-    }
-
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
