@@ -33,8 +33,20 @@ public class BorrowTransaction {
 
     // 检查是否可以续借
     public boolean canRenew() {
-        return "BORROWED".equals(status) && 
-               new Date().before(endDate) && 
-               patron.canBorrow();
+        return false;
+    }
+
+    public void initializeDueDate() {
+        this.dueDate = calculateDueDate(startDate);
+        this.status = "BORROWED";
+    }
+    private Date calculateDueDate(Date baseDate) {
+        return new Date(baseDate.getTime() + 14L * 24 * 60 * 60 * 1000);
+    }
+    public void renew() {
+        if (!canRenew()) {
+            throw new IllegalStateException("Cannot renew this transaction");
+        }
+        this.dueDate = calculateDueDate(dueDate);
     }
 }

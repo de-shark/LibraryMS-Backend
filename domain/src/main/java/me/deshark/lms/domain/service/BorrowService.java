@@ -51,8 +51,7 @@ public class BorrowService {
         // 4. 创建借阅记录
         Date now = new Date();
         BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getBookCopyId(), patron, now);
-        borrowTransaction.setStatus("BORROWED");
-        borrowTransaction.setDueDate(calculateDueDate(now));
+        borrowTransaction.initializeDueDate();
 
         // 5. 保存借阅记录
         borrowRepository.save(borrowTransaction);
@@ -69,15 +68,7 @@ public class BorrowService {
      * @return 更新后的借阅记录
      */
     public BorrowTransaction renew(BorrowTransaction transaction) {
-        // 1. 检查是否可以续借
-        if (!transaction.canRenew()) {
-            throw new IllegalArgumentException("Borrow is not can renew");
-        }
-        // 2. 更新到期时间
-        Date dueDate = transaction.getDueDate();
-        dueDate = calculateDueDate(dueDate);
-        transaction.setDueDate(dueDate);
-        // 4. 保存更新后的借阅记录
+        transaction.renew();
         borrowRepository.save(transaction);
         return transaction;
     }
@@ -95,12 +86,5 @@ public class BorrowService {
         bookCopy.setStatus("ACTIVATE");
 
         return transaction;
-    }
-
-    /**
-     * 计算到期时间（默认借阅期限为14天）
-     */
-    private Date calculateDueDate(Date startDate) {
-        return new Date(startDate.getTime() + 14L * 24 * 60 * 60 * 1000);
     }
 }
