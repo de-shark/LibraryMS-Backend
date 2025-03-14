@@ -50,4 +50,9 @@ public class BorrowTransaction {
         }
         this.dueDate = calculateDueDate(dueDate);
     }
+
+    public void returnBook() {
+        this.status = "RETURNED";
+        this.endDate = LocalDate.now();
+    }
 }

@@ -78,8 +78,7 @@ public class BorrowService {
      */
     public BorrowTransaction returnBook(BorrowTransaction transaction) {
         // 1. 更新借阅记录状态
-        transaction.setStatus("RETURNED");
-        transaction.setEndDate(LocalDate.now());
+        transaction.returnBook();
         // 2. 更新图书副本状态
         BookCopy bookCopy = bookCopyRepository.findBookCopy(transaction.getBookCopyId());
         bookCopy.setStatus("ACTIVATE");
