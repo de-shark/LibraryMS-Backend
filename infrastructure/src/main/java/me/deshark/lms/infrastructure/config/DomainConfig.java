@@ -1,6 +1,9 @@
 package me.deshark.lms.infrastructure.config;
 
+import me.deshark.lms.domain.repository.BookCopyRepository;
+import me.deshark.lms.domain.repository.BorrowRepository;
 import me.deshark.lms.domain.repository.auth.UserRepository;
+import me.deshark.lms.domain.service.BorrowService;
 import me.deshark.lms.domain.service.auth.AuthService;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 import me.deshark.lms.domain.service.auth.TokenProvider;
@@ -21,5 +24,13 @@ public class DomainConfig {
             TokenProvider tokenProvider
     ) {
         return new AuthService(userRepository, passwordEncryptor, tokenProvider);
+    }
+
+    @Bean
+    public BorrowService borrowService(
+            BorrowRepository borrowRepository,
+            BookCopyRepository bookCopyRepository
+    ) {
+        return new BorrowService(borrowRepository, bookCopyRepository);
     }
 }
