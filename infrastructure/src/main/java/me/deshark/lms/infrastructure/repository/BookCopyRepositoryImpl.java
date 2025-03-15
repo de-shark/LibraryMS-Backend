@@ -43,4 +43,9 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
     public void deleteBookCopy(UUID bookCopyId) {
 
     }
+
+    @Override
+    public void updateBookCopyStatus(BookCopy bookCopy) {
+
+    }
 }

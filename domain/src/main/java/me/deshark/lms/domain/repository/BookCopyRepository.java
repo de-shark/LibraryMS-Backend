@@ -20,4 +20,6 @@ public interface BookCopyRepository {
     void saveBookCopy(BookCopy bookCopy);
 
     void deleteBookCopy(UUID bookCopyId);
+
+    void updateBookCopyStatus(BookCopy bookCopy);
 }

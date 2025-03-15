@@ -55,7 +55,7 @@ public class BorrowService {
 
         // 6. 更新图书副本状态
         bookCopy.setStatus("BORROWED");
-        borrowRepository.updateBookCopyStatus(bookCopy);
+        bookCopyRepository.updateBookCopyStatus(bookCopy);
 
         return borrowTransaction;
     }
