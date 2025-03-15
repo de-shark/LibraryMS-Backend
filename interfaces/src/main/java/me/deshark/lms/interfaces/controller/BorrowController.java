@@ -10,8 +10,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.application.cqrs.borrow.command.*;
+import me.deshark.lms.interfaces.dto.BorrowRequest;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -56,8 +59,19 @@ public class BorrowController {
             @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "借阅请求",
                     required = true,
-                    content = @Content(schema = @Schema(implementation = BorrowCommand.class))
-            ) BorrowCommand command) {
+                    content = @Content(schema = @Schema(implementation = BorrowRequest.class))
+            ) BorrowRequest request) {
+        
+        // 从安全上下文中获取当前用户名
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
+        // 创建command对象，设置当前用户名和ISBN
+        BorrowCommand command = BorrowCommand.builder()
+                .username(username)
+                .isbn(request.getIsbn())
+                .build();
+                
         borrowCommandHandlerImpl.handle(command);
         
         // 构建Location header

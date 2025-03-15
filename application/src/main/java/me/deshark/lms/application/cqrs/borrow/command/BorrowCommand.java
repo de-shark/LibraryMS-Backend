@@ -16,9 +16,9 @@ import java.util.UUID;
 @Builder
 public class BorrowCommand {
     /**
-     * 读者ID
+     * 读者用户名
      */
-    private final UUID patronId;
+    private final String username;
 
     /**
      * 图书ISBN
