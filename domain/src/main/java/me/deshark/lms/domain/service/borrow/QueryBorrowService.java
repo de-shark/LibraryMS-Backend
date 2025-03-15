@@ -1,9 +1,9 @@
-package me.deshark.lms.domain.service;
+package me.deshark.lms.domain.service.borrow;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BorrowRepository;
+import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 
 import java.time.LocalDate;
 import java.util.List;

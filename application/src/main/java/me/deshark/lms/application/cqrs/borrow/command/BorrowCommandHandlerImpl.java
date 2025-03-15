@@ -1,7 +1,7 @@
 package me.deshark.lms.application.cqrs.borrow.command;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.service.BorrowService;
+import me.deshark.lms.domain.service.borrow.BorrowService;
 import org.springframework.stereotype.Service;
 
 /**

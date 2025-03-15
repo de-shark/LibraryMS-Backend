@@ -5,7 +5,7 @@ import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.application.info.PageResult;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.common.Page;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

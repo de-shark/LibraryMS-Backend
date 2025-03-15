@@ -5,7 +5,7 @@ import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.model.common.Page;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookDO;
 import me.deshark.lms.infrastructure.mapper.BookMapper;
 import org.springframework.stereotype.Repository;

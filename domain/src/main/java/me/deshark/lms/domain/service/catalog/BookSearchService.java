@@ -1,8 +1,8 @@
-package me.deshark.lms.domain.service;
+package me.deshark.lms.domain.service.catalog;
 
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 
 /**
  * @author DE_SHARK

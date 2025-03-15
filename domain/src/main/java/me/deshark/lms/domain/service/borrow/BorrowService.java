@@ -1,14 +1,11 @@
-package me.deshark.lms.domain.service;
+package me.deshark.lms.domain.service.borrow;
 
 import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookCopyRepository;
-import me.deshark.lms.domain.repository.BorrowRepository;
-
-import java.time.LocalDate;
-import java.util.Date;
+import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
+import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 
 /**
  * @author DE_SHARK

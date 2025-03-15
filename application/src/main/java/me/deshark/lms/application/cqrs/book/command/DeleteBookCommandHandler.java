@@ -2,7 +2,7 @@ package me.deshark.lms.application.cqrs.book.command;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 import org.springframework.stereotype.Service;
 
 /**

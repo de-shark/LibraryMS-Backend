@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.repository;
+package me.deshark.lms.domain.repository.borrow;
 
 import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 

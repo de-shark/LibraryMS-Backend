@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.deshark.lms.common.exception.book.BookAlreadyExistsException;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 import me.deshark.lms.domain.service.catalog.BookMetadataProvider;
 import org.springframework.stereotype.Service;
 

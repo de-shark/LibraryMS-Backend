@@ -1,9 +1,9 @@
 package me.deshark.lms.infrastructure.config;
 
-import me.deshark.lms.domain.repository.BookCopyRepository;
-import me.deshark.lms.domain.repository.BorrowRepository;
+import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
+import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 import me.deshark.lms.domain.repository.auth.UserRepository;
-import me.deshark.lms.domain.service.BorrowService;
+import me.deshark.lms.domain.service.borrow.BorrowService;
 import me.deshark.lms.domain.service.auth.AuthService;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 import me.deshark.lms.domain.service.auth.TokenProvider;

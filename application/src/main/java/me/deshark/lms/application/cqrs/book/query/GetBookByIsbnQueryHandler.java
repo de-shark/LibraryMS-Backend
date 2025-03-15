@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 import org.springframework.stereotype.Service;
 
 /**

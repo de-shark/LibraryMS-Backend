@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.repository;
+package me.deshark.lms.domain.repository.catalog;
 
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;

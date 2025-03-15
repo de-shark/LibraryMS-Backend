@@ -3,7 +3,7 @@ package me.deshark.lms.infrastructure.repository;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
-import me.deshark.lms.domain.repository.BookCopyRepository;
+import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
 import org.springframework.stereotype.Repository;
 
