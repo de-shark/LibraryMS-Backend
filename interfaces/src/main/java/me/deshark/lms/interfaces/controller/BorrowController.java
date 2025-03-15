@@ -71,8 +71,8 @@ public class BorrowController {
             @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "借阅请求",
                     required = true,
-                    content = @Content(schema = @Schema(implementation = BorrowBookCommand.class))
-            ) BorrowBookCommand command) {
+                    content = @Content(schema = @Schema(implementation = BorrowCommand.class))
+            ) BorrowCommand command) {
         BorrowTransactionInfo transactionInfo = borrowCommandHandlerImpl.handle(command);
         BorrowTransactionResponse response = convertToResponse(transactionInfo);
         
@@ -111,7 +111,7 @@ public class BorrowController {
     public ResponseEntity<ResultBody<Void>> returnBook(
             @Parameter(description = "借阅记录ID", required = true)
             @PathVariable("transactionId") UUID transactionId) {
-        ReturnBookCommand command = new ReturnBookCommand(transactionId);
+        ReturnCommand command = new ReturnCommand(transactionId);
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.<Void>builder()
                 .message("归还成功")
@@ -143,7 +143,7 @@ public class BorrowController {
     public ResponseEntity<ResultBody<BorrowTransactionResponse>> renewBook(
             @Parameter(description = "借阅记录ID", required = true)
             @PathVariable("transactionId") UUID transactionId) {
-        RenewBorrowCommand command = new RenewBorrowCommand(transactionId);
+        RenewCommand command = new RenewCommand(transactionId);
         BorrowTransactionInfo transactionInfo = borrowCommandHandlerImpl.handle(command);
         BorrowTransactionResponse response = convertToResponse(transactionInfo);
         

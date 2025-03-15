@@ -14,7 +14,7 @@ import java.util.UUID;
  */
 @Data
 @Builder
-public class BorrowBookCommand {
+public class BorrowCommand {
     /**
      * 读者ID
      */

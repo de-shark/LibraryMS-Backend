@@ -15,17 +15,17 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     private final BorrowService borrowService;
 
     @Override
-    public BorrowTransactionInfo handle(BorrowBookCommand command) {
+    public BorrowTransactionInfo handle(BorrowCommand command) {
         return null;
     }
 
     @Override
-    public BorrowTransactionInfo handle(RenewBorrowCommand command) {
+    public BorrowTransactionInfo handle(RenewCommand command) {
         return null;
     }
 
     @Override
-    public void handle(ReturnBookCommand command) {
+    public void handle(ReturnCommand command) {
 
     }
 }

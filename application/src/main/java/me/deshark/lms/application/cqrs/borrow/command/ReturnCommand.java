@@ -7,16 +7,16 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 /**
- * 续借图书命令
+ * 归还图书命令
  *
- * <p>包含续借图书所需的借阅记录ID</p>
+ * <p>包含归还图书所需的借阅记录ID</p>
  *
  * @author DE_SHARK
  */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RenewBorrowCommand {
+public class ReturnCommand {
     /**
      * 借阅记录ID
      */

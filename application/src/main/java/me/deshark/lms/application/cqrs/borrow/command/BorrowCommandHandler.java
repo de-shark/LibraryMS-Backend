@@ -6,8 +6,8 @@ import me.deshark.lms.application.info.BorrowTransactionInfo;
  * @author DE_SHARK
  */
 public interface BorrowCommandHandler {
-    BorrowTransactionInfo handle(BorrowBookCommand command);
+    BorrowTransactionInfo handle(BorrowCommand command);
 
-    BorrowTransactionInfo handle(RenewBorrowCommand command);
-    void handle(ReturnBookCommand command);
+    BorrowTransactionInfo handle(RenewCommand command);
+    void handle(ReturnCommand command);
 }
