@@ -41,9 +41,7 @@ import java.util.stream.Collectors;
 @Tag(name = "Borrow", description = "图书借阅相关API")
 public class BorrowController {
 
-    private final BorrowBookCommandHandler borrowBookCommandHandler;
-    private final ReturnBookCommandHandler returnBookCommandHandler;
-    private final RenewBorrowCommandHandler renewBorrowCommandHandler;
+    private final BorrowCommandHandler borrowCommandHandlerImpl;
     private final GetBorrowTransactionQueryHandler getBorrowTransactionQueryHandler;
     private final ListPatronBorrowsQueryHandler listPatronBorrowsQueryHandler;
 
@@ -75,7 +73,7 @@ public class BorrowController {
                     required = true,
                     content = @Content(schema = @Schema(implementation = BorrowBookCommand.class))
             ) BorrowBookCommand command) {
-        BorrowTransactionInfo transactionInfo = borrowBookCommandHandler.handle(command);
+        BorrowTransactionInfo transactionInfo = borrowCommandHandlerImpl.handle(command);
         BorrowTransactionResponse response = convertToResponse(transactionInfo);
         
         // 构建Location header
@@ -110,15 +108,12 @@ public class BorrowController {
             )
     })
     @PostMapping("/{transactionId}/return")
-    public ResponseEntity<ResultBody<BorrowTransactionResponse>> returnBook(
+    public ResponseEntity<ResultBody<Void>> returnBook(
             @Parameter(description = "借阅记录ID", required = true)
             @PathVariable("transactionId") UUID transactionId) {
         ReturnBookCommand command = new ReturnBookCommand(transactionId);
-        BorrowTransactionInfo transactionInfo = returnBookCommandHandler.handle(command);
-        BorrowTransactionResponse response = convertToResponse(transactionInfo);
-        
-        return ResponseEntity.ok(ResultBody.<BorrowTransactionResponse>builder()
-                .data(response)
+        borrowCommandHandlerImpl.handle(command);
+        return ResponseEntity.ok(ResultBody.<Void>builder()
                 .message("归还成功")
                 .build());
     }
@@ -149,7 +144,7 @@ public class BorrowController {
             @Parameter(description = "借阅记录ID", required = true)
             @PathVariable("transactionId") UUID transactionId) {
         RenewBorrowCommand command = new RenewBorrowCommand(transactionId);
-        BorrowTransactionInfo transactionInfo = renewBorrowCommandHandler.handle(command);
+        BorrowTransactionInfo transactionInfo = borrowCommandHandlerImpl.handle(command);
         BorrowTransactionResponse response = convertToResponse(transactionInfo);
         
         return ResponseEntity.ok(ResultBody.<BorrowTransactionResponse>builder()
