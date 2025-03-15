@@ -36,9 +36,7 @@ public class BorrowService {
     public BorrowTransaction borrow(Patron patron, String isbn) {
 
         // 1. 检查用户是否可以借阅
-        if (!patron.canBorrow()) {
-            throw new IllegalArgumentException("Patron is not can borrow");
-        }
+        patron.canBorrow();
 
         // 2. 检查图书是否可借
         Isbn vaildIsbn = new Isbn(isbn);
