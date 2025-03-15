@@ -50,10 +50,7 @@ public class BorrowController {
             @ApiResponse(
                     responseCode = "201",
                     description = "借阅成功",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ResultBody.class)
-                    )
+                    content = @Content
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -67,23 +64,19 @@ public class BorrowController {
             )
     })
     @PostMapping
-    public ResponseEntity<ResultBody<BorrowTransactionResponse>> borrowBook(
+    public ResponseEntity<ResultBody<Void>> borrowBook(
             @RequestBody @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "借阅请求",
                     required = true,
                     content = @Content(schema = @Schema(implementation = BorrowCommand.class))
             ) BorrowCommand command) {
-        BorrowTransactionInfo transactionInfo = borrowCommandHandlerImpl.handle(command);
-        BorrowTransactionResponse response = convertToResponse(transactionInfo);
+        borrowCommandHandlerImpl.handle(command);
         
         // 构建Location header
-        URI location = URI.create("/api/borrows/" + response.getTransactionId());
+        URI location = URI.create("/api/borrows/" + "这里是借阅ID");
         
         return ResponseEntity.created(location)
-                .body(ResultBody.<BorrowTransactionResponse>builder()
-                        .data(response)
-                        .message("借阅成功")
-                        .build());
+                .body(ResultBody.success("借阅成功"));
     }
 
     @Operation(summary = "归还图书", description = "读者归还已借阅的图书")
@@ -91,10 +84,7 @@ public class BorrowController {
             @ApiResponse(
                     responseCode = "200",
                     description = "归还成功",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ResultBody.class)
-                    )
+                    content = @Content
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -113,9 +103,7 @@ public class BorrowController {
             @PathVariable("transactionId") UUID transactionId) {
         ReturnCommand command = new ReturnCommand(transactionId);
         borrowCommandHandlerImpl.handle(command);
-        return ResponseEntity.ok(ResultBody.<Void>builder()
-                .message("归还成功")
-                .build());
+        return ResponseEntity.ok(ResultBody.success("归还成功"));
     }
 
     @Operation(summary = "续借图书", description = "读者续借已借阅的图书")
@@ -123,10 +111,7 @@ public class BorrowController {
             @ApiResponse(
                     responseCode = "200",
                     description = "续借成功",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ResultBody.class)
-                    )
+                    content = @Content
             ),
             @ApiResponse(
                     responseCode = "400",
@@ -140,17 +125,12 @@ public class BorrowController {
             )
     })
     @PostMapping("/{transactionId}/renew")
-    public ResponseEntity<ResultBody<BorrowTransactionResponse>> renewBook(
+    public ResponseEntity<ResultBody<Void>> renewBook(
             @Parameter(description = "借阅记录ID", required = true)
             @PathVariable("transactionId") UUID transactionId) {
         RenewCommand command = new RenewCommand(transactionId);
-        BorrowTransactionInfo transactionInfo = borrowCommandHandlerImpl.handle(command);
-        BorrowTransactionResponse response = convertToResponse(transactionInfo);
-        
-        return ResponseEntity.ok(ResultBody.<BorrowTransactionResponse>builder()
-                .data(response)
-                .message("续借成功")
-                .build());
+        borrowCommandHandlerImpl.handle(command);
+        return ResponseEntity.ok(ResultBody.success("续借成功"));
     }
 
     @Operation(summary = "获取借阅详情", description = "查询特定借阅记录的详细信息")
