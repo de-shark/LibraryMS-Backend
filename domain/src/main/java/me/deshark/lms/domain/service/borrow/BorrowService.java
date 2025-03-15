@@ -5,11 +5,9 @@ import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
+import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 import me.deshark.lms.domain.repository.borrow.PatronRepository;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
-import me.deshark.lms.domain.repository.borrow.BorrowRepository;
-
-import java.util.UUID;
 
 /**
  * @author DE_SHARK
@@ -24,14 +22,14 @@ public class BorrowService {
 
     /**
      * 借阅图书
-     * @param patronId 借阅者ID
+     * @param patronName 借阅者
      * @param isbn 图书ISBN
      * @return 借阅记录
      */
-    public BorrowTransaction borrow(UUID patronId, String isbn) {
+    public BorrowTransaction borrow(String patronName, String isbn) {
 
         // 1. 检查用户是否可以借阅
-        Patron patron = patronRepository.findById(patronId);
+        Patron patron = patronRepository.findByUsername(patronName);
         patron.canBorrow();
 
         // 2. 检查图书是否可借

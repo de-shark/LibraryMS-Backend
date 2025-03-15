@@ -9,4 +9,6 @@ import java.util.UUID;
  */
 public interface PatronRepository {
     Patron findById(UUID id);
+
+    Patron findByUsername(String username);
 }
