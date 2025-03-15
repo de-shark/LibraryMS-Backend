@@ -35,7 +35,7 @@ public class ResultBody<T> {
     private Instant timestamp;
 
     /**
-     * 创建成功响应（带消息）
+     * 创建成功响应
      *
      * @param data    业务数据
      * @param message 成功消息
@@ -45,6 +45,18 @@ public class ResultBody<T> {
     public static <T> ResultBody<T> success(T data, String message) {
         return ResultBody.<T>builder()
                 .data(data)
+                .message(message)
+                .build();
+    }
+
+    /**
+     * 创建成功响应（只带消息）
+     *
+     * @param message 成功消息
+     * @return 响应体
+     */
+    public static ResultBody<Void> success(String message) {
+        return ResultBody.<Void>builder()
                 .message(message)
                 .build();
     }
