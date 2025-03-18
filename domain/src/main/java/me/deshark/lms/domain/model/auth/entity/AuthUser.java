@@ -5,7 +5,7 @@ import lombok.Data;
 import me.deshark.lms.common.exception.AuthenticationException;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.auth.vo.Password;
-import me.deshark.lms.domain.model.auth.vo.UserRoleType;
+import me.deshark.lms.domain.model.auth.vo.UserRole;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 
@@ -22,7 +22,7 @@ public class AuthUser {
     private Password passwordHash;
     private String email;
     private UserStatus status;
-    private UserRoleType userRoleType;
+    private UserRole userRole;
 
     // 创建新用户
     public static AuthUser createUser(String username, String rawPassword, String email, PasswordEncryptor encryptor) {

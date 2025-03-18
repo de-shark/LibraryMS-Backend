@@ -4,7 +4,7 @@ package me.deshark.lms.domain.model.auth.vo;
  * @author DE_SHARK
  */
 
-public enum UserRoleType {
+public enum UserRole {
     USER,
     LIBRARIAN,
     ADMIN

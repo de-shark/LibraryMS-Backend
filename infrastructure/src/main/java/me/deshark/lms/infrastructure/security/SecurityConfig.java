@@ -86,7 +86,7 @@ public class SecurityConfig {
             return new org.springframework.security.core.userdetails.User(
                     authUser.getUsername(),
                     authUser.getPasswordHash().encryptedValue(),
-                    Collections.singleton(new SimpleGrantedAuthority(authUser.getUserRoleType().name()))
+                    Collections.singleton(new SimpleGrantedAuthority(authUser.getUserRole().name()))
             );
         };
     }
