@@ -4,8 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 import me.deshark.lms.domain.model.borrowing.vo.BookCopyStatus;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -17,9 +16,8 @@ import java.util.UUID;
 public class BookCopyDO {
     private UUID copyId;
     private String isbn;
-    private BookCopyStatus status;
     private String location;
+    private BookCopyStatus status;
+    private int loanCount;
     private Date acquisitionDate;
-    private int conditionRating;
-    private Timestamp lastMaintain;
 }

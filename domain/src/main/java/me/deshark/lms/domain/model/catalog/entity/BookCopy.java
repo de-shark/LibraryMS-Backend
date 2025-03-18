@@ -1,42 +1,21 @@
 package me.deshark.lms.domain.model.catalog.entity;
 
+import lombok.Builder;
+import lombok.Data;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
-import java.util.Date;
 import java.util.UUID;
 
 /**
+ * 领域实体：图书副本
  * @author DE_SHARK
  * @date 2025/2/16 14:44
  */
-// 图书副本
+@Data
+@Builder
 public class BookCopy {
     private final UUID bookCopyId;
-    private Isbn isbn;
-    private Date acquisitionDate;
+    private final Isbn isbn;
     private String status;
-
-    public BookCopy(UUID bookCopyId) {
-        this.bookCopyId = bookCopyId;
-    }
-
-    public UUID getBookCopyId() {
-        return bookCopyId;
-    }
-
-    public Isbn getIsbn() {
-        return isbn;
-    }
-
-    public void setIsbn(Isbn isbn) {
-        this.isbn = isbn;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    private int loanCount;
 }
