@@ -1,7 +1,7 @@
 package me.deshark.lms.infrastructure.mybatis;
 
-import me.deshark.lms.domain.model.auth.vo.UserRoleType;
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
+import me.deshark.lms.infrastructure.enums.UserRoleType;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
