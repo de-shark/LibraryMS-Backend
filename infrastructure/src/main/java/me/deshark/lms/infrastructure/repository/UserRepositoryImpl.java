@@ -50,7 +50,7 @@ public class UserRepositoryImpl implements UserRepository {
         userRoleMapper.insert(userRoleDO);
         // 插入借阅者信息
         BorrowerInfoDO borrowerInfoDO = BorrowerInfoDO.builder()
-                .id(userDO.getUuid())
+                .userId(userDO.getUuid())
                 .maxBorrowLimit(5)
                 .currentLoans(0)
                 .build();

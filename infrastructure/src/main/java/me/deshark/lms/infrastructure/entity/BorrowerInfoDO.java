@@ -11,7 +11,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class BorrowerInfoDO {
-    private UUID id;
+    private UUID userId;
     private int maxBorrowLimit;
     private int currentLoans;
 }
