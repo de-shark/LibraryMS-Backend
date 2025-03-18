@@ -8,6 +8,7 @@ import me.deshark.lms.domain.service.auth.AuthService;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 import me.deshark.lms.domain.service.auth.TokenProvider;
 import me.deshark.lms.domain.service.borrow.BorrowService;
+import me.deshark.lms.domain.service.borrow.QueryBorrowService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -34,5 +35,12 @@ public class DomainConfig {
             PatronRepository patronRepository
     ) {
         return new BorrowService(borrowRepository, bookCopyRepository, patronRepository);
+    }
+
+    @Bean
+    public QueryBorrowService queryBorrowService(
+            BorrowRepository borrowRepository
+    ) {
+        return new QueryBorrowService(borrowRepository);
     }
 }
