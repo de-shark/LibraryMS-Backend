@@ -12,14 +12,13 @@ import java.util.UUID;
 @Mapper
 public interface BorrowerInfoMapper {
 
-    @Insert("INSERT INTO borrower_info (user_id, max_borrow_limit, current_loans, total_fines) " +
-            "VALUES (#{userId}, #{maxBorrowLimit}, #{currentLoans}, #{totalFines})")
+    @Insert("INSERT INTO borrower_info (user_id, max_borrow_limit, current_loans) " +
+            "VALUES (#{userId}, #{maxBorrowLimit}, #{currentLoans})")
     void insert(BorrowerInfoDO borrowerInfoDO);
 
     @Update("UPDATE borrower_info SET " +
             "max_borrow_limit = #{maxBorrowLimit}, " +
             "current_loans = #{currentLoans}, " +
-            "total_fines = #{totalFines} " +
             "WHERE user_id = #{userId}")
     void update(BorrowerInfoDO borrowerInfoDO);
 
@@ -34,9 +33,6 @@ public interface BorrowerInfoMapper {
 
     @Update("UPDATE borrower_info SET current_loans = current_loans + #{delta} WHERE user_id = #{userId}")
     void updateCurrentLoans(@Param("userId") UUID userId, @Param("delta") int delta);
-
-    @Update("UPDATE borrower_info SET total_fines = total_fines + #{amount} WHERE user_id = #{userId}")
-    void addFine(@Param("userId") UUID userId, @Param("amount") double amount);
 
     @Delete("DELETE FROM borrower_info WHERE user_id = #{userId}")
     void delete(@Param("userId") UUID userId);
