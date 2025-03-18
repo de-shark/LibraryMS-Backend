@@ -3,6 +3,7 @@ package me.deshark.lms.infrastructure.mapper;
 import me.deshark.lms.infrastructure.entity.LoanRecordDO;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
