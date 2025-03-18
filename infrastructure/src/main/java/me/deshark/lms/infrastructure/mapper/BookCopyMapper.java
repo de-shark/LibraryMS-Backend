@@ -19,8 +19,8 @@ public interface BookCopyMapper {
      * @param bookCopyDO 图书副本数据对象
      * @return 插入记录数
      */
-    @Insert("INSERT INTO book_copy(copy_id, isbn, status, location, acquisition_date, condition_rating, last_maintain) " +
-            "VALUES(#{copyId}, #{isbn}, #{status}::copy_status, #{location}, #{acquisitionDate}, #{conditionRating}, #{lastMaintain})")
+    @Insert("INSERT INTO book_copy(copy_id, isbn, location, status, loan_count, acquisition_date) " +
+            "VALUES(#{copyId}, #{isbn}, #{location}, #{status}, #{loanCount}, #{acquisitionDate})")
     int insert(BookCopyDO bookCopyDO);
 
     /**
@@ -28,14 +28,6 @@ public interface BookCopyMapper {
      * @param bookCopyDO 图书副本数据对象
      * @return 更新记录数
      */
-    @Update("UPDATE book_copy SET " +
-            "isbn = #{isbn}, " +
-            "status = #{status}::copy_status, " +
-            "location = #{location}, " +
-            "acquisition_date = #{acquisitionDate}, " +
-            "condition_rating = #{conditionRating}, " +
-            "last_maintain = #{lastMaintain} " +
-            "WHERE copy_id = #{copyId}")
     int update(BookCopyDO bookCopyDO);
 
     /**
@@ -68,6 +60,5 @@ public interface BookCopyMapper {
      * @param status 新状态
      * @return 更新记录数
      */
-    @Update("UPDATE book_copy SET status = #{status}::copy_status WHERE copy_id = #{copyId}")
     int updateStatus(@Param("copyId") UUID copyId, @Param("status") String status);
 }
