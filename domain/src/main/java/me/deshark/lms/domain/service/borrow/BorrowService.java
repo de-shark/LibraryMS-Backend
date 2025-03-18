@@ -42,7 +42,7 @@ public class BorrowService {
         BookCopy bookCopy = bookCopyRepository.findAvailableBookCopy(vaildIsbn);
 
         // 4. 创建借阅记录
-        BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getBookCopyId(), patron);
+        BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy.getCopyId(), patron);
 
         // 5. 保存借阅记录
         borrowRepository.save(borrowTransaction);

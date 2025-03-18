@@ -14,7 +14,7 @@ import java.util.UUID;
 @Data
 @Builder
 public class BookCopy {
-    private final UUID bookCopyId;
+    private final UUID copyId;
     private final Isbn isbn;
     private String status;
     private int loanCount;
