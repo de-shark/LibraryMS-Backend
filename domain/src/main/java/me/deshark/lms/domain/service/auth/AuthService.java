@@ -31,6 +31,8 @@ public class AuthService {
 
         // 2. 注册新用户
         AuthUser newUser = AuthUser.createUser(username, password, email, encryptor);
+        // 激活用户（没有邮箱验证前的替代方法）
+        newUser.activate();
         userRepository.save(newUser);
     }
 
