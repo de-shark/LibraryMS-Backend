@@ -52,7 +52,6 @@ CREATE TABLE borrower_info
     user_id          UUID PRIMARY KEY,
     max_borrow_limit INT            DEFAULT 5,
     current_loans    INT NOT NULL   DEFAULT 0,
-    total_fines      DECIMAL(10, 2) DEFAULT 0.00,
 
     CONSTRAINT fk_borrower_info_user
         FOREIGN KEY (user_id) REFERENCES users (uuid)
