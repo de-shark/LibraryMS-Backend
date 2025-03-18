@@ -17,7 +17,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BookCopyRepositoryImpl implements BookCopyRepository {
 
-    private final BookCopyMapper bookCatalogMapper;
+    private final BookCopyMapper bookCopyMapper;
 
     @Override
     public int countAvailableCopies(Isbn isbn) {
@@ -26,7 +26,9 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public BookCopy findAvailableBookCopy(Isbn isbn) {
-        return null;
+        return bookCopyMapper.findAvailableByIsbn(isbn.toString())
+                .flatMap(bookCopyMapper::toDomain)
+                .orElseThrow(() -> new IllegalStateException("找不到可用的书籍副本 ISBN: " + isbn));
     }
 
     @Override
