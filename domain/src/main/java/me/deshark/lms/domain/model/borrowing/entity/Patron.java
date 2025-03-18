@@ -14,13 +14,15 @@ import java.util.UUID;
 public class Patron {
     // 账号 id
     private final UUID id;
+    /**
+     * 账号借阅上限
+     */
+    private int maxBorrowLimit;
     // 目前已借阅数量
     private int currentBorrows;
-    
-    private static final int MAX_BORROWS = 5;
 
     public void canBorrow() {
-        if (currentBorrows >= MAX_BORROWS) {
+        if (currentBorrows >= maxBorrowLimit) {
             throw new IllegalArgumentException("Max borrows reached");
         }
     }
