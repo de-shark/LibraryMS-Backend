@@ -1,5 +1,8 @@
 package me.deshark.lms.infrastructure.mapper;
 
+import me.deshark.lms.domain.model.borrowing.vo.BookCopyStatus;
+import me.deshark.lms.domain.model.catalog.entity.BookCopy;
+import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
 import org.apache.ibatis.annotations.*;
 
@@ -28,6 +31,13 @@ public interface BookCopyMapper {
      * @param bookCopyDO 图书副本数据对象
      * @return 更新记录数
      */
+    @Update("UPDATE book_copy SET " +
+            "isbn = #{isbn}, " +
+            "location = #{location}, " +
+            "status = #{status}, " +
+            "loan_count = #{loanCount}, " +
+            "acquisition_date = #{acquisitionDate} " +
+            "WHERE copy_id = #{copyId}")
     int update(BookCopyDO bookCopyDO);
 
     /**
@@ -60,5 +70,15 @@ public interface BookCopyMapper {
      * @param status 新状态
      * @return 更新记录数
      */
+    @Update("UPDATE book_copy SET status = #{status} WHERE copy_id = #{copyId}")
     int updateStatus(@Param("copyId") UUID copyId, @Param("status") String status);
+
+    default Optional<BookCopy> toDomain(BookCopyDO bookCopyDO) {
+        return Optional.ofNullable(bookCopyDO).map(d -> BookCopy.builder()
+                .copyId(d.getCopyId())
+                .isbn(new Isbn(d.getIsbn()))
+                .status(d.getStatus().name())
+                .loanCount(d.getLoanCount())
+                .build());
+    }
 }
