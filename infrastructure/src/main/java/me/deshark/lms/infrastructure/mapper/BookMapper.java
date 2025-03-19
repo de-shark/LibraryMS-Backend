@@ -59,4 +59,6 @@ public interface BookMapper {
     @Select("SELECT COUNT(*) FROM book")
     long count();
 
+    @Select("SELECT isbn FROM book_inventory_view WHERE current_copy_count < #{minCopyCount}")
+    List<String> findBooksWithLowInventory(@Param("minCopyCount") int minCopyCount);
 }

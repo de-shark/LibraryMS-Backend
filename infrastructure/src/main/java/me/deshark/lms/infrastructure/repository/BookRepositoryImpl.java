@@ -92,4 +92,9 @@ public class BookRepositoryImpl implements BookRepository {
 
         return new Page<>(bookMetadatas, pageNumber, pageSize, total);
     }
+
+    @Override
+    public List<String> findBooksWithLowInventory(int minCopyCount) {
+        return bookMapper.findBooksWithLowInventory(minCopyCount);
+    }
 }
