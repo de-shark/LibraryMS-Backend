@@ -5,7 +5,7 @@ import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
 
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -18,9 +18,9 @@ public class BorrowTransaction {
     private final UUID transactionId;
     private final UUID bookCopyId;
     private final Patron patron;
-    private final LocalDate startDate;
-    private LocalDate dueDate;
-    private LocalDate endDate;
+    private final OffsetDateTime startDate;
+    private OffsetDateTime dueDate;
+    private OffsetDateTime endDate;
     private String status;
 
     // 构造方法（创建借阅记录）
@@ -28,20 +28,20 @@ public class BorrowTransaction {
         this.transactionId = GUID.v7();
         this.bookCopyId = bookCopyId;
         this.patron = patron;
-        this.startDate = LocalDate.now();
+        this.startDate = OffsetDateTime.now();
         initializeTransaction();
     }
 
     // 检查是否可以续借
     public boolean canRenew() {
-        return "BORROWED".equals(status) && LocalDate.now().isBefore(dueDate);
+        return "BORROWED".equals(status) && OffsetDateTime.now().isBefore(dueDate);
     }
 
     public void initializeTransaction() {
         this.dueDate = calculateDueDate(startDate);
         this.status = "BORROWED";
     }
-    private LocalDate calculateDueDate(LocalDate baseDate) {
+    private OffsetDateTime calculateDueDate(OffsetDateTime baseDate) {
         return baseDate.plusDays(14);
     }
     public void renew() {
@@ -53,6 +53,6 @@ public class BorrowTransaction {
 
     public void returnBook() {
         this.status = "RETURNED";
-        this.endDate = LocalDate.now();
+        this.endDate = OffsetDateTime.now();
     }
 }
