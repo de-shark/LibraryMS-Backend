@@ -7,6 +7,7 @@ import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -48,6 +49,11 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public void updateBookCopyStatus(BookCopy bookCopy) {
+
+    }
+
+    @Override
+    public void saveAllCopies(List<BookCopy> copies) {
 
     }
 }
