@@ -7,8 +7,10 @@ import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
+import me.deshark.lms.infrastructure.entity.BookInventoryViewDO;
 import me.deshark.lms.infrastructure.enums.CopyStatusType;
 import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
+import me.deshark.lms.infrastructure.mapper.BookInventoryMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -26,10 +28,12 @@ import java.util.stream.Collectors;
 public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     private final BookCopyMapper bookCopyMapper;
+    private final BookInventoryMapper bookInventoryMapper;
 
     @Override
     public int countAvailableCopies(Isbn isbn) {
-        return 0;
+        BookInventoryViewDO bookInventoryViewDO = bookInventoryMapper.findByIsbn(isbn.toString()).orElseThrow();
+        return bookInventoryViewDO.getAvailableCount();
     }
 
     @Override
