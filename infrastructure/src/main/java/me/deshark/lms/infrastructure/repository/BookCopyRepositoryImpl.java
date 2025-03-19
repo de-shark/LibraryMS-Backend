@@ -1,11 +1,13 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.domain.model.catalog.Book;
 import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
+import me.deshark.lms.infrastructure.enums.CopyStatusType;
 import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
 import org.springframework.stereotype.Repository;
 
@@ -69,7 +71,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
         return BookCopyDO.builder()
                 .copyId(bookCopy.getCopyId())
                 .isbn(bookCopy.getIsbn().toString())
-                .status(BookCopyStatus.valueOf(bookCopy.getStatus().name()))
+                .status(CopyStatusType.valueOf(bookCopy.getStatus().name()))
                 .loanCount(bookCopy.getLoanCount())
                 .build();
     }

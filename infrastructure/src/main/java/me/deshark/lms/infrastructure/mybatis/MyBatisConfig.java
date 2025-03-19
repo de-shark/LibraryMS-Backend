@@ -1,6 +1,7 @@
 package me.deshark.lms.infrastructure.mybatis;
 
 import me.deshark.lms.domain.model.auth.vo.UserStatus;
+import me.deshark.lms.infrastructure.enums.CopyStatusType;
 import me.deshark.lms.infrastructure.enums.UserRoleType;
 import org.mybatis.spring.boot.autoconfigure.ConfigurationCustomizer;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +22,7 @@ public class MyBatisConfig {
             // 注册通用枚举处理器
             configuration.getTypeHandlerRegistry().register(UserRoleType.class, GenericEnumTypeHandler.class);
             configuration.getTypeHandlerRegistry().register(UserStatus.class, GenericEnumTypeHandler.class);
+            configuration.getTypeHandlerRegistry().register(CopyStatusType.class, GenericEnumTypeHandler.class);
         };
     }
 }
