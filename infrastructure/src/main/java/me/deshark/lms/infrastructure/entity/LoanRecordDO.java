@@ -13,8 +13,8 @@ import java.util.UUID;
 @Data
 @Builder
 public class LoanRecordDO {
-    private UUID loanId;
-    private UUID bookCopyId;
+    private UUID recordId;
+    private UUID copyId;
     private UUID userId;
     private OffsetDateTime loanDate;
     private OffsetDateTime dueDate;

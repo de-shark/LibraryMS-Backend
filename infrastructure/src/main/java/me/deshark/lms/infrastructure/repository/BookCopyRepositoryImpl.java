@@ -62,7 +62,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public void updateBookCopyStatus(BookCopy bookCopy) {
-
+        bookCopyMapper.updateStatus(bookCopy.getCopyId(), CopyStatusType.valueOf(bookCopy.getStatus().name()));
     }
 
     @Override

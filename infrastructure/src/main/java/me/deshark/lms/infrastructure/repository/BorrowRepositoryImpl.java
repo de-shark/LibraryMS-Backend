@@ -42,8 +42,8 @@ public class BorrowRepositoryImpl implements BorrowRepository {
 
     private LoanRecordDO toDataObject(BorrowTransaction transaction) {
         return LoanRecordDO.builder()
-                .loanId(transaction.getTransactionId())
-                .bookCopyId(transaction.getBookCopyId())
+                .recordId(transaction.getTransactionId())
+                .copyId(transaction.getBookCopyId())
                 .userId(transaction.getPatron().getId())
                 .loanDate(transaction.getStartDate())
                 .dueDate(transaction.getDueDate())

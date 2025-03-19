@@ -4,6 +4,7 @@ import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
+import me.deshark.lms.infrastructure.enums.CopyStatusType;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -72,7 +73,7 @@ public interface BookCopyMapper {
      * @return 更新记录数
      */
     @Update("UPDATE book_copy SET status = #{status} WHERE copy_id = #{copyId}")
-    int updateStatus(@Param("copyId") UUID copyId, @Param("status") String status);
+    void updateStatus(@Param("copyId") UUID copyId, @Param("status") CopyStatusType status);
 
     default Optional<BookCopy> toDomain(BookCopyDO bookCopyDO) {
         return Optional.ofNullable(bookCopyDO).map(d -> BookCopy.builder()
