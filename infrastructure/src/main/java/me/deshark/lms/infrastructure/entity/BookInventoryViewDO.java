@@ -6,7 +6,7 @@ import lombok.Getter;
  * @author DE_SHARK
  */
 @Getter
-public class LowInventoryInfoDO {
+public class BookInventoryViewDO {
     private String isbn;
     private int currentCopyCount;
 }
