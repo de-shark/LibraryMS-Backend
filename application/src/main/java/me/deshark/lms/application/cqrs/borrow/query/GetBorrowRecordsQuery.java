@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
 
 /**
  * 获取借阅交易查询
@@ -16,9 +15,19 @@ import java.util.UUID;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetBorrowTransactionQuery {
+public class GetBorrowRecordsQuery {
     /**
-     * 借阅记录ID
+     * 读者用户名
      */
-    private UUID transactionId;
+    private String username;
+
+    /**
+     * 页面
+     */
+    private int page;
+
+    /**
+     * 页大小
+     */
+    private int size;
 }

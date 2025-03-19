@@ -3,6 +3,10 @@ package me.deshark.lms.interfaces.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.application.cqrs.borrow.command.*;
+import me.deshark.lms.application.cqrs.borrow.query.BorrowQueryHandler;
+import me.deshark.lms.application.cqrs.borrow.query.GetBorrowRecordsQuery;
+import me.deshark.lms.application.info.BorrowRecord;
+import me.deshark.lms.application.info.PageResult;
 import me.deshark.lms.interfaces.dto.BorrowRequest;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +31,7 @@ import java.util.UUID;
 public class BorrowController {
 
     private final BorrowCommandHandler borrowCommandHandlerImpl;
+    private final BorrowQueryHandler borrowQueryHandlerImpl;
 
     @PostMapping
     public ResponseEntity<ResultBody<Void>> borrowBook(
@@ -65,5 +70,26 @@ public class BorrowController {
         RenewCommand command = new RenewCommand(transactionId);
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.success("续借成功"));
+    }
+
+    /**
+     * 获取所有借阅记录
+     * @param page 页码，从1开始
+     * @param size 每页大小
+     * @return 分页的借阅记录
+     */
+    @GetMapping
+    public ResponseEntity<ResultBody<PageResult<BorrowRecord>>> getBorrowRecords(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        
+        // 从安全上下文中获取当前用户名
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        
+        GetBorrowRecordsQuery query = new GetBorrowRecordsQuery(username, page, size);
+        PageResult<BorrowRecord> result = borrowQueryHandlerImpl.handle(query);
+        
+        return ResponseEntity.ok(ResultBody.success(result, "查询成功"));
     }
 }
