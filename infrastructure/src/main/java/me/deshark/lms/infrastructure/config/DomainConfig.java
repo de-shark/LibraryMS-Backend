@@ -4,11 +4,13 @@ import me.deshark.lms.domain.repository.auth.UserRepository;
 import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 import me.deshark.lms.domain.repository.borrow.PatronRepository;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
+import me.deshark.lms.domain.repository.catalog.BookRepository;
 import me.deshark.lms.domain.service.auth.AuthService;
 import me.deshark.lms.domain.service.auth.PasswordEncryptor;
 import me.deshark.lms.domain.service.auth.TokenProvider;
 import me.deshark.lms.domain.service.borrow.BorrowService;
 import me.deshark.lms.domain.service.borrow.QueryBorrowService;
+import me.deshark.lms.domain.service.catalog.BookCopyService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -42,5 +44,13 @@ public class DomainConfig {
             BorrowRepository borrowRepository
     ) {
         return new QueryBorrowService(borrowRepository);
+    }
+
+    @Bean
+    public BookCopyService bookCopyService(
+            BookRepository bookRepository,
+            BookCopyRepository bookCopyRepository
+    ) {
+        return new BookCopyService(bookRepository, bookCopyRepository);
     }
 }
