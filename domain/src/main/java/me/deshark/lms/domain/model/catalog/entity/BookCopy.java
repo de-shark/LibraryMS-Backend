@@ -32,4 +32,8 @@ public class BookCopy {
                 .acquisitionDate(OffsetDateTime.now())
                 .build();
     }
+
+    public boolean isAvailable() {
+        return status == BookCopyStatus.AVAILABLE;
+    }
 }
