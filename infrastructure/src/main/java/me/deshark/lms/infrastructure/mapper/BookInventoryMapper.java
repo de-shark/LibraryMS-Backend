@@ -12,6 +12,6 @@ import java.util.Optional;
 @Mapper
 public interface BookInventoryMapper {
 
-    @Select("SELECT * FROM book_inventory_view WHERE current_copy_count < #{minCopyCount}")
+    @Select("SELECT * FROM book_inventory_view WHERE isbn = #{isbn}")
     Optional<BookInventoryViewDO> findByIsbn(String isbn);
 }

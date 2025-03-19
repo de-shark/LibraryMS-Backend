@@ -1,6 +1,7 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.common.exception.book.BookCatalogException;
 import me.deshark.lms.domain.model.catalog.Book;
 import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
@@ -32,7 +33,8 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public int countAvailableCopies(Isbn isbn) {
-        BookInventoryViewDO bookInventoryViewDO = bookInventoryMapper.findByIsbn(isbn.toString()).orElseThrow();
+        BookInventoryViewDO bookInventoryViewDO = bookInventoryMapper.findByIsbn(isbn.toString())
+                .orElseThrow(() -> new BookCatalogException("没有找到库存信息"));
         return bookInventoryViewDO.getAvailableCount();
     }
 
