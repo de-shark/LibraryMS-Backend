@@ -1,11 +1,14 @@
 package me.deshark.lms.domain.model.catalog.vo;
 
+import lombok.Getter;
+
 import java.util.Objects;
 
 /**
  * @author DE_SHARK
  * @date 2025/2/16 14:45
  */
+@Getter
 public class Isbn {
     private final String isbn;
     private final String formattedIsbn;
@@ -26,10 +29,6 @@ public class Isbn {
                 isbn.substring(4, 7) + "-" +
                 isbn.substring(7, 12) + "-" +
                 isbn.substring(12);
-    }
-
-    public String getFormattedIsbn() {
-        return formattedIsbn;
     }
 
     @Override
@@ -53,4 +52,5 @@ public class Isbn {
     public int hashCode() {
         return Objects.hash(isbn);
     }
+
 }
