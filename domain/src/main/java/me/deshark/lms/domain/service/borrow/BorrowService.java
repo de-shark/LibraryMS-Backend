@@ -3,6 +3,7 @@ package me.deshark.lms.domain.service.borrow;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.borrow.BorrowRepository;
@@ -48,7 +49,7 @@ public class BorrowService {
         borrowRepository.save(borrowTransaction);
 
         // 6. 更新图书副本状态
-        bookCopy.setStatus("BORROWED");
+        bookCopy.setStatus(BookCopyStatus.BORROWED);
         bookCopyRepository.updateBookCopyStatus(bookCopy);
 
         return borrowTransaction;
@@ -73,7 +74,7 @@ public class BorrowService {
         transaction.returnBook();
         // 2. 更新图书副本状态
         BookCopy bookCopy = bookCopyRepository.findBookCopy(transaction.getBookCopyId());
-        bookCopy.setStatus("ACTIVATE");
+        bookCopy.setStatus(BookCopyStatus.AVAILABLE);
 
         return transaction;
     }

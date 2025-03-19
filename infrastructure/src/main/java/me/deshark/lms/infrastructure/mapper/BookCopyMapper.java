@@ -1,6 +1,6 @@
 package me.deshark.lms.infrastructure.mapper;
 
-import me.deshark.lms.domain.model.borrowing.vo.BookCopyStatus;
+import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
@@ -77,7 +77,7 @@ public interface BookCopyMapper {
         return Optional.ofNullable(bookCopyDO).map(d -> BookCopy.builder()
                 .copyId(d.getCopyId())
                 .isbn(new Isbn(d.getIsbn()))
-                .status(d.getStatus().name())
+                .status(BookCopyStatus.valueOf(d.getStatus().name()))
                 .loanCount(d.getLoanCount())
                 .build());
     }
