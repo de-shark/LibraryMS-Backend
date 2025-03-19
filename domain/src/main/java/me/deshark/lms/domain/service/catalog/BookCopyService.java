@@ -1,6 +1,7 @@
 package me.deshark.lms.domain.service.catalog;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
 
@@ -32,7 +33,7 @@ public class BookCopyService {
      */
     public void generateDefaultCopiesForAllBooks() {
         // 获取需要处理的ISBN列表
-        List<String> lowInventoryIsbns = bookRepository.findBooksWithLowInventory(DEFAULT_COPY_COUNT);
+        List<LowInventoryInfo> lowInventoryIsbns = bookRepository.findBooksWithLowInventory(DEFAULT_COPY_COUNT);
 
     }
 }

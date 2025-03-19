@@ -2,6 +2,7 @@ package me.deshark.lms.domain.repository.catalog;
 
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
+import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
 import me.deshark.lms.domain.model.common.Page;
 
 import java.util.List;
@@ -26,5 +27,5 @@ public interface BookRepository {
      * @param minCopyCount 最小副本数要求
      * @return 库存不足的图书ISBN列表
      */
-    List<String> findBooksWithLowInventory(int minCopyCount);
+    List<LowInventoryInfo> findBooksWithLowInventory(int minCopyCount);
 }

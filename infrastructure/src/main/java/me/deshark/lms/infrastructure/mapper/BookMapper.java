@@ -4,6 +4,7 @@ import me.deshark.lms.infrastructure.entity.BookDO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 /**
@@ -59,6 +60,6 @@ public interface BookMapper {
     @Select("SELECT COUNT(*) FROM book")
     long count();
 
-    @Select("SELECT isbn FROM book_inventory_view WHERE current_copy_count < #{minCopyCount}")
-    List<String> findBooksWithLowInventory(@Param("minCopyCount") int minCopyCount);
+    @Select("SELECT isbn, current_copy_count FROM book_inventory_view WHERE current_copy_count < #{minCopyCount}")
+    List<Map<String, Integer>> findBooksWithLowInventory(@Param("minCopyCount") int minCopyCount);
 }
