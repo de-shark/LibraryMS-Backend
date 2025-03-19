@@ -1,13 +1,8 @@
 package me.deshark.lms.domain.service.catalog;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.catalog.entity.BookCopy;
-import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * 图书副本领域服务
@@ -35,18 +30,6 @@ public class BookCopyService {
      */
     public void generateDefaultCopiesForAllBooks() {
         // 获取所有需要补充副本的图书isbn
-        List<Isbn> booksNeedCopies = bookRepository.findAllIsbn()
-                .stream()
-                .filter(book -> book.getCopyCount() < DEFAULT_COPY_COUNT)
-                .collect(Collectors.toList());
 
-        // 为每本图书生成缺失的副本
-        booksNeedCopies.forEach(book -> {
-            int existingCopies = book.getCopyCount();
-            int copiesToAdd = DEFAULT_COPY_COUNT - existingCopies;
-            
-            List<BookCopy> newCopies = book.generateCopies(copiesToAdd);
-            bookCopyRepository.saveAll(newCopies);
-        });
     }
 }
