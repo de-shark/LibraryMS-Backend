@@ -6,6 +6,7 @@ import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -20,6 +21,7 @@ public class BookCopy {
     private final Isbn isbn;
     private BookCopyStatus status;
     private int loanCount;
+    private OffsetDateTime acquisitionDate;
 
     public static BookCopy copyOf(Isbn isbn) {
         return BookCopy.builder()
@@ -27,6 +29,7 @@ public class BookCopy {
                 .isbn(isbn)
                 .status(BookCopyStatus.AVAILABLE)
                 .loanCount(0)
+                .acquisitionDate(OffsetDateTime.now())
                 .build();
     }
 }
