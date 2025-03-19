@@ -6,6 +6,7 @@ import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
 import org.apache.ibatis.annotations.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -81,4 +82,18 @@ public interface BookCopyMapper {
                 .loanCount(d.getLoanCount())
                 .build());
     }
+
+    /**
+     * 批量插入图书副本
+     * @param bookCopies 图书副本数据对象列表
+     */
+    @Insert({
+            "<script>",
+            "INSERT INTO book_copy (copy_id, isbn, location, status, loan_count, acquisition_date) VALUES ",
+            "<foreach collection='list' item='item' separator=','>",
+            "(#{item.copyId}, #{item.isbn}, #{item.location}, #{item.status}, #{item.loanCount}, #{item.acquisitionDate})",
+            "</foreach>",
+            "</script>"
+    })
+    void insertAll(@Param("list") List<BookCopyDO> bookCopies);
 }

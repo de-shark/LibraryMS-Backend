@@ -2,7 +2,7 @@ package me.deshark.lms.infrastructure.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import me.deshark.lms.domain.model.borrowing.vo.BookCopyStatus;
+import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 
 import java.util.Date;
 import java.util.UUID;

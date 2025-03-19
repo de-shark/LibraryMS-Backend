@@ -1,14 +1,19 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
+import me.deshark.lms.infrastructure.entity.BookCopyDO;
 import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
 import org.springframework.stereotype.Repository;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author DE_SHARK
@@ -54,6 +59,18 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public void saveAllCopies(List<BookCopy> copies) {
+        List<BookCopyDO> bookCopyDOs = copies.stream()
+                .map(this::toDataObject)
+                .collect(Collectors.toList());
+        bookCopyMapper.insertAll(bookCopyDOs);
+    }
 
+    private BookCopyDO toDataObject(BookCopy bookCopy) {
+        return BookCopyDO.builder()
+                .copyId(bookCopy.getCopyId())
+                .isbn(bookCopy.getIsbn().toString())
+                .status(BookCopyStatus.valueOf(bookCopy.getStatus().name()))
+                .loanCount(bookCopy.getLoanCount())
+                .build();
     }
 }
