@@ -3,6 +3,7 @@ package me.deshark.lms.domain.repository.catalog;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -22,4 +23,6 @@ public interface BookCopyRepository {
     void deleteBookCopy(UUID bookCopyId);
 
     void updateBookCopyStatus(BookCopy bookCopy);
+
+    void saveAllCopies(List<BookCopy> copies);
 }

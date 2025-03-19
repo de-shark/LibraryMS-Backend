@@ -1,6 +1,7 @@
 package me.deshark.lms.domain.service.catalog;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.domain.model.catalog.Book;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
@@ -34,17 +35,18 @@ public class BookCopyService {
      * 3. 将新生成的副本持久化到数据库</p>
      */
     public void generateDefaultCopiesForAllBooks() {
-        // 获取所有副本数小于10的图书isbn
-        List<String> isbns = bookRepository.findBooksWithLowInventory(DEFAULT_COPY_COUNT);
+        List<Book> booksNeedCopy = bookRepository.findBooksWithLowInventory(DEFAULT_COPY_COUNT)
+                .stream()
+                .map(isbn -> {
+                    Book book = bookRepository.findByIsbn(new Isbn(isbn));
+                    book.checkCopyDemand(DEFAULT_COPY_COUNT); // 领域逻辑内聚到聚合根
+                    return book;
+                })
+                .toList();
 
-        // 为每本图书生成缺失的副本
-        isbns.forEach(isbn -> {
-            int existingCopies = bookCopyRepository.countAvailableCopies(new Isbn(isbn));
-            int copiesToAdd = DEFAULT_COPY_COUNT - existingCopies;
-
-            for (int i = 0; i < copiesToAdd; i++) {
-                bookCopyRepository.saveBookCopy(BookCopy.copyOf(new Isbn(isbn)));
-            }
+        booksNeedCopy.forEach(book -> {
+            List<BookCopy> newCopies = book.generateNewCopies();
+            bookCopyRepository.saveAllCopies(newCopies); // 批量保存
         });
 
     }
