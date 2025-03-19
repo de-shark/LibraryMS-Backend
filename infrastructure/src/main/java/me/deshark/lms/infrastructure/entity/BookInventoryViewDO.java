@@ -9,4 +9,5 @@ import lombok.Getter;
 public class BookInventoryViewDO {
     private String isbn;
     private int currentCopyCount;
+    private int availableCount;
 }
