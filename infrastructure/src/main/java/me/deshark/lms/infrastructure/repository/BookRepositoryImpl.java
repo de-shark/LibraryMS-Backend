@@ -8,6 +8,7 @@ import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
 import me.deshark.lms.domain.model.common.Page;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookDO;
+import me.deshark.lms.infrastructure.entity.LowInventoryInfoDO;
 import me.deshark.lms.infrastructure.mapper.BookMapper;
 import org.springframework.stereotype.Repository;
 
@@ -98,15 +99,12 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public List<LowInventoryInfo> findBooksWithLowInventory(int minCopyCount) {
-        List<Map<String, Integer>> lowInventoryInfoDO = bookMapper.findBooksWithLowInventory(minCopyCount);
+        List<LowInventoryInfoDO> lowInventoryInfoDOs = bookMapper.findBooksWithLowInventory(minCopyCount);
         List<LowInventoryInfo> result = new ArrayList<>();
 
-        for (Map<String, Integer> info : lowInventoryInfoDO) {
-            String isbnValue = info.get("isbn").toString();
-            int copyCount = info.get("current_copy_count");
-
-            Isbn isbn = new Isbn(isbnValue);
-            LowInventoryInfo lowInventoryInfo = new LowInventoryInfo(isbn, copyCount);
+        for (LowInventoryInfoDO info : lowInventoryInfoDOs) {
+            Isbn isbn = new Isbn(info.getIsbn());
+            LowInventoryInfo lowInventoryInfo = new LowInventoryInfo(isbn, info.getCurrentCopyCount());
             result.add(lowInventoryInfo);
         }
 
