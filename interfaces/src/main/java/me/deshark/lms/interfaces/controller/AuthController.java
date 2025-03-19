@@ -1,11 +1,5 @@
 package me.deshark.lms.interfaces.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.cqrs.auth.command.CreateUserCommand;
@@ -29,33 +23,11 @@ import java.time.Instant;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
-@Tag(name = "Authentication", description = "用户认证相关API")
 public class AuthController {
 
     private final AuthAppService authAppService;
     private final CreateUserCommandHandler createUserCommandHandler;
 
-    @Operation(summary = "用户注册", description = "注册新用户到系统")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "201",
-                    description = "注册成功",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(implementation = ResultBody.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "请求参数错误",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "用户名或邮箱已存在",
-                    content = @Content
-            )
-    })
     @PostMapping("/register")
     public ResponseEntity<ResultBody<Void>> register(@RequestBody RegisterRequest request) {
         CreateUserCommand command = new CreateUserCommand(
@@ -72,36 +44,6 @@ public class AuthController {
                         .build());
     }
 
-    @Operation(summary = "刷新访问令牌", description = "使用刷新令牌获取新的访问令牌")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "令牌刷新成功",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                    implementation = ResultBody.class,
-                                    example = """
-                                                {
-                                                    "data": {
-                                                        "accessToken": "eyJhbGciOiJIUzUxMiJ9..."
-                                                    }
-                                                }
-                                 """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "无效的刷新令牌",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "未授权访问",
-                    content = @Content
-            )
-    })
     @PostMapping("/refresh")
     public ResponseEntity<ResultBody<AuthToken>> refreshToken(
             @CookieValue(name = "refresh_token") String refreshToken,
@@ -112,38 +54,6 @@ public class AuthController {
         return ResponseEntity.ok().body(ResultBody.<AuthToken>builder().data(newTokens).build());
     }
 
-    @Operation(summary = "用户登录", description = "使用用户名和密码进行登录认证")
-    @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "登录成功",
-                    content = @Content(
-                            mediaType = "application/json",
-                            schema = @Schema(
-                                implementation = ResultBody.class,
-                                example = """
-                                            {
-                                                "message": "登录成功",
-                                                "data": {
-                                                    "accessToken": "eyJhbGciOiJIUzUxMiJ9..."
-                                                },
-                                                "timestamp": "2025-03-11T09:48:49.716Z"
-                                            }
-                                        """
-                            )
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "请求参数错误",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "用户名或密码错误",
-                    content = @Content
-            )
-    })
     @PostMapping("/login")
     public ResponseEntity<ResultBody<AuthToken>> login(
             @RequestBody LoginRequest request,
