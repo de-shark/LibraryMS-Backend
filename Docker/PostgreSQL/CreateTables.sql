@@ -98,6 +98,19 @@ COMMENT ON COLUMN book_copy.status IS '当前状态';
 COMMENT ON COLUMN book_copy.loan_count IS '借出次数';
 COMMENT ON COLUMN book_copy.acquisition_date IS '购入日期';
 
+-- 创建库存视图
+CREATE VIEW book_inventory_view AS
+SELECT
+    b.isbn,
+    COUNT(bc.copy_id) AS current_copy_count,
+    SUM(CASE WHEN bc.status = 'AVAILABLE' THEN 1 ELSE 0 END) AS available_count
+FROM
+    book b
+        LEFT JOIN
+    book_copy bc ON b.isbn = bc.isbn
+GROUP BY
+    b.isbn;
+
 
 -- 借阅记录表
 CREATE TYPE loan_status_type AS ENUM ('BORROWED', 'RETURNED', 'OVERDUE');
