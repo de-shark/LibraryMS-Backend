@@ -1,7 +1,7 @@
 package me.deshark.lms.infrastructure.mapper;
 
-import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
+import me.deshark.lms.domain.model.catalog.vo.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
 import me.deshark.lms.infrastructure.enums.CopyStatusType;

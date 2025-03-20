@@ -2,8 +2,6 @@ package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.common.exception.book.BookCatalogException;
-import me.deshark.lms.domain.model.catalog.Book;
-import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
@@ -14,9 +12,7 @@ import me.deshark.lms.infrastructure.mapper.BookCopyMapper;
 import me.deshark.lms.infrastructure.mapper.BookInventoryMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

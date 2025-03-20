@@ -3,7 +3,7 @@ package me.deshark.lms.domain.model.catalog.entity;
 import lombok.Builder;
 import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
-import me.deshark.lms.domain.model.catalog.BookCopyStatus;
+import me.deshark.lms.domain.model.catalog.vo.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
 import java.time.OffsetDateTime;

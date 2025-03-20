@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.model.catalog;
+package me.deshark.lms.domain.model.catalog.vo;
 
 /**
  * 图书副本状态枚举
