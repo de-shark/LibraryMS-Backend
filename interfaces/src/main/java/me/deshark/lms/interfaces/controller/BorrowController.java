@@ -83,8 +83,8 @@ public class BorrowController {
      */
     @GetMapping
     public ResponseEntity<ResultBody<Page<BorrowRecord>>> getBorrowRecords(
-            @RequestParam(defaultValue = "1") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size) {
         
         // 从安全上下文中获取当前用户名
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
