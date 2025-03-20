@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.repository.borrow;
 
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
+import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 
 import java.util.List;
 import java.util.UUID;
@@ -12,12 +12,12 @@ import java.util.UUID;
 public interface BorrowRepository {
     
     // 保存借阅记录
-    void save(BorrowTransaction transaction);
+    void save(LoanRecord transaction);
     
     // 根据ID查找借阅记录
-    BorrowTransaction findById(UUID transactionId);
+    LoanRecord findById(UUID transactionId);
 
-    List<BorrowTransaction> findHistoricalBorrowsByPatron(UUID patronId);
+    List<LoanRecord> findHistoricalBorrowsByPatron(UUID patronId);
 
-    List<BorrowTransaction> findCurrentBorrowsByPatron(UUID patronId);
+    List<LoanRecord> findCurrentBorrowsByPatron(UUID patronId);
 }

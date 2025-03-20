@@ -1,6 +1,6 @@
 package me.deshark.lms.infrastructure.mapper;
 
-import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.infrastructure.entity.BorrowerInfoDO;
 import org.apache.ibatis.annotations.*;
 

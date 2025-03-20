@@ -1,7 +1,7 @@
 package me.deshark.lms.domain.service.borrow;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
+import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 
@@ -27,7 +27,7 @@ public class QueryBorrowService {
      * @param patronId 借阅者ID
      * @return 借阅记录列表
      */
-    public List<BorrowTransaction> findCurrentBorrowsByPatron(UUID patronId) {
+    public List<LoanRecord> findCurrentBorrowsByPatron(UUID patronId) {
         return borrowRepository.findCurrentBorrowsByPatron(patronId);
     }
 
@@ -37,7 +37,7 @@ public class QueryBorrowService {
      * @param patronId 借阅者ID
      * @return 借阅记录列表
      */
-    public List<BorrowTransaction> findHistoricalBorrowsByPatron(UUID patronId) {
+    public List<LoanRecord> findHistoricalBorrowsByPatron(UUID patronId) {
         return borrowRepository.findHistoricalBorrowsByPatron(patronId);
     }
 
@@ -47,7 +47,7 @@ public class QueryBorrowService {
      * @param isbn 图书ISBN
      * @return 该ISBN下所有图书副本的借阅记录
      */
-    public List<BorrowTransaction> findCurrentBorrowsByIsbn(String isbn) {
+    public List<LoanRecord> findCurrentBorrowsByIsbn(String isbn) {
         Isbn validIsbn = new Isbn(isbn);
         return null;
     }
@@ -58,7 +58,7 @@ public class QueryBorrowService {
      * @param bookCopyId 图书副本ID
      * @return 借阅记录列表
      */
-    public List<BorrowTransaction> findBorrowHistoryByBookCopy(UUID bookCopyId) {
+    public List<LoanRecord> findBorrowHistoryByBookCopy(UUID bookCopyId) {
         return null;
     }
 
@@ -68,7 +68,7 @@ public class QueryBorrowService {
      * @param daysBeforeDue 到期前天数
      * @return 即将到期的借阅记录列表
      */
-    public List<BorrowTransaction> findBorrowsAboutToExpire(int daysBeforeDue) {
+    public List<LoanRecord> findBorrowsAboutToExpire(int daysBeforeDue) {
         LocalDate targetDate = LocalDate.now().plusDays(daysBeforeDue);
         return null;
     }
@@ -78,7 +78,7 @@ public class QueryBorrowService {
      *
      * @return 已逾期的借阅记录列表
      */
-    public List<BorrowTransaction> findOverdueBorrows() {
+    public List<LoanRecord> findOverdueBorrows() {
         LocalDate today = LocalDate.now();
         return null;
     }
@@ -90,8 +90,8 @@ public class QueryBorrowService {
      * @return 借阅记录详情
      * @throws IllegalArgumentException 当记录不存在时抛出
      */
-    public BorrowTransaction findBorrowTransactionById(UUID transactionId) {
-        BorrowTransaction transaction = borrowRepository.findById(transactionId);
+    public LoanRecord findBorrowTransactionById(UUID transactionId) {
+        LoanRecord transaction = borrowRepository.findById(transactionId);
         if (transaction == null) {
             throw new IllegalArgumentException("Borrow transaction not found with ID: " + transactionId);
         }

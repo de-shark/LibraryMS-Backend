@@ -1,6 +1,6 @@
-package me.deshark.lms.domain.model.borrowing.entity;
+package me.deshark.lms.domain.model.borrow.entity;
 
-import me.deshark.lms.domain.model.borrowing.vo.Money;
+import me.deshark.lms.domain.model.borrow.vo.Money;
 
 import java.math.BigDecimal;
 import java.util.UUID;

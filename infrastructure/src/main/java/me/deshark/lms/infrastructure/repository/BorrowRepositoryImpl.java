@@ -1,7 +1,7 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
+import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 import me.deshark.lms.infrastructure.entity.LoanRecordDO;
 import me.deshark.lms.infrastructure.enums.LoanStatusType;
@@ -21,26 +21,26 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     private final LoanRecordMapper loanRecordMapper;
 
     @Override
-    public void save(BorrowTransaction transaction) {
+    public void save(LoanRecord transaction) {
         loanRecordMapper.insert(toDataObject(transaction));
     }
 
     @Override
-    public BorrowTransaction findById(UUID transactionId) {
+    public LoanRecord findById(UUID transactionId) {
         return null;
     }
 
     @Override
-    public List<BorrowTransaction> findHistoricalBorrowsByPatron(UUID patronId) {
+    public List<LoanRecord> findHistoricalBorrowsByPatron(UUID patronId) {
         return List.of();
     }
 
     @Override
-    public List<BorrowTransaction> findCurrentBorrowsByPatron(UUID patronId) {
+    public List<LoanRecord> findCurrentBorrowsByPatron(UUID patronId) {
         return List.of();
     }
 
-    private LoanRecordDO toDataObject(BorrowTransaction transaction) {
+    private LoanRecordDO toDataObject(LoanRecord transaction) {
         return LoanRecordDO.builder()
                 .recordId(transaction.getTransactionId())
                 .copyId(transaction.getBookCopy().getCopyId())

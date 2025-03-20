@@ -3,7 +3,7 @@ package me.deshark.lms.application.cqrs.borrow.query;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.info.BorrowRecord;
 import me.deshark.lms.application.info.PageResult;
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
+import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.model.common.Page;
 import me.deshark.lms.domain.repository.auth.UserQueryRepository;
 import me.deshark.lms.domain.repository.borrow.BorrowQueryRepository;
@@ -27,7 +27,7 @@ public class BorrowQueryHandlerImpl implements BorrowQueryHandler {
 
         UUID userId = userQueryRepository.getUserIdByUsername(query.getUsername());
 
-        Page<BorrowTransaction> page = borrowQueryRepository.getPatronTransactions(
+        Page<LoanRecord> page = borrowQueryRepository.getPatronTransactions(
                 userId,
                 query.getPage() - 1,
                 query.getSize()

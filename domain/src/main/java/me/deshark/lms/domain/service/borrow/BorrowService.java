@@ -1,8 +1,8 @@
 package me.deshark.lms.domain.service.borrow;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
-import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
+import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.domain.model.catalog.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
@@ -27,7 +27,7 @@ public class BorrowService {
      * @param isbn 图书ISBN
      * @return 借阅记录
      */
-    public BorrowTransaction borrow(String patronName, String isbn) {
+    public LoanRecord borrow(String patronName, String isbn) {
 
         // 1. 检查用户是否可以借阅
         Patron patron = patronRepository.findByUsername(patronName);
@@ -43,23 +43,23 @@ public class BorrowService {
         BookCopy bookCopy = bookCopyRepository.findAvailableBookCopy(vaildIsbn);
 
         // 4. 创建借阅记录
-        BorrowTransaction borrowTransaction = new BorrowTransaction(bookCopy, patron);
+        LoanRecord loanRecord = new LoanRecord(bookCopy, patron);
 
         // 5. 保存借阅记录
-        borrowRepository.save(borrowTransaction);
+        borrowRepository.save(loanRecord);
 
         // 6. 更新图书副本状态
         bookCopy.setStatus(BookCopyStatus.BORROWED);
         bookCopyRepository.updateBookCopyStatus(bookCopy);
 
-        return borrowTransaction;
+        return loanRecord;
     }
 
     /**
      * 续借图书
      * @return 更新后的借阅记录
      */
-    public BorrowTransaction renew(BorrowTransaction transaction) {
+    public LoanRecord renew(LoanRecord transaction) {
         transaction.renew();
         borrowRepository.save(transaction);
         return transaction;
@@ -69,7 +69,7 @@ public class BorrowService {
      * 归还图书
      * @return 更新后的借阅记录
      */
-    public BorrowTransaction returnBook(BorrowTransaction transaction) {
+    public LoanRecord returnBook(LoanRecord transaction) {
         // 1. 更新借阅记录状态
         transaction.returnBook();
         // 2. 更新图书副本状态

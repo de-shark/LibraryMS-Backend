@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.model.borrowing.vo;
+package me.deshark.lms.domain.model.borrow.vo;
 
 import java.math.BigDecimal;
 import java.util.Currency;

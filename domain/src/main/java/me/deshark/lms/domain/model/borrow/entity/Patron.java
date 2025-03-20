@@ -1,4 +1,4 @@
-package me.deshark.lms.domain.model.borrowing.entity;
+package me.deshark.lms.domain.model.borrow.entity;
 
 import lombok.Builder;
 import lombok.Data;

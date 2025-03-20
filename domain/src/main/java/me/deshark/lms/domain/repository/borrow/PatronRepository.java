@@ -1,6 +1,6 @@
 package me.deshark.lms.domain.repository.borrow;
 
-import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.borrow.entity.Patron;
 
 import java.util.UUID;
 

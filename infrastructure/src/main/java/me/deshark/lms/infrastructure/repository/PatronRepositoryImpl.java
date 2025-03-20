@@ -1,16 +1,13 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.domain.repository.borrow.PatronRepository;
-import me.deshark.lms.infrastructure.entity.BorrowerInfoDO;
 import me.deshark.lms.infrastructure.entity.UserDO;
-import me.deshark.lms.infrastructure.entity.UserRoleDO;
 import me.deshark.lms.infrastructure.mapper.BorrowerInfoMapper;
 import me.deshark.lms.infrastructure.mapper.UserMapper;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**

@@ -1,9 +1,9 @@
-package me.deshark.lms.domain.model.borrowing.aggregate;
+package me.deshark.lms.domain.model.borrow.aggregate;
 
 
 import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
-import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 
 import java.time.OffsetDateTime;
@@ -15,7 +15,7 @@ import java.util.UUID;
  */
 // 借阅记录聚合根 (包含借阅记录和归还逻辑)
 @Data
-public class BorrowTransaction {
+public class LoanRecord {
     private final UUID transactionId;
     private final BookCopy bookCopy;
     private final Patron patron;
@@ -25,7 +25,7 @@ public class BorrowTransaction {
     private String status;
 
     // 构造方法（创建借阅记录）
-    public BorrowTransaction(BookCopy bookCopy, Patron patron) {
+    public LoanRecord(BookCopy bookCopy, Patron patron) {
         this.transactionId = GUID.v7();
         this.bookCopy = bookCopy;
         this.patron = patron;

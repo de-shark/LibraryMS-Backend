@@ -1,7 +1,7 @@
 package me.deshark.lms.application.cqrs.borrow.command;
 
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.domain.model.borrowing.aggregate.BorrowTransaction;
+import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.service.borrow.BorrowService;
 import me.deshark.lms.domain.service.borrow.QueryBorrowService;
 import org.springframework.stereotype.Service;
@@ -35,7 +35,7 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
         }
 
         // 2. 查找借阅记录
-        BorrowTransaction transaction = queryBorrowService.findBorrowTransactionById(command.getTransactionId());
+        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getTransactionId());
         if (transaction == null) {
             throw new IllegalArgumentException("借阅记录不存在");
         }
@@ -52,7 +52,7 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
         }
 
         // 2. 查找借阅记录
-        BorrowTransaction transaction = queryBorrowService.findBorrowTransactionById(command.getTransactionId());
+        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getTransactionId());
         if (transaction == null) {
             throw new IllegalArgumentException("借阅记录不存在");
         }
