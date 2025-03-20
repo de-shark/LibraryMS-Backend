@@ -1,4 +1,4 @@
-package me.deshark.lms.application.info;
+package me.deshark.lms.common.utils;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author DE_SHARK
  */
-public record PageResult<T>(
+public record PageData<T>(
         List<T> data,
         int currentPage,
         int totalPages,
@@ -27,7 +27,7 @@ public record PageResult<T>(
      * @param <T>         数据项类型
      * @return 分页结果
      */
-    public static <T> PageResult<T> of(List<T> data, int currentPage, int totalPages, long totalItems) {
-        return new PageResult<>(data, currentPage, totalPages, totalItems);
+    public static <T> PageData<T> of(List<T> data, int currentPage, int totalPages, long totalItems) {
+        return new PageData<>(data, currentPage, totalPages, totalItems);
     }
 }

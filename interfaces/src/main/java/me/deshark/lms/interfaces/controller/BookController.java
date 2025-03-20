@@ -10,7 +10,7 @@ import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQuery;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
-import me.deshark.lms.application.info.PageResult;
+import me.deshark.lms.common.utils.PageData;
 import me.deshark.lms.interfaces.dto.BookResponse;
 import me.deshark.lms.interfaces.dto.PageResponse;
 import me.deshark.lms.interfaces.dto.ResultBody;
@@ -65,12 +65,12 @@ public class BookController {
             @RequestParam(name = "size", defaultValue = "20") int size) {
         
         // 执行查询
-        PageResult<BookInfo> pageResult = searchBooksQueryHandler.handle(
+        PageData<BookInfo> pageData = searchBooksQueryHandler.handle(
             new SearchBooksQuery(keyword, page, size)
         );
 
         // 转换为响应DTO
-        List<BookResponse> books = pageResult.data().stream()
+        List<BookResponse> books = pageData.data().stream()
             .map(book -> BookResponse.builder()
                 .isbn(book.getIsbn())
                 .title(book.getTitle())
@@ -80,9 +80,9 @@ public class BookController {
 
         PageResponse<BookResponse> response = PageResponse.of(
             books,
-            pageResult.currentPage(),
-            pageResult.totalPages(),
-            pageResult.totalItems()
+                pageData.currentPage(),
+                pageData.totalPages(),
+                pageData.totalItems()
         );
 
         return ResponseEntity.ok(ResultBody.<PageResponse<BookResponse>>builder()
