@@ -1,5 +1,6 @@
 package me.deshark.lms.infrastructure.mapper;
 
+import me.deshark.lms.domain.model.borrow.query.BorrowRecordQuery;
 import me.deshark.lms.infrastructure.entity.LoanRecordDO;
 import org.apache.ibatis.annotations.*;
 
@@ -55,4 +56,8 @@ public interface LoanRecordMapper {
     @Update("UPDATE loan_record SET status = 'RETURNED', return_date = CURRENT_TIMESTAMP " +
             "WHERE record_id = #{recordId}")
     void markAsReturned(@Param("recordId") UUID recordId);
+
+    long selectCountByUserId(@Param("userId") UUID userId);
+
+    List<BorrowRecordQuery> findBorrowRecordsPageByUserId(@Param("userId") UUID userId, long offset, long limit);
 }
