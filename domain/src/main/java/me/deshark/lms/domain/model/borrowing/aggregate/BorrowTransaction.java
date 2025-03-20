@@ -4,6 +4,7 @@ package me.deshark.lms.domain.model.borrowing.aggregate;
 import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrowing.entity.Patron;
+import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Data
 public class BorrowTransaction {
     private final UUID transactionId;
-    private final UUID bookCopyId;
+    private final BookCopy bookCopy;
     private final Patron patron;
     private final OffsetDateTime startDate;
     private OffsetDateTime dueDate;
@@ -24,9 +25,9 @@ public class BorrowTransaction {
     private String status;
 
     // 构造方法（创建借阅记录）
-    public BorrowTransaction(UUID bookCopyId, Patron patron) {
+    public BorrowTransaction(BookCopy bookCopy, Patron patron) {
         this.transactionId = GUID.v7();
-        this.bookCopyId = bookCopyId;
+        this.bookCopy = bookCopy;
         this.patron = patron;
         this.startDate = OffsetDateTime.now();
         initializeTransaction();

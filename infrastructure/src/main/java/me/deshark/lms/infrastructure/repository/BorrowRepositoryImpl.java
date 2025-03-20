@@ -43,7 +43,7 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     private LoanRecordDO toDataObject(BorrowTransaction transaction) {
         return LoanRecordDO.builder()
                 .recordId(transaction.getTransactionId())
-                .copyId(transaction.getBookCopyId())
+                .copyId(transaction.getBookCopy().getCopyId())
                 .userId(transaction.getPatron().getId())
                 .loanDate(transaction.getStartDate())
                 .dueDate(transaction.getDueDate())
