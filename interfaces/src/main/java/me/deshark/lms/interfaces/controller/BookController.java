@@ -12,14 +12,11 @@ import me.deshark.lms.application.cqrs.book.query.SearchBooksQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.common.utils.Page;
 import me.deshark.lms.interfaces.dto.BookResponse;
-import me.deshark.lms.interfaces.dto.PageResponse;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * @author DE_SHARK
@@ -59,7 +56,7 @@ public class BookController {
     }
 
     @GetMapping
-    public ResponseEntity<ResultBody<PageResponse<BookResponse>>> listBooks(
+    public ResponseEntity<ResultBody<Page<BookInfo>>> listBooks(
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "20") int size) {
@@ -69,24 +66,8 @@ public class BookController {
             new SearchBooksQuery(keyword, page, size)
         );
 
-        // 转换为响应DTO
-        List<BookResponse> books = pageData.data().stream()
-            .map(book -> BookResponse.builder()
-                .isbn(book.getIsbn())
-                .title(book.getTitle())
-                .author(book.getAuthor())
-                .build())
-            .collect(Collectors.toList());
-
-        PageResponse<BookResponse> response = PageResponse.of(
-            books,
-                pageData.current(),
-                pageData.totalPages(),
-                pageData.totalItems()
-        );
-
-        return ResponseEntity.ok(ResultBody.<PageResponse<BookResponse>>builder()
-            .data(response)
+        return ResponseEntity.ok(ResultBody.<Page<BookInfo>>builder()
+                .data(pageData)
             .build());
     }
 

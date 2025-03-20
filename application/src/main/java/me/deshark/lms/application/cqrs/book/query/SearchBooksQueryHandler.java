@@ -36,11 +36,9 @@ public class SearchBooksQueryHandler {
                 .build())
             .collect(Collectors.toList());
 
-        return Page.of(
-                bookInfos,
-                query.page(),
-                page.getTotalPages(),
-                page.getTotalElements()
-        );
+        Page<BookInfo> result = new Page<>(query.page(), query.size());
+        result.setRecords(bookInfos);
+        result.setTotal(page.getTotalElements());
+        return result;
     }
 }
