@@ -1,7 +1,7 @@
 package me.deshark.lms.domain.repository.borrow;
 
-import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
-import me.deshark.lms.domain.model.common.Page;
+import me.deshark.lms.common.utils.Page;
+import me.deshark.lms.domain.model.borrow.query.BorrowRecordQuery;
 
 import java.util.UUID;
 
@@ -10,5 +10,5 @@ import java.util.UUID;
  */
 public interface BorrowQueryRepository {
 
-    Page<LoanRecord> getPatronTransactions(UUID userId, int pageNumber, int pageSize);
+    Page<BorrowRecordQuery> getPatronTransactions(UUID userId, int pageNumber, int pageSize);
 }
