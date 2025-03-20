@@ -62,6 +62,11 @@ public class Page<T> implements Serializable {
         return (this.current - 1) * this.size;
     }
 
+    public void setTotal(long total) {
+        this.total = total;
+        calculatePages();
+    }
+
     @Override
     public String toString() {
         return "Page{" +
