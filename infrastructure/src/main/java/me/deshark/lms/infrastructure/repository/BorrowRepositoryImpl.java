@@ -45,10 +45,10 @@ public class BorrowRepositoryImpl implements BorrowRepository {
                 .recordId(transaction.getTransactionId())
                 .copyId(transaction.getBookCopy().getCopyId())
                 .userId(transaction.getPatron().getId())
-                .loanDate(transaction.getStartDate())
-                .dueDate(transaction.getDueDate())
-                .returnDate(transaction.getEndDate())
-                .status(LoanStatusType.valueOf(transaction.getStatus()))
+                .loanDate(transaction.getLoanPeriod().getLoanDate())
+                .dueDate(transaction.getLoanPeriod().getDueDate())
+                .returnDate(transaction.getLoanPeriod().getReturnDate())
+                .status(LoanStatusType.valueOf(transaction.getStatus().name()))
                 .build();
     }
 }

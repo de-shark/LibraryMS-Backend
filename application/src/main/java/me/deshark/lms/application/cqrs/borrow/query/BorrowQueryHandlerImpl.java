@@ -38,10 +38,10 @@ public class BorrowQueryHandlerImpl implements BorrowQueryHandler {
 //                        .isbn()
 //                        .title()
 //                        .author()
-                        .borrowDate(transaction.getStartDate())
-                        .dueDate(transaction.getDueDate())
-                        .returnDate(transaction.getEndDate())
-                        .status(transaction.getStatus())
+                        .borrowDate(transaction.getLoanPeriod().getLoanDate())
+                        .dueDate(transaction.getLoanPeriod().getDueDate())
+                        .returnDate(transaction.getLoanPeriod().getReturnDate())
+                        .status(transaction.getStatus().name())
                         .build())
                 .toList();
 

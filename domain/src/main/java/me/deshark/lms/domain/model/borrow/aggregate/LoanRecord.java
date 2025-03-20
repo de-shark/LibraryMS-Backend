@@ -4,6 +4,8 @@ package me.deshark.lms.domain.model.borrow.aggregate;
 import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrow.entity.Patron;
+import me.deshark.lms.domain.model.borrow.vo.LoanPeriod;
+import me.deshark.lms.domain.model.borrow.vo.LoanStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 
 import java.time.OffsetDateTime;
@@ -19,41 +21,32 @@ public class LoanRecord {
     private final UUID transactionId;
     private final BookCopy bookCopy;
     private final Patron patron;
-    private final OffsetDateTime startDate;
-    private OffsetDateTime dueDate;
-    private OffsetDateTime endDate;
-    private String status;
+    private LoanPeriod loanPeriod;
+    private LoanStatus status;
 
     // 构造方法（创建借阅记录）
     public LoanRecord(BookCopy bookCopy, Patron patron) {
         this.transactionId = GUID.v7();
         this.bookCopy = bookCopy;
         this.patron = patron;
-        this.startDate = OffsetDateTime.now();
-        initializeTransaction();
+        this.loanPeriod = new LoanPeriod(OffsetDateTime.now());
+        this.status = LoanStatus.BORROWED;
     }
 
     // 检查是否可以续借
     public boolean canRenew() {
-        return "BORROWED".equals(status) && OffsetDateTime.now().isBefore(dueDate);
+        return true;
     }
 
-    public void initializeTransaction() {
-        this.dueDate = calculateDueDate(startDate);
-        this.status = "BORROWED";
-    }
-    private OffsetDateTime calculateDueDate(OffsetDateTime baseDate) {
-        return baseDate.plusDays(14);
-    }
     public void renew() {
         if (!canRenew()) {
             throw new IllegalStateException("Cannot renew this transaction");
         }
-        this.dueDate = calculateDueDate(dueDate);
+        loanPeriod.renew();
     }
 
     public void returnBook() {
-        this.status = "RETURNED";
-        this.endDate = OffsetDateTime.now();
+        this.status = LoanStatus.RETURNED;
+        loanPeriod.returnBook();
     }
 }
