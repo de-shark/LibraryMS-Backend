@@ -10,7 +10,7 @@ import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQuery;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
-import me.deshark.lms.common.utils.PageData;
+import me.deshark.lms.common.utils.Page;
 import me.deshark.lms.interfaces.dto.BookResponse;
 import me.deshark.lms.interfaces.dto.PageResponse;
 import me.deshark.lms.interfaces.dto.ResultBody;
@@ -65,7 +65,7 @@ public class BookController {
             @RequestParam(name = "size", defaultValue = "20") int size) {
         
         // 执行查询
-        PageData<BookInfo> pageData = searchBooksQueryHandler.handle(
+        Page<BookInfo> pageData = searchBooksQueryHandler.handle(
             new SearchBooksQuery(keyword, page, size)
         );
 
@@ -80,7 +80,7 @@ public class BookController {
 
         PageResponse<BookResponse> response = PageResponse.of(
             books,
-                pageData.currentPage(),
+                pageData.current(),
                 pageData.totalPages(),
                 pageData.totalItems()
         );

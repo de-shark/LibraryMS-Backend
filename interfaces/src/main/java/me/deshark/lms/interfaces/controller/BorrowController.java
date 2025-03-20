@@ -9,7 +9,7 @@ import me.deshark.lms.application.cqrs.borrow.command.ReturnCommand;
 import me.deshark.lms.application.cqrs.borrow.query.BorrowQueryHandler;
 import me.deshark.lms.application.cqrs.borrow.query.GetBorrowRecordsQuery;
 import me.deshark.lms.application.info.BorrowRecord;
-import me.deshark.lms.common.utils.PageData;
+import me.deshark.lms.common.utils.Page;
 import me.deshark.lms.interfaces.dto.BorrowRequest;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
@@ -82,7 +82,7 @@ public class BorrowController {
      * @return 分页的借阅记录
      */
     @GetMapping
-    public ResponseEntity<ResultBody<PageData<BorrowRecord>>> getBorrowRecords(
+    public ResponseEntity<ResultBody<Page<BorrowRecord>>> getBorrowRecords(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size) {
         
@@ -91,7 +91,7 @@ public class BorrowController {
         String username = authentication.getName();
         
         GetBorrowRecordsQuery query = new GetBorrowRecordsQuery(username, page, size);
-        PageData<BorrowRecord> result = borrowQueryHandlerImpl.handle(query);
+        Page<BorrowRecord> result = borrowQueryHandlerImpl.handle(query);
         
         return ResponseEntity.ok(ResultBody.success(result, "查询成功"));
     }
