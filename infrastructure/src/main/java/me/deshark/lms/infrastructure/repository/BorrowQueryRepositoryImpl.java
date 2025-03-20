@@ -30,6 +30,7 @@ public class BorrowQueryRepositoryImpl implements BorrowQueryRepository {
         Page<BorrowRecordQuery> result = new Page<>(pageNumber, pageSize);
         result.setRecords(list);
         result.setTotal(total);
+
         return result;
     }
 }

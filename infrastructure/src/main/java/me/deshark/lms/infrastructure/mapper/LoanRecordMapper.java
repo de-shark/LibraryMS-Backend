@@ -59,5 +59,5 @@ public interface LoanRecordMapper {
 
     long selectCountByUserId(@Param("userId") UUID userId);
 
-    List<BorrowRecordQuery> findBorrowRecordsPageByUserId(@Param("userId") UUID userId, long offset, long limit);
+    List<BorrowRecordQuery> findBorrowRecordsPageByUserId(@Param("userId") UUID userId, @Param("offset") long offset, @Param("limit") long limit);
 }
