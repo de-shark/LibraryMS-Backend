@@ -59,18 +59,18 @@ public class BorrowController {
                 .body(ResultBody.success("借阅成功"));
     }
 
-    @PostMapping("/{transactionId}/return")
+    @PostMapping("/return")
     public ResponseEntity<ResultBody<Void>> returnBook(
-            @PathVariable("transactionId") UUID transactionId) {
-        ReturnCommand command = new ReturnCommand(transactionId);
+            @RequestBody UUID recordId) {
+        ReturnCommand command = new ReturnCommand(recordId);
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.success("归还成功"));
     }
 
-    @PostMapping("/{transactionId}/renew")
+    @PostMapping("/renew")
     public ResponseEntity<ResultBody<Void>> renewBook(
-            @PathVariable("transactionId") UUID transactionId) {
-        RenewCommand command = new RenewCommand(transactionId);
+            @RequestBody UUID recordId) {
+        RenewCommand command = new RenewCommand(recordId);
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.success("续借成功"));
     }

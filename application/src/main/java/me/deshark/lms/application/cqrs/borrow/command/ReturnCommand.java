@@ -20,5 +20,5 @@ public class ReturnCommand {
     /**
      * 借阅记录ID
      */
-    private UUID transactionId;
+    private UUID recordId;
 }
