@@ -59,23 +59,23 @@ public class BorrowService {
      * 续借图书
      * @return 更新后的借阅记录
      */
-    public LoanRecord renew(LoanRecord transaction) {
-        transaction.renew();
-        borrowRepository.save(transaction);
-        return transaction;
+    public LoanRecord renew(LoanRecord loanRecord) {
+        loanRecord.renew();
+        borrowRepository.save(loanRecord);
+        return loanRecord;
     }
 
     /**
      * 归还图书
      * @return 更新后的借阅记录
      */
-    public LoanRecord returnBook(LoanRecord transaction) {
+    public LoanRecord returnBook(LoanRecord loanRecord) {
         // 1. 更新借阅记录状态
-        transaction.returnBook();
+        loanRecord.returnBook();
         // 2. 更新图书副本状态
-        BookCopy bookCopy = transaction.getBookCopy();
+        BookCopy bookCopy = loanRecord.getBookCopy();
         bookCopy.setStatus(BookCopyStatus.AVAILABLE);
 
-        return transaction;
+        return loanRecord;
     }
 }
