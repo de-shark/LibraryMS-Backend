@@ -21,6 +21,8 @@ jwt:
   secret: EKLUF4cU6FuytxSFpddH86/+YptlWf9vHBuWcg==MsPJfkUBpd25DCKvmCusPLAl
 
 logging:
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %magenta([%X{traceId}]) %green(%-5level) %cyan(%logger{36}) : %msg%n"
   level:
     org:
       springframework: debug
