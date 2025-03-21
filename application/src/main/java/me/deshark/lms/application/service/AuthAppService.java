@@ -17,6 +17,14 @@ public class AuthAppService {
         this.authService = authService;
     }
 
+    public void register(String username, String email, String rawPassword) {
+        authService.registerUser(
+                username,
+                email,
+                rawPassword
+        );
+    }
+
     public AuthToken login(String username, String password) {
         AuthTokenPair authTokenPair = authService.authenticate(username, password);
         return AuthToken.builder()

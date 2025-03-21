@@ -2,8 +2,6 @@ package me.deshark.lms.interfaces.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import me.deshark.lms.application.cqrs.auth.command.CreateUserCommand;
-import me.deshark.lms.application.cqrs.auth.command.CreateUserCommandHandler;
 import me.deshark.lms.application.info.AuthToken;
 import me.deshark.lms.application.service.AuthAppService;
 import me.deshark.lms.interfaces.dto.LoginRequest;
@@ -26,16 +24,15 @@ import java.time.Instant;
 public class AuthController {
 
     private final AuthAppService authAppService;
-    private final CreateUserCommandHandler createUserCommandHandler;
 
     @PostMapping("/register")
     public ResponseEntity<ResultBody<Void>> register(@RequestBody RegisterRequest request) {
-        CreateUserCommand command = new CreateUserCommand(
+
+        authAppService.register(
                 request.username(),
-                request.password(),
-                request.email()
+                request.email(),
+                request.password()
         );
-        createUserCommandHandler.handle(command);
 
         URI location = URI.create("/api/user");
         return ResponseEntity.created(location)
