@@ -9,6 +9,7 @@ import me.deshark.lms.infrastructure.mapper.LoanRecordMapper;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -26,8 +27,8 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     }
 
     @Override
-    public LoanRecord findById(UUID transactionId) {
-        return null;
+    public Optional<LoanRecord> findById(UUID transactionId) {
+        return Optional.empty();
     }
 
     @Override

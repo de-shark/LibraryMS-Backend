@@ -91,11 +91,9 @@ public class QueryBorrowService {
      * @throws IllegalArgumentException 当记录不存在时抛出
      */
     public LoanRecord findBorrowTransactionById(UUID transactionId) {
-        LoanRecord transaction = borrowRepository.findById(transactionId);
-        if (transaction == null) {
-            throw new IllegalArgumentException("Borrow transaction not found with ID: " + transactionId);
-        }
-        return transaction;
+
+        return borrowRepository.findById(transactionId)
+                .orElseThrow(() -> new IllegalArgumentException("该借阅记录不存在 ID: " + transactionId));
     }
 
     /**
