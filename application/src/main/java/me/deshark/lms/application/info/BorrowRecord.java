@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * @author DE_SHARK
@@ -11,6 +12,7 @@ import java.time.OffsetDateTime;
 @Data
 @Builder
 public class BorrowRecord {
+    private UUID recordId;
     private String isbn;
     private String title;
     private String author;

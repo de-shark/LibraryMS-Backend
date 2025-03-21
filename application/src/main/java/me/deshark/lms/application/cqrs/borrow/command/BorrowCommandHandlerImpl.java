@@ -30,12 +30,12 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     @Override
     public void handle(RenewCommand command) {
         // 1. 参数校验
-        if (command == null || command.getTransactionId() == null) {
+        if (command == null || command.getRecordId() == null) {
             throw new IllegalArgumentException("续借命令参数不完整");
         }
 
         // 2. 查找借阅记录
-        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getTransactionId());
+        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getRecordId());
         if (transaction == null) {
             throw new IllegalArgumentException("借阅记录不存在");
         }
@@ -47,12 +47,12 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     @Override
     public void handle(ReturnCommand command) {
         // 1. 参数校验
-        if (command == null || command.getTransactionId() == null) {
+        if (command == null || command.getRecordId() == null) {
             throw new IllegalArgumentException("归还命令参数不完整");
         }
 
         // 2. 查找借阅记录
-        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getTransactionId());
+        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getRecordId());
         if (transaction == null) {
             throw new IllegalArgumentException("借阅记录不存在");
         }

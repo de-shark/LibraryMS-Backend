@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 /**
  * @author DE_SHARK
@@ -11,6 +12,7 @@ import java.time.OffsetDateTime;
 @Getter
 @RequiredArgsConstructor
 public class BorrowRecordQuery {
+    private final UUID recordId;
     private final String isbn;
     private final String title;
     private final String author;

@@ -46,6 +46,7 @@ public class BorrowQueryHandlerImpl implements BorrowQueryHandler {
     // 转换方法：BorrowRecordQuery -> BorrowRecord
     private BorrowRecord convertToBorrowRecord(BorrowRecordQuery query) {
         return BorrowRecord.builder()
+                .recordId(query.getRecordId())
                 .isbn(query.getIsbn())
                 .title(query.getTitle())
                 .author(query.getAuthor())
