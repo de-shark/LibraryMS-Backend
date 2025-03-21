@@ -12,13 +12,14 @@ import me.deshark.lms.application.info.BorrowRecord;
 import me.deshark.lms.common.utils.Page;
 import me.deshark.lms.interfaces.dto.BorrowRequest;
 import me.deshark.lms.interfaces.dto.ResultBody;
+import me.deshark.lms.interfaces.dto.borrow.RenewRequest;
+import me.deshark.lms.interfaces.dto.borrow.ReturnRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.util.UUID;
 
 /**
  * 图书借阅控制器
@@ -61,16 +62,16 @@ public class BorrowController {
 
     @PostMapping("/return")
     public ResponseEntity<ResultBody<Void>> returnBook(
-            @RequestBody UUID recordId) {
-        ReturnCommand command = new ReturnCommand(recordId);
+            @RequestBody ReturnRequest request) {
+        ReturnCommand command = new ReturnCommand(request.getRecordId());
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.success("归还成功"));
     }
 
     @PostMapping("/renew")
     public ResponseEntity<ResultBody<Void>> renewBook(
-            @RequestBody UUID recordId) {
-        RenewCommand command = new RenewCommand(recordId);
+            @RequestBody RenewRequest request) {
+        RenewCommand command = new RenewCommand(request.getRecordId());
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.success("续借成功"));
     }
