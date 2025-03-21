@@ -1,5 +1,7 @@
 package me.deshark.lms.domain.model.borrow.vo;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.OffsetDateTime;
@@ -8,6 +10,8 @@ import java.time.OffsetDateTime;
  * @author DE_SHARK
  */
 @Getter
+@AllArgsConstructor
+@Builder
 public class LoanPeriod {
     private final OffsetDateTime loanDate;
     private OffsetDateTime dueDate;
