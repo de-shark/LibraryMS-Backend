@@ -14,7 +14,6 @@ import me.deshark.lms.infrastructure.mapper.UserMapper;
 import me.deshark.lms.infrastructure.mapper.UserPersistenceMapper;
 import me.deshark.lms.infrastructure.mapper.UserRoleMapper;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,7 +22,6 @@ import java.util.Optional;
  */
 @Repository
 @RequiredArgsConstructor
-@Transactional
 public class UserRepositoryImpl implements UserRepository {
 
     private final UserMapper userMapper;
@@ -37,7 +35,6 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public void save(AuthUser authUser) {
         UserDO userDO = persistenceMapper.toDataObject(authUser);
         if (userMapper.insert(userDO) != 1) {

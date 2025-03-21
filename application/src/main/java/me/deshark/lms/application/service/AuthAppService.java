@@ -5,6 +5,8 @@ import me.deshark.lms.application.info.AuthToken;
 import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
 import me.deshark.lms.domain.service.auth.AuthService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
@@ -28,14 +30,14 @@ public class AuthAppService {
                 .build();
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
     public void register(String username, String email, String rawPassword) {
         logger.info("新用户注册: {}, {}", username, email);
         authService.registerUser(username, email, rawPassword);
         logger.info("用户注册成功: {}", username);
     }
 
-    @Transactional
+    @Transactional(readOnly = true, propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public AuthToken login(String username, String password) {
         logger.info("用户登录尝试: {}", username);
         AuthTokenPair authTokenPair = authService.authenticate(username, password);
@@ -43,7 +45,7 @@ public class AuthAppService {
         return convertToAuthToken(authTokenPair);
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.READ_COMMITTED, rollbackFor = Exception.class)
     public AuthToken refresh(String refreshToken) {
         logger.debug("尝试刷新令牌");
         AuthTokenPair authTokenPair = authService.refreshToken(refreshToken);
