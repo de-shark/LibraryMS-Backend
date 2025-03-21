@@ -1,4 +1,4 @@
-package me.deshark.lms.common.exception;
+package me.deshark.lms.common.exception.auth;
 
 /**
  * @author DE_SHARK

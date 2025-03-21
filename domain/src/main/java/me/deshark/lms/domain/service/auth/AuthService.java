@@ -1,7 +1,7 @@
 package me.deshark.lms.domain.service.auth;
 
-import me.deshark.lms.common.exception.AuthenticationException;
-import me.deshark.lms.common.exception.UsernameAlreadyExistedException;
+import me.deshark.lms.common.exception.auth.AuthenticationException;
+import me.deshark.lms.common.exception.auth.UsernameAlreadyExistedException;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
 import me.deshark.lms.domain.model.auth.vo.TokenRequest;

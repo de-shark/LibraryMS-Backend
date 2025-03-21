@@ -2,7 +2,7 @@ package me.deshark.lms.domain.model.auth.entity;
 
 import lombok.Builder;
 import lombok.Data;
-import me.deshark.lms.common.exception.AuthenticationException;
+import me.deshark.lms.common.exception.auth.AuthenticationException;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.auth.vo.Password;
 import me.deshark.lms.domain.model.auth.vo.UserRole;
