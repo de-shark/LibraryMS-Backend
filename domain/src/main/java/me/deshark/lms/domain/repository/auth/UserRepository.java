@@ -2,6 +2,8 @@ package me.deshark.lms.domain.repository.auth;
 
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 
+import java.util.Optional;
+
 
 /**
  * @author DE_SHARK
@@ -15,7 +17,7 @@ public interface UserRepository {
     void save(AuthUser authUser);
 
     // 根据用户名查找用户（用于登录验证）
-    AuthUser findByUsername(String username);
+    Optional<AuthUser> findByUsername(String username);
 
     // 可选：根据邮箱查找用户（用于扩展邮箱登录）
 

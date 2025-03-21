@@ -16,6 +16,8 @@ import me.deshark.lms.infrastructure.mapper.UserRoleMapper;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 /**
  * @author DE_SHARK
  */
@@ -58,7 +60,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public AuthUser findByUsername(String username) {
+    public Optional<AuthUser> findByUsername(String username) {
         UserDO userDO = userMapper.findByUsername(username)
                 .orElseThrow(() -> new IllegalArgumentException("Username not found"));
 
@@ -68,6 +70,6 @@ public class UserRepositoryImpl implements UserRepository {
         UserRole userRole = UserRole.valueOf(userRoleDO.getRole().toString());
         AuthUser authUser = persistenceMapper.toDomainEntity(userDO);
         authUser.setUserRole(userRole);
-        return authUser;
+        return Optional.of(authUser);
     }
 }

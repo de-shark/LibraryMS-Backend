@@ -37,7 +37,8 @@ public class AuthService {
     }
 
     public AuthTokenPair authenticate(String username, String rawPassword) {
-        AuthUser user = userRepository.findByUsername(username);
+        AuthUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AuthenticationException("用户不存在"));
         user.authenticate(rawPassword, encryptor);
         return generateToken(new TokenRequest(username, user.getUserRole().name()));
     }
@@ -54,9 +55,14 @@ public class AuthService {
         
         // 2. 从refresh token中解析用户名和角色
         String username = tokenProvider.getUsernameFromToken(refreshToken);
-        String role = tokenProvider.getRoleFromToken(refreshToken);
-        
+        AuthUser user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new AuthenticationException("用户不存在"));
+
+        if (!user.isActive()) {
+            throw new AuthenticationException("用户已被禁用");
+        }
+
         // 3. 生成新的token pair
-        return tokenProvider.generateToken(username, role);
+        return tokenProvider.generateToken(username, user.getUserRole().name());
     }
 }
