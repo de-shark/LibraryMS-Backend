@@ -49,4 +49,8 @@ public class AuthUser {
     public void activate() {
         this.status = UserStatus.ACTIVE;
     }
+
+    public boolean isActive() {
+        return status == UserStatus.ACTIVE;
+    }
 }
