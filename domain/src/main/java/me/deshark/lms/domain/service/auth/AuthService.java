@@ -12,6 +12,10 @@ import me.deshark.lms.domain.repository.auth.UserRepository;
  */
 public class AuthService {
 
+    private static final String ERROR_USER_NOT_EXIST = "用户不存在";
+    private static final String ERROR_INVALID_REFRESH_TOKEN = "无效的刷新令牌";
+    private static final String ERROR_USER_DISABLED = "用户已被禁用";
+
     private final UserRepository userRepository;
     private final PasswordEncryptor encryptor;
     private final TokenProvider tokenProvider;
@@ -38,7 +42,7 @@ public class AuthService {
 
     public AuthTokenPair authenticate(String username, String rawPassword) {
         AuthUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AuthenticationException("用户不存在"));
+                .orElseThrow(() -> new AuthenticationException(ERROR_USER_NOT_EXIST));
         user.authenticate(rawPassword, encryptor);
         return generateToken(new TokenRequest(username, user.getUserRole().name()));
     }
@@ -50,19 +54,22 @@ public class AuthService {
     public AuthTokenPair refreshToken(String refreshToken) {
         // 1. 验证refresh token有效性
         if (!tokenProvider.validateToken(refreshToken)) {
-            throw new AuthenticationException("无效的刷新令牌");
+            throw new AuthenticationException(ERROR_INVALID_REFRESH_TOKEN);
         }
         
-        // 2. 从refresh token中解析用户名和角色
+        // 2. 从refresh token中解析用户名
         String username = tokenProvider.getUsernameFromToken(refreshToken);
-        AuthUser user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new AuthenticationException("用户不存在"));
-
-        if (!user.isActive()) {
-            throw new AuthenticationException("用户已被禁用");
-        }
-
-        // 3. 生成新的token pair
-        return tokenProvider.generateToken(username, user.getUserRole().name());
+        
+        // 3. 查找用户并验证状态
+        return userRepository.findByUsername(username)
+                .filter(AuthUser::isActive)
+                .map(user -> tokenProvider.generateToken(username, user.getUserRole().name()))
+                .orElseThrow(() -> {
+                    AuthUser user = userRepository.findByUsername(username)
+                            .orElseThrow(() -> new AuthenticationException(ERROR_USER_NOT_EXIST));
+                    
+                    // 用户存在但不活跃
+                    throw new AuthenticationException(ERROR_USER_DISABLED);
+                });
     }
 }
