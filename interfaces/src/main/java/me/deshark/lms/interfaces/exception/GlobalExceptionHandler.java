@@ -2,12 +2,12 @@ package me.deshark.lms.interfaces.exception;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.deshark.lms.common.exception.book.BookAlreadyExistsException;
+import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MissingRequestCookieException;
-import me.deshark.lms.common.exception.book.BookAlreadyExistsException;
-import me.deshark.lms.common.exception.book.BookNotFoundException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
     // 400 Bad Request
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ResultBody<Void>> handleIllegalArgumentException(IllegalArgumentException e) {
-        return ResponseEntity.badRequest().body(ResultBody.<Void>builder().error(e.getMessage()).build());
+        return ResponseEntity.badRequest().body(ResultBody.error(e.getMessage()));
     }
 
     // 处理图书已存在异常
