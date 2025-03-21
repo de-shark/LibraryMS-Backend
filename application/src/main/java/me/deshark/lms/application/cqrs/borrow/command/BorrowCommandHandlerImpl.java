@@ -1,6 +1,7 @@
 package me.deshark.lms.application.cqrs.borrow.command;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.service.borrow.BorrowService;
 import me.deshark.lms.domain.service.borrow.QueryBorrowService;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
 
     private final BorrowService borrowService;
@@ -46,8 +48,9 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
 
     @Override
     public void handle(ReturnCommand command) {
+        log.info("处理归还请求中: {}", command.getRecordId());
         // 1. 参数校验
-        if (command == null || command.getRecordId() == null) {
+        if (command.getRecordId() == null) {
             throw new IllegalArgumentException("归还命令参数不完整");
         }
 
