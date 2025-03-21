@@ -14,6 +14,7 @@ import me.deshark.lms.interfaces.dto.BorrowRequest;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import me.deshark.lms.interfaces.dto.borrow.RenewRequest;
 import me.deshark.lms.interfaces.dto.borrow.ReturnRequest;
+import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -63,6 +64,8 @@ public class BorrowController {
     @PostMapping("/return")
     public ResponseEntity<ResultBody<Void>> returnBook(
             @RequestBody ReturnRequest request) {
+        String traceId = MDC.get("traceId");
+        log.info("[Trace:{}] 开始处理归还请求: {}", traceId, request.getRecordId());
         ReturnCommand command = new ReturnCommand(request.getRecordId());
         borrowCommandHandlerImpl.handle(command);
         return ResponseEntity.ok(ResultBody.success("归还成功"));

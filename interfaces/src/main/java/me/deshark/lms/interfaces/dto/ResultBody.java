@@ -3,6 +3,7 @@ package me.deshark.lms.interfaces.dto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
+import org.slf4j.MDC;
 
 import java.time.Instant;
 
@@ -27,6 +28,8 @@ public class ResultBody<T> {
     private T data;
 
     private Instant timestamp;
+
+    private String traceId;
 
     /**
      * 创建成功响应
@@ -64,6 +67,7 @@ public class ResultBody<T> {
     public static <T> ResultBody<T> error(String error) {
         return ResultBody.<T>builder()
                 .error(error)
+                .traceId(MDC.get("traceId"))
                 .build();
     }
 }
