@@ -4,6 +4,7 @@ import me.deshark.lms.application.info.AuthToken;
 import me.deshark.lms.domain.model.auth.vo.AuthTokenPair;
 import me.deshark.lms.domain.service.auth.AuthService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author DE_SHARK
@@ -17,6 +18,7 @@ public class AuthAppService {
         this.authService = authService;
     }
 
+    @Transactional
     public void register(String username, String email, String rawPassword) {
         authService.registerUser(
                 username,
@@ -25,6 +27,7 @@ public class AuthAppService {
         );
     }
 
+    @Transactional
     public AuthToken login(String username, String password) {
         AuthTokenPair authTokenPair = authService.authenticate(username, password);
         return AuthToken.builder()
@@ -33,6 +36,7 @@ public class AuthAppService {
                 .build();
     }
 
+    @Transactional
     public AuthToken refresh(String refreshToken) {
         AuthTokenPair authTokenPair = authService.refreshToken(refreshToken);
         return AuthToken.builder()
