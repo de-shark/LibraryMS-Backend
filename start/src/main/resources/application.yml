@@ -23,9 +23,9 @@ jwt:
 logging:
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %magenta([%X{traceId}]) %green(%-5level) %cyan(%logger{36}) : %msg%n"
-  level:
-    org:
-      springframework: debug
+#  level:
+#    org:
+#      springframework: debug
 
 google:
   books:
