@@ -1,6 +1,7 @@
 package me.deshark.lms.infrastructure.security;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.common.exception.auth.UsernameNotFoundException;
 import me.deshark.lms.domain.model.auth.entity.AuthUser;
 import me.deshark.lms.domain.repository.auth.UserRepository;
 import org.springframework.context.annotation.Bean;
@@ -82,7 +83,8 @@ public class SecurityConfig {
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return username -> {
-            AuthUser authUser = userRepository.findByUsername(username);
+            AuthUser authUser = userRepository.findByUsername(username)
+                    .orElseThrow(() -> new UsernameNotFoundException("用户名不存在"));
             return new org.springframework.security.core.userdetails.User(
                     authUser.getUsername(),
                     authUser.getPasswordHash().encryptedValue(),
