@@ -18,7 +18,7 @@ import java.util.UUID;
 // 借阅记录聚合根 (包含借阅记录和归还逻辑)
 @Data
 public class LoanRecord {
-    private final UUID transactionId;
+    private final UUID recordId;
     private final BookCopy bookCopy;
     private final Patron patron;
     private LoanPeriod loanPeriod;
@@ -26,7 +26,7 @@ public class LoanRecord {
 
     // 构造方法（创建借阅记录）
     public LoanRecord(BookCopy bookCopy, Patron patron) {
-        this.transactionId = GUID.v7();
+        this.recordId = GUID.v7();
         this.bookCopy = bookCopy;
         this.patron = patron;
         this.loanPeriod = new LoanPeriod(OffsetDateTime.now());
