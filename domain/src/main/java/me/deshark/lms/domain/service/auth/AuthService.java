@@ -22,7 +22,7 @@ public class AuthService {
         this.tokenProvider = tokenProvider;
     }
 
-    public void registerUser(String username, String password, String email) {
+    public void registerUser(String username, String email, String password) {
 
         // 1. 校验用户名唯一性
         if (userRepository.existsByUsername(username)) {
