@@ -6,6 +6,7 @@ import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.service.borrow.BorrowService;
 import me.deshark.lms.domain.service.borrow.QueryBorrowService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author DE_SHARK
@@ -19,6 +20,7 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     private final QueryBorrowService queryBorrowService;
 
     @Override
+    @Transactional
     public void handle(BorrowCommand command) {
         // 1. 参数校验
         if (command == null || command.getUsername() == null || command.getIsbn() == null) {
@@ -30,6 +32,7 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     }
 
     @Override
+    @Transactional
     public void handle(RenewCommand command) {
         // 1. 参数校验
         if (command == null || command.getRecordId() == null) {
@@ -47,6 +50,7 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     }
 
     @Override
+    @Transactional
     public void handle(ReturnCommand command) {
         log.info("处理归还请求中: {}", command.getRecordId());
         // 1. 参数校验
