@@ -70,7 +70,6 @@ public interface BookCopyMapper {
      * 更新图书副本状态
      * @param copyId 副本ID
      * @param status 新状态
-     * @return 更新记录数
      */
     @Update("UPDATE book_copy SET status = #{status} WHERE copy_id = #{copyId}")
     void updateStatus(@Param("copyId") UUID copyId, @Param("status") CopyStatusType status);

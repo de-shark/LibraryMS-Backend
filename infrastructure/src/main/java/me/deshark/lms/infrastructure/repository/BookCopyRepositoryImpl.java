@@ -1,6 +1,7 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.common.exception.book.BookCatalogException;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  */
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     private final BookCopyMapper bookCopyMapper;
@@ -58,6 +60,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
 
     @Override
     public void updateBookCopyStatus(BookCopy bookCopy) {
+        log.info("正在更新图书副本状态: {}", bookCopy.getStatus());
         bookCopyMapper.updateStatus(bookCopy.getCopyId(), CopyStatusType.valueOf(bookCopy.getStatus().name()));
     }
 

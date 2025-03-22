@@ -63,5 +63,6 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
 
         // 3. 调用领域服务执行归还
         borrowService.returnBook(record);
+        log.info("归还请求处理完成: {}", command.getRecordId());
     }
 }
