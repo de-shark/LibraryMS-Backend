@@ -5,6 +5,7 @@ import me.deshark.lms.infrastructure.entity.LoanRecordDO;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -40,7 +41,7 @@ public interface LoanRecordMapper {
             @Result(property = "returnDate", column = "return_date"),
             @Result(property = "status", column = "status")
     })
-    LoanRecordDO findById(@Param("recordId") UUID recordId);
+    Optional<LoanRecordDO> findById(@Param("recordId") UUID recordId);
 
     @Select("SELECT * FROM loan_record WHERE user_id = #{userId} ORDER BY loan_date DESC")
     @ResultMap("loanRecordMap")

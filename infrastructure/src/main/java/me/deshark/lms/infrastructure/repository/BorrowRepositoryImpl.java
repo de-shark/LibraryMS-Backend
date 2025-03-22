@@ -2,6 +2,10 @@ package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
+import me.deshark.lms.domain.model.borrow.entity.Patron;
+import me.deshark.lms.domain.model.borrow.vo.LoanPeriod;
+import me.deshark.lms.domain.model.borrow.vo.LoanStatus;
+import me.deshark.lms.domain.model.catalog.entity.BookCopy;
 import me.deshark.lms.domain.repository.borrow.BorrowRepository;
 import me.deshark.lms.infrastructure.entity.LoanRecordDO;
 import me.deshark.lms.infrastructure.enums.LoanStatusType;
@@ -27,8 +31,8 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     }
 
     @Override
-    public Optional<LoanRecord> findById(UUID transactionId) {
-        return Optional.empty();
+    public Optional<LoanRecord> findById(UUID recordId) {
+        return loanRecordMapper.findById(recordId).map(this::toDomainModel);
     }
 
     @Override
@@ -43,7 +47,7 @@ public class BorrowRepositoryImpl implements BorrowRepository {
 
     private LoanRecordDO toDataObject(LoanRecord transaction) {
         return LoanRecordDO.builder()
-                .recordId(transaction.getTransactionId())
+                .recordId(transaction.getRecordId())
                 .copyId(transaction.getBookCopy().getCopyId())
                 .userId(transaction.getPatron().getId())
                 .loanDate(transaction.getLoanPeriod().getLoanDate())
@@ -51,5 +55,20 @@ public class BorrowRepositoryImpl implements BorrowRepository {
                 .returnDate(transaction.getLoanPeriod().getReturnDate())
                 .status(LoanStatusType.valueOf(transaction.getStatus().name()))
                 .build();
+    }
+
+    private LoanRecord toDomainModel(LoanRecordDO recordDO) {
+        BookCopy bookCopy = BookCopy.builder().copyId(recordDO.getCopyId()).build();
+        Patron patron = Patron.builder().id(recordDO.getUserId()).build();
+        LoanPeriod loanPeriod = LoanPeriod.builder()
+                .loanDate(recordDO.getLoanDate())
+                .dueDate(recordDO.getDueDate())
+                .returnDate(recordDO.getReturnDate())
+                .build();
+        LoanRecord loanRecord = new LoanRecord(bookCopy, patron);
+        loanRecord.setLoanPeriod(loanPeriod);
+        loanRecord.setStatus(LoanStatus.valueOf(recordDO.getStatus().name()));
+
+        return loanRecord;
     }
 }
