@@ -56,9 +56,6 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
 
         // 2. 查找借阅记录
         LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getRecordId());
-        if (transaction == null) {
-            throw new IllegalArgumentException("借阅记录不存在");
-        }
 
         // 3. 调用领域服务执行归还
         borrowService.returnBook(transaction);
