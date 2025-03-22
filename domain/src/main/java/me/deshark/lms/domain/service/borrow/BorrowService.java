@@ -72,9 +72,8 @@ public class BorrowService {
     public LoanRecord returnBook(LoanRecord loanRecord) {
         // 1. 更新借阅记录状态
         loanRecord.returnBook();
-        // 2. 更新图书副本状态
-        BookCopy bookCopy = loanRecord.getBookCopy();
-        bookCopy.setStatus(BookCopyStatus.AVAILABLE);
+
+        borrowRepository.update(loanRecord);
 
         return loanRecord;
     }

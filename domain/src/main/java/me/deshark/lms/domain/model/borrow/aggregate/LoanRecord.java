@@ -7,6 +7,7 @@ import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.domain.model.borrow.vo.LoanPeriod;
 import me.deshark.lms.domain.model.borrow.vo.LoanStatus;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
+import me.deshark.lms.domain.model.catalog.vo.BookCopyStatus;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;
@@ -46,6 +47,8 @@ public class LoanRecord {
     }
 
     public void returnBook() {
+        // 更新图书副本状态
+        bookCopy.setStatus(BookCopyStatus.AVAILABLE);
         this.status = LoanStatus.RETURNED;
         loanPeriod.returnBook();
     }
