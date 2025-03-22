@@ -1,6 +1,8 @@
 package me.deshark.lms.domain.model.borrow.aggregate;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import me.deshark.lms.common.utils.GUID;
 import me.deshark.lms.domain.model.borrow.entity.Patron;
@@ -18,6 +20,8 @@ import java.util.UUID;
  */
 // 借阅记录聚合根 (包含借阅记录和归还逻辑)
 @Data
+@AllArgsConstructor
+@Builder
 public class LoanRecord {
     private final UUID recordId;
     private final BookCopy bookCopy;
