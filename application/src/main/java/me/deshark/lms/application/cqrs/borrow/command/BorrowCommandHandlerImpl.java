@@ -34,19 +34,18 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
     @Override
     @Transactional
     public void handle(RenewCommand command) {
+        log.info("处理续借请求中: {}", command.getRecordId());
         // 1. 参数校验
-        if (command == null || command.getRecordId() == null) {
+        if (command.getRecordId() == null) {
             throw new IllegalArgumentException("续借命令参数不完整");
         }
 
         // 2. 查找借阅记录
-        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getRecordId());
-        if (transaction == null) {
-            throw new IllegalArgumentException("借阅记录不存在");
-        }
+        LoanRecord record = queryBorrowService.findBorrowTransactionById(command.getRecordId());
 
         // 3. 调用领域服务执行续借
-        borrowService.renew(transaction);
+        borrowService.renew(record);
+        log.info("续借请求处理完成: {}", command.getRecordId());
     }
 
     @Override

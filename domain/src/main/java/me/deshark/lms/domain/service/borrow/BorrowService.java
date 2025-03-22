@@ -66,7 +66,7 @@ public class BorrowService {
      */
     public LoanRecord renew(LoanRecord loanRecord) {
         loanRecord.renew();
-        borrowRepository.save(loanRecord);
+        borrowRepository.update(loanRecord);
         return loanRecord;
     }
 

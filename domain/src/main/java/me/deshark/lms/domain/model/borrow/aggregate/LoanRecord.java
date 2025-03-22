@@ -40,12 +40,18 @@ public class LoanRecord {
 
     // 检查是否可以续借
     public boolean canRenew() {
-        return true;
+        if (status != LoanStatus.BORROWED) {
+            throw new IllegalStateException("借阅记录的状态不为BORROWED");
+        }
+        OffsetDateTime loanDate = loanPeriod.getLoanDate();
+        OffsetDateTime dueDate = loanPeriod.getDueDate();
+
+        return dueDate.isBefore(loanDate.plusDays(20));
     }
 
     public void renew() {
         if (!canRenew()) {
-            throw new IllegalStateException("Cannot renew this transaction");
+            throw new IllegalStateException("该记录不可续借");
         }
         loanPeriod.renew();
     }
