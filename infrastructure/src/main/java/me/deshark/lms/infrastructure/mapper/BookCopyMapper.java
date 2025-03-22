@@ -24,8 +24,8 @@ public interface BookCopyMapper {
      * @param bookCopyDO 图书副本数据对象
      * @return 插入记录数
      */
-    @Insert("INSERT INTO book_copy(copy_id, isbn, location, status, loan_count, acquisition_date) " +
-            "VALUES(#{copyId}, #{isbn}, #{location}, #{status}, #{loanCount}, #{acquisitionDate})")
+    @Insert("INSERT INTO book_copy(copy_id, isbn, location, status, acquisition_date) " +
+            "VALUES(#{copyId}, #{isbn}, #{location}, #{status}, #{acquisitionDate})")
     int insert(BookCopyDO bookCopyDO);
 
     /**
@@ -37,7 +37,6 @@ public interface BookCopyMapper {
             "isbn = #{isbn}, " +
             "location = #{location}, " +
             "status = #{status}, " +
-            "loan_count = #{loanCount}, " +
             "acquisition_date = #{acquisitionDate} " +
             "WHERE copy_id = #{copyId}")
     int update(BookCopyDO bookCopyDO);
@@ -79,7 +78,6 @@ public interface BookCopyMapper {
                 .copyId(d.getCopyId())
                 .isbn(new Isbn(d.getIsbn()))
                 .status(BookCopyStatus.valueOf(d.getStatus().name()))
-                .loanCount(d.getLoanCount())
                 .build());
     }
 
@@ -89,9 +87,9 @@ public interface BookCopyMapper {
      */
     @Insert({
             "<script>",
-            "INSERT INTO book_copy (copy_id, isbn, location, status, loan_count, acquisition_date) VALUES ",
+            "INSERT INTO book_copy (copy_id, isbn, location, status, acquisition_date) VALUES ",
             "<foreach collection='list' item='item' separator=','>",
-            "(#{item.copyId}, #{item.isbn}, #{item.location}, #{item.status}, #{item.loanCount}, #{item.acquisitionDate})",
+            "(#{item.copyId}, #{item.isbn}, #{item.location}, #{item.status}, #{item.acquisitionDate})",
             "</foreach>",
             "</script>"
     })

@@ -77,7 +77,6 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
                 .copyId(bookCopy.getCopyId())
                 .isbn(bookCopy.getIsbn().toString())
                 .status(CopyStatusType.valueOf(bookCopy.getStatus().name()))
-                .loanCount(bookCopy.getLoanCount())
                 .build();
     }
 }

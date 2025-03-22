@@ -85,7 +85,6 @@ CREATE TABLE book_copy
     isbn             CHAR(13)         NOT NULL,
     location         VARCHAR(100),
     status           copy_status_type NOT NULL DEFAULT 'AVAILABLE',
-    loan_count       SMALLINT         NOT NULL DEFAULT 0,
     acquisition_date DATE,
 
     CONSTRAINT fk_book_copy_bookinfo
@@ -95,7 +94,6 @@ CREATE TABLE book_copy
 COMMENT ON COLUMN book_copy.copy_id IS '副本唯一标识';
 COMMENT ON COLUMN book_copy.location IS '馆藏位置';
 COMMENT ON COLUMN book_copy.status IS '当前状态';
-COMMENT ON COLUMN book_copy.loan_count IS '借出次数';
 COMMENT ON COLUMN book_copy.acquisition_date IS '购入日期';
 
 -- 创建库存视图
@@ -138,6 +136,15 @@ COMMENT ON COLUMN loan_record.due_date IS '应归还日期';
 COMMENT ON COLUMN loan_record.return_date IS '实际归还日期';
 COMMENT ON COLUMN loan_record.status IS '记录状态';
 
+-- 图书副本借阅计数视图
+CREATE VIEW book_copy_loan_count_view AS
+SELECT bc.copy_id,
+       COUNT(lr.record_id) AS calculated_loan_count
+FROM book_copy bc
+         LEFT JOIN
+     loan_record lr ON bc.copy_id = lr.copy_id
+         AND lr.status IN ('BORROWED', 'OVERDUE')
+GROUP BY bc.copy_id;
 
 -- 触发器函数
 CREATE OR REPLACE FUNCTION update_user_modified_time()
