@@ -21,6 +21,8 @@ public interface BorrowRepository {
     // 更新借阅记录
     void update(LoanRecord record);
 
+    boolean existsByPatronAndIsbn(UUID patronId, String isbn);
+
     List<LoanRecord> findHistoricalBorrowsByPatron(UUID patronId);
 
     List<LoanRecord> findCurrentBorrowsByPatron(UUID patronId);

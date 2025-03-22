@@ -45,6 +45,11 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     }
 
     @Override
+    public boolean existsByPatronAndIsbn(UUID patronId, String isbn) {
+        return loanRecordMapper.existsByPatronAndIsbn(patronId, isbn.toString()) > 0;
+    }
+
+    @Override
     public List<LoanRecord> findHistoricalBorrowsByPatron(UUID patronId) {
         return List.of();
     }

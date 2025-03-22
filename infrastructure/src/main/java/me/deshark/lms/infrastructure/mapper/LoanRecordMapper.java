@@ -43,6 +43,13 @@ public interface LoanRecordMapper {
     })
     Optional<LoanRecordDO> findById(@Param("recordId") UUID recordId);
 
+    @Select("SELECT COUNT(1) FROM loan_record lr " +
+            "JOIN book_copy bc ON lr.copy_id = bc.copy_id " +
+            "WHERE lr.user_id = #{patronId} " +
+            "AND bc.isbn = #{isbn} " +
+            "AND lr.return_date IS NULL")
+    int existsByPatronAndIsbn(@Param("patronId") UUID patronId, @Param("isbn") String isbn);
+
     @Select("SELECT * FROM loan_record WHERE user_id = #{userId} ORDER BY loan_date DESC")
     @ResultMap("loanRecordMap")
     List<LoanRecordDO> findByUserId(@Param("userId") UUID userId);
