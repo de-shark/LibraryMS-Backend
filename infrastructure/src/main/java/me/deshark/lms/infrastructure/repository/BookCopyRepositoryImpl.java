@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.common.exception.book.BookCatalogException;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
+import me.deshark.lms.domain.model.catalog.vo.BookCopyStatus;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.catalog.BookCopyRepository;
 import me.deshark.lms.infrastructure.entity.BookCopyDO;
@@ -39,7 +40,7 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
     @Override
     public BookCopy findAvailableBookCopy(Isbn isbn) {
         return bookCopyMapper.findAvailableByIsbn(isbn.toString())
-                .flatMap(bookCopyMapper::toDomain)
+                .map(this::toDomain)
                 .orElseThrow(() -> new IllegalStateException("找不到可用的书籍副本 ISBN: " + isbn));
     }
 
@@ -77,6 +78,16 @@ public class BookCopyRepositoryImpl implements BookCopyRepository {
                 .copyId(bookCopy.getCopyId())
                 .isbn(bookCopy.getIsbn().toString())
                 .status(CopyStatusType.valueOf(bookCopy.getStatus().name()))
+                .acquisitionDate(bookCopy.getAcquisitionDate())
+                .build();
+    }
+
+    private BookCopy toDomain(BookCopyDO bookCopyDO) {
+        return BookCopy.builder()
+                .copyId(bookCopyDO.getCopyId())
+                .isbn(new Isbn(bookCopyDO.getIsbn()))
+                .status(BookCopyStatus.valueOf(bookCopyDO.getStatus().name()))
+                .acquisitionDate(bookCopyDO.getAcquisitionDate())
                 .build();
     }
 }

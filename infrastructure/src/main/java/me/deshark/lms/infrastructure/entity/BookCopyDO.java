@@ -18,6 +18,5 @@ public class BookCopyDO {
     private String isbn;
     private String location;
     private CopyStatusType status;
-    private int loanCount;
     private Date acquisitionDate;
 }
