@@ -1,6 +1,7 @@
 package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.domain.model.borrow.vo.LoanPeriod;
@@ -21,6 +22,7 @@ import java.util.UUID;
  */
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class BorrowRepositoryImpl implements BorrowRepository {
 
     private final LoanRecordMapper loanRecordMapper;
@@ -37,7 +39,8 @@ public class BorrowRepositoryImpl implements BorrowRepository {
 
     @Override
     public void update(LoanRecord record) {
-
+        log.info("正在更新借阅记录: {}", record.getRecordId());
+        loanRecordMapper.update(toDataObject(record));
     }
 
     @Override

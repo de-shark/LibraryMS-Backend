@@ -55,9 +55,9 @@ public class BorrowCommandHandlerImpl implements BorrowCommandHandler {
         }
 
         // 2. 查找借阅记录
-        LoanRecord transaction = queryBorrowService.findBorrowTransactionById(command.getRecordId());
+        LoanRecord record = queryBorrowService.findBorrowTransactionById(command.getRecordId());
 
         // 3. 调用领域服务执行归还
-        borrowService.returnBook(transaction);
+        borrowService.returnBook(record);
     }
 }

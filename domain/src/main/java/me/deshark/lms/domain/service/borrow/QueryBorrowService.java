@@ -86,14 +86,14 @@ public class QueryBorrowService {
     /**
      * 查询特定借阅记录详情
      *
-     * @param transactionId 借阅记录ID
+     * @param recordId 借阅记录ID
      * @return 借阅记录详情
      * @throws IllegalArgumentException 当记录不存在时抛出
      */
-    public LoanRecord findBorrowTransactionById(UUID transactionId) {
+    public LoanRecord findBorrowTransactionById(UUID recordId) {
 
-        return borrowRepository.findById(transactionId)
-                .orElseThrow(() -> new IllegalArgumentException("该借阅记录不存在 ID: " + transactionId));
+        return borrowRepository.findById(recordId)
+                .orElseThrow(() -> new IllegalArgumentException("该借阅记录不存在 ID: " + recordId));
     }
 
     /**
