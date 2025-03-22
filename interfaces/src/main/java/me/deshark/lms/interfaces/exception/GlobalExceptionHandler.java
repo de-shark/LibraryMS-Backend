@@ -49,6 +49,13 @@ public class GlobalExceptionHandler {
                 .body(ResultBody.<Void>builder().error(e.getMessage()).build());
     }
 
+    // 500 Internal Server Error
+    @ExceptionHandler(IllegalStateException.class)
+    public ResponseEntity<ResultBody<Void>> handleIllegalStateException(IllegalStateException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.internalServerError().body(ResultBody.error(e.getMessage()));
+    }
+
     // 处理其他未捕获异常
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ResultBody<Void>> handleUnexpectedException(Exception e) {
