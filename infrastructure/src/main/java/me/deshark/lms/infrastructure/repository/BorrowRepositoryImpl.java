@@ -34,6 +34,7 @@ public class BorrowRepositoryImpl implements BorrowRepository {
 
     @Override
     public Optional<LoanRecord> findById(UUID recordId) {
+        log.info("正在查找借阅记录: {}", recordId);
         return loanRecordMapper.findById(recordId).map(this::toDomainModel);
     }
 
@@ -73,10 +74,13 @@ public class BorrowRepositoryImpl implements BorrowRepository {
                 .dueDate(recordDO.getDueDate())
                 .returnDate(recordDO.getReturnDate())
                 .build();
-        LoanRecord loanRecord = new LoanRecord(bookCopy, patron);
-        loanRecord.setLoanPeriod(loanPeriod);
-        loanRecord.setStatus(LoanStatus.valueOf(recordDO.getStatus().name()));
 
-        return loanRecord;
+        return LoanRecord.builder()
+                .recordId(recordDO.getRecordId())
+                .bookCopy(bookCopy)
+                .patron(patron)
+                .loanPeriod(loanPeriod)
+                .status(LoanStatus.valueOf(recordDO.getStatus().name()))
+                .build();
     }
 }
