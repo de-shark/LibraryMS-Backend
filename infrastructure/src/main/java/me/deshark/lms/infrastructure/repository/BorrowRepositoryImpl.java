@@ -26,13 +26,18 @@ public class BorrowRepositoryImpl implements BorrowRepository {
     private final LoanRecordMapper loanRecordMapper;
 
     @Override
-    public void save(LoanRecord transaction) {
-        loanRecordMapper.insert(toDataObject(transaction));
+    public void save(LoanRecord record) {
+        loanRecordMapper.insert(toDataObject(record));
     }
 
     @Override
     public Optional<LoanRecord> findById(UUID recordId) {
         return loanRecordMapper.findById(recordId).map(this::toDomainModel);
+    }
+
+    @Override
+    public void update(LoanRecord record) {
+
     }
 
     @Override
@@ -45,15 +50,15 @@ public class BorrowRepositoryImpl implements BorrowRepository {
         return List.of();
     }
 
-    private LoanRecordDO toDataObject(LoanRecord transaction) {
+    private LoanRecordDO toDataObject(LoanRecord record) {
         return LoanRecordDO.builder()
-                .recordId(transaction.getRecordId())
-                .copyId(transaction.getBookCopy().getCopyId())
-                .userId(transaction.getPatron().getId())
-                .loanDate(transaction.getLoanPeriod().getLoanDate())
-                .dueDate(transaction.getLoanPeriod().getDueDate())
-                .returnDate(transaction.getLoanPeriod().getReturnDate())
-                .status(LoanStatusType.valueOf(transaction.getStatus().name()))
+                .recordId(record.getRecordId())
+                .copyId(record.getBookCopy().getCopyId())
+                .userId(record.getPatron().getId())
+                .loanDate(record.getLoanPeriod().getLoanDate())
+                .dueDate(record.getLoanPeriod().getDueDate())
+                .returnDate(record.getLoanPeriod().getReturnDate())
+                .status(LoanStatusType.valueOf(record.getStatus().name()))
                 .build();
     }
 

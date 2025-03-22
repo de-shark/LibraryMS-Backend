@@ -13,10 +13,13 @@ import java.util.UUID;
 public interface BorrowRepository {
     
     // 保存借阅记录
-    void save(LoanRecord transaction);
+    void save(LoanRecord record);
     
     // 根据ID查找借阅记录
-    Optional<LoanRecord> findById(UUID transactionId);
+    Optional<LoanRecord> findById(UUID recordId);
+
+    // 更新借阅记录
+    void update(LoanRecord record);
 
     List<LoanRecord> findHistoricalBorrowsByPatron(UUID patronId);
 
