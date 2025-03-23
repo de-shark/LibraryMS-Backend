@@ -3,6 +3,7 @@ package me.deshark.lms.common.exception.domain;
 import lombok.Getter;
 
 /**
+ * 服务操作异常
  * @author DE_SHARK
  */
 @Getter
