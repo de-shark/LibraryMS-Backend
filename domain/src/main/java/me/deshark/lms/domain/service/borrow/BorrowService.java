@@ -1,6 +1,7 @@
 package me.deshark.lms.domain.service.borrow;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.common.exception.domain.DomainServiceException;
 import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.model.borrow.entity.Patron;
 import me.deshark.lms.domain.model.catalog.entity.BookCopy;
@@ -36,12 +37,12 @@ public class BorrowService {
         // 2. 检查图书是否可借
         Isbn vaildIsbn = new Isbn(isbn);
         if (bookCopyRepository.countAvailableCopies(vaildIsbn) < 1) {
-            throw new IllegalArgumentException("Book is not available");
+            throw new DomainServiceException("该图书可用数量不足");
         }
 
         // 2.5 检查是否已借阅同一ISBN书籍且未归还
         if (borrowRepository.existsByPatronAndIsbn(patron.getId(), vaildIsbn.toString())) {
-            throw new IllegalStateException("您已借阅该ISBN的书籍且尚未归还");
+            throw new DomainServiceException("您已借阅该ISBN的书籍且尚未归还");
         }
 
         // 3. 获取可用的图书副本

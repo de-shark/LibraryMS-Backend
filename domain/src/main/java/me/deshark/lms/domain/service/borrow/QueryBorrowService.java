@@ -1,6 +1,7 @@
 package me.deshark.lms.domain.service.borrow;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.common.exception.domain.DomainServiceException;
 import me.deshark.lms.domain.model.borrow.aggregate.LoanRecord;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.repository.borrow.BorrowRepository;
@@ -93,7 +94,7 @@ public class QueryBorrowService {
     public LoanRecord findBorrowTransactionById(UUID recordId) {
 
         return borrowRepository.findById(recordId)
-                .orElseThrow(() -> new IllegalArgumentException("该借阅记录不存在 ID: " + recordId));
+                .orElseThrow(() -> new DomainServiceException("该借阅记录不存在 ID: " + recordId));
     }
 
     /**
