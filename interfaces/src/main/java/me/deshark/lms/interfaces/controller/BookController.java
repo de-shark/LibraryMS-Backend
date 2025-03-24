@@ -1,6 +1,7 @@
 package me.deshark.lms.interfaces.controller;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
 import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
@@ -21,6 +22,7 @@ import java.net.URI;
 /**
  * @author DE_SHARK
  */
+@Slf4j
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
@@ -60,11 +62,15 @@ public class BookController {
             @RequestParam(name = "keyword", required = false) String keyword,
             @RequestParam(name = "page", defaultValue = "1") int page,
             @RequestParam(name = "size", defaultValue = "20") int size) {
-        
+
+        log.info("开始处理请求：分页查询图书");
+
         // 执行查询
         Page<BookInfo> pageData = searchBooksQueryHandler.handle(
             new SearchBooksQuery(keyword, page, size)
         );
+
+        log.info("请求处理完成：分页查询图书");
 
         return ResponseEntity.ok(ResultBody.<Page<BookInfo>>builder()
                 .data(pageData)
