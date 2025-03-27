@@ -2,6 +2,7 @@ DROP TABLE IF EXISTS loan_record;
 DROP TABLE IF EXISTS book_copy;
 DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS borrower_info;
+DROP TABLE IF EXISTS student_info;
 DROP TABLE IF EXISTS user_role;
 DROP TABLE IF EXISTS users;
 
@@ -45,6 +46,28 @@ CREATE TABLE user_role
 );
 COMMENT ON COLUMN user_role.assigned_at IS '授权时间';
 
+CREATE TABLE student_info
+(
+    user_id        UUID PRIMARY KEY,
+    college        VARCHAR(100) NOT NULL,
+    major          VARCHAR(100) NOT NULL,
+    student_id     VARCHAR(20)  NOT NULL UNIQUE,
+    grade          VARCHAR(10),
+    admission_year INT          NOT NULL,
+    class_name     VARCHAR(50),
+    degree_type    VARCHAR(20)  NOT NULL CHECK (degree_type IN ('本科', '硕士', '博士')),
+
+    CONSTRAINT fk_student_info_user
+        FOREIGN KEY (user_id) REFERENCES users(uuid)
+            ON DELETE CASCADE
+);
+COMMENT ON COLUMN student_info.college IS '学院';
+COMMENT ON COLUMN student_info.major IS '专业';
+COMMENT ON COLUMN student_info.student_id IS '学号';
+COMMENT ON COLUMN student_info.grade IS '年级';
+COMMENT ON COLUMN student_info.admission_year IS '入学年份';
+COMMENT ON COLUMN student_info.class_name IS '班级信息';
+COMMENT ON COLUMN student_info.class_name IS '学位类型';
 
 -- 普通用户扩展表
 CREATE TABLE borrower_info
