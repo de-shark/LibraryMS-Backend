@@ -44,11 +44,11 @@ public class AuthService {
         AuthUser user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new AuthenticationException(ERROR_USER_NOT_EXIST));
         user.authenticate(rawPassword, encryptor);
-        return generateToken(new TokenRequest(username, user.getUserRole().name()));
+        return generateToken(new TokenRequest(username, user.getUuid(), user.getUserRole().name()));
     }
 
     public AuthTokenPair generateToken(TokenRequest tokenRequest) {
-        return tokenProvider.generateToken(tokenRequest.getUsername(), tokenRequest.getRole());
+        return tokenProvider.generateToken(tokenRequest.getUsername(), tokenRequest.getUserId(), tokenRequest.getRole());
     }
 
     public AuthTokenPair refreshToken(String refreshToken) {
@@ -63,13 +63,13 @@ public class AuthService {
         // 3. 查找用户并验证状态
         return userRepository.findByUsername(username)
                 .filter(AuthUser::isActive)
-                .map(user -> tokenProvider.generateToken(username, user.getUserRole().name()))
+                .map(user -> tokenProvider.generateToken(username, user.getUuid(), user.getUserRole().name()))
                 .orElseThrow(() -> {
                     AuthUser user = userRepository.findByUsername(username)
                             .orElseThrow(() -> new AuthenticationException(ERROR_USER_NOT_EXIST));
                     
                     // 用户存在但不活跃
-                    throw new AuthenticationException(ERROR_USER_DISABLED);
+                    return new AuthenticationException(ERROR_USER_DISABLED);
                 });
     }
 }

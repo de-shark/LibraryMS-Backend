@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * JWT Token 提供者实现
@@ -32,19 +33,20 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
-    public AuthTokenPair generateToken(String username, String role) {
+    public AuthTokenPair generateToken(String username, UUID userId, String role) {
         return new AuthTokenPair(
-                generateAccessToken(username, role),
-                generateRefreshToken(username, role)
+                generateAccessToken(username, userId, role),
+                generateRefreshToken(username, userId, role)
         );
     }
 
     // 生成访问令牌
     @Override
-    public String generateAccessToken(String username, String role) {
+    public String generateAccessToken(String username, UUID userId, String role) {
         Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         return Jwts.builder()
                 .subject(username)
+                .claim("userId", userId.toString())
                 .claim("role", role)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(ACCESS_TOKEN_EXPIRATION_TIME, ChronoUnit.SECONDS)))
@@ -54,10 +56,11 @@ public class JwtTokenProvider implements TokenProvider {
 
     // 生成刷新令牌
     @Override
-    public String generateRefreshToken(String username, String role) {
+    public String generateRefreshToken(String username, UUID userId, String role) {
         Instant now = Instant.now().truncatedTo(ChronoUnit.SECONDS);
         return Jwts.builder()
                 .subject(username)
+                .claim("userId", userId.toString())
                 .claim("role", role)
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(REFRESH_TOKEN_EXPIRATION_TIME, ChronoUnit.SECONDS)))
