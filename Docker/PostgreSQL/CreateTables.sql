@@ -67,7 +67,7 @@ COMMENT ON COLUMN student_info.student_id IS '学号';
 COMMENT ON COLUMN student_info.grade IS '年级';
 COMMENT ON COLUMN student_info.admission_year IS '入学年份';
 COMMENT ON COLUMN student_info.class_name IS '班级信息';
-COMMENT ON COLUMN student_info.class_name IS '学位类型';
+COMMENT ON COLUMN student_info.degree_type IS '学位类型';
 
 -- 普通用户扩展表
 CREATE TABLE borrower_info
