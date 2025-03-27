@@ -1,5 +1,7 @@
 package me.deshark.lms.application.cqrs.core;
 
+import java.util.Optional;
+
 /**
  * @author DE_SHARK
  */
@@ -9,5 +11,5 @@ public interface QueryHandler<Q extends Query<R>, R>{
      * @param query 查询对象
      * @return 查询结果
      */
-    R handle(Q query);
+    Optional<R> handle(Q query);
 }

@@ -9,6 +9,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public class UserInfoResponse {
-    String username;
-    String email;
+    private String username;
+    private String email;
+    private String college;
+    private String major;
+    private String studentId;
+    private String grade;
+    private Integer admissionYear;
+    private String className;
+    private String degreeType;
 }

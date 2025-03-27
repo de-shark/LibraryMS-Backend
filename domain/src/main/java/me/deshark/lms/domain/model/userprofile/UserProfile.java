@@ -12,4 +12,11 @@ public class UserProfile {
     UUID userId;
     String username;
     String email;
+    String college;
+    String major;
+    String studentId;
+    String grade;
+    Integer admissionYear;
+    String className;
+    String degreeType;
 }

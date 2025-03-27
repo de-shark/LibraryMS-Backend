@@ -5,6 +5,8 @@ import lombok.extern.slf4j.Slf4j;
 import me.deshark.lms.application.cqrs.core.QueryHandler;
 import me.deshark.lms.application.cqrs.userprofile.query.GetUserProfileQuery;
 import me.deshark.lms.application.info.userprofile.UserProfileInfo;
+import me.deshark.lms.common.exception.UserProfileNotFoundException;
+import me.deshark.lms.interfaces.converter.UserProfileConverter;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import me.deshark.lms.interfaces.dto.user.UpdateUserRequest;
 import me.deshark.lms.interfaces.dto.user.UserInfoResponse;
@@ -13,6 +15,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -37,10 +40,14 @@ public class UserController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UUID userId = UUID.fromString(authentication.getDetails().toString());
 
-        UserProfileInfo profile =handler.handle(new GetUserProfileQuery(userId));
-        UserInfoResponse userInfoResponse = new UserInfoResponse(profile.getUsername(), profile.getEmail());
+        Optional<UserProfileInfo> op = handler.handle(new GetUserProfileQuery(userId));
+        UserInfoResponse response = op
+                .map(UserProfileConverter.INSTANCE::entityToDto)
+                .orElseThrow(() -> new UserProfileNotFoundException(
+                        "用户档案不存在: " + userId
+                ));
 
-        return ResponseEntity.ok(ResultBody.success(userInfoResponse, "获取成功"));
+        return ResponseEntity.ok(ResultBody.success(response, "获取成功"));
     }
 
     /**

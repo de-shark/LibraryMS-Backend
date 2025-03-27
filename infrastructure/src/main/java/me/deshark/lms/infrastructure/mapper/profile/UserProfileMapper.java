@@ -7,12 +7,9 @@ import org.apache.ibatis.annotations.Select;
 import java.util.Optional;
 import java.util.UUID;
 
-/**
- * @author DE_SHARK
- */
 @Mapper
 public interface UserProfileMapper {
 
-    @Select("SELECT * FROM users WHERE uuid = #{uuid}")
+    @Select("SELECT * FROM user_profile_view WHERE uuid = #{uuid}")
     Optional<UserProfile> selectProfileView(UUID userId);
 }
