@@ -92,6 +92,16 @@ public class JwtTokenProvider implements TokenProvider {
     }
 
     @Override
+    public UUID getUserIdFromToken(String token) {
+        return UUID.fromString(Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload()
+                .get("userId", String.class));
+    }
+
+    @Override
     public String getRoleFromToken(String token) {
         return Jwts.parser()
                 .verifyWith(key)

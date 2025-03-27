@@ -25,5 +25,7 @@ public interface TokenProvider {
     // 从refresh token中解析用户名和角色
     String getUsernameFromToken(String refreshToken);
 
+    UUID getUserIdFromToken(String token);
+
     String getRoleFromToken(String refreshToken);
 }
