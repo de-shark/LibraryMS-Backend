@@ -13,7 +13,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import javax.crypto.SecretKey;
 import java.io.IOException;
 import java.util.List;
 
@@ -52,11 +51,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     .getPayload();
 
             String username = claims.getSubject();
+            String userId = claims.get("userId", String.class);
             String role = claims.get("role", String.class);
 
             // 创建认证对象
             List<SimpleGrantedAuthority> authority = List.of(new SimpleGrantedAuthority("ROLE_" + role));
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(username, null, authority);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                    username, null, authority
+            );
+            auth.setDetails(userId);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (Exception e) {
             logger.error("JWT解析失败: {" + e.getMessage() + "}", e);
