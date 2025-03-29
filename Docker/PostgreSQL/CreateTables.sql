@@ -30,7 +30,6 @@ COMMENT ON COLUMN users.email IS '邮箱';
 COMMENT ON COLUMN users.created_at IS '账户创建时间';
 COMMENT ON COLUMN users.updated_at IS '最后更新时间';
 
-
 -- UserRole表
 CREATE TYPE user_role_type AS ENUM ('USER', 'LIBRARIAN', 'ADMIN');
 CREATE TABLE user_role
@@ -99,7 +98,6 @@ COMMENT ON COLUMN book.publisher IS '出版社';
 COMMENT ON COLUMN book.published_date IS '出版日期';
 COMMENT ON COLUMN book.created_at IS '录入时间';
 
-
 -- 图书副本表
 CREATE TYPE copy_status_type AS ENUM ('AVAILABLE', 'BORROWED');
 CREATE TABLE book_copy
@@ -118,20 +116,6 @@ COMMENT ON COLUMN book_copy.copy_id IS '副本唯一标识';
 COMMENT ON COLUMN book_copy.location IS '馆藏位置';
 COMMENT ON COLUMN book_copy.status IS '当前状态';
 COMMENT ON COLUMN book_copy.acquisition_date IS '购入日期';
-
--- 创建库存视图
-CREATE VIEW book_inventory_view AS
-SELECT
-    b.isbn,
-    COUNT(bc.copy_id) AS current_copy_count,
-    SUM(CASE WHEN bc.status = 'AVAILABLE' THEN 1 ELSE 0 END) AS available_count
-FROM
-    book b
-        LEFT JOIN
-    book_copy bc ON b.isbn = bc.isbn
-GROUP BY
-    b.isbn;
-
 
 -- 借阅记录表
 CREATE TYPE loan_status_type AS ENUM ('BORROWED', 'RETURNED', 'OVERDUE');
@@ -158,30 +142,3 @@ COMMENT ON COLUMN loan_record.loan_date IS '借出日期';
 COMMENT ON COLUMN loan_record.due_date IS '应归还日期';
 COMMENT ON COLUMN loan_record.return_date IS '实际归还日期';
 COMMENT ON COLUMN loan_record.status IS '记录状态';
-
--- 图书副本借阅计数视图
-CREATE VIEW book_copy_loan_count_view AS
-SELECT bc.copy_id,
-       COUNT(lr.record_id) AS calculated_loan_count
-FROM book_copy bc
-         LEFT JOIN
-     loan_record lr ON bc.copy_id = lr.copy_id
-         AND lr.status IN ('BORROWED', 'OVERDUE')
-GROUP BY bc.copy_id;
-
--- 触发器函数
-CREATE OR REPLACE FUNCTION update_user_modified_time()
-    RETURNS TRIGGER AS
-$$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- 触发器
-CREATE TRIGGER trigger_update_user_modified_time
-    BEFORE UPDATE
-    ON users
-    FOR EACH ROW
-EXECUTE FUNCTION update_user_modified_time();
