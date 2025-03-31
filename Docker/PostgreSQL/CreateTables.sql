@@ -84,19 +84,60 @@ CREATE TABLE borrower_info
 CREATE TABLE book
 (
     isbn           CHAR(13) PRIMARY KEY,
-    title          VARCHAR(255),
-    author         VARCHAR(255),
-    publisher      VARCHAR(100),
+    title          VARCHAR(255) NOT NULL,
+    author         VARCHAR(255) NOT NULL,
+    publisher      VARCHAR(100) NOT NULL,
     published_date DATE,
+    language       VARCHAR(50),
+    page_count     INT,
+    isbn_10        VARCHAR(10),
+    cover_image    TEXT,
+    description    TEXT,
     created_at     TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
 );
 
-COMMENT ON COLUMN book.isbn IS '国际标准书号';
+COMMENT ON COLUMN book.isbn IS '国际标准书号(ISBN-13)';
 COMMENT ON COLUMN book.title IS '图书标题';
 COMMENT ON COLUMN book.author IS '作者';
 COMMENT ON COLUMN book.publisher IS '出版社';
 COMMENT ON COLUMN book.published_date IS '出版日期';
+COMMENT ON COLUMN book.language IS '语言';
+COMMENT ON COLUMN book.page_count IS '页数';
+COMMENT ON COLUMN book.isbn_10 IS 'ISBN-10';
+COMMENT ON COLUMN book.cover_image IS '封面图URL或Base64编码';
+COMMENT ON COLUMN book.description IS '图书描述';
 COMMENT ON COLUMN book.created_at IS '录入时间';
+
+-- 图书分类表
+CREATE TABLE book_category (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE,
+    description VARCHAR(255)
+);
+
+-- 图书-分类关联表
+CREATE TABLE book_category_mapping (
+    isbn CHAR(13) NOT NULL,
+    category_id INT NOT NULL,
+    PRIMARY KEY (isbn, category_id),
+    CONSTRAINT fk_book_category_mapping_book
+        FOREIGN KEY (isbn) REFERENCES book(isbn)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_book_category_mapping_category
+        FOREIGN KEY (category_id) REFERENCES book_category(category_id)
+        ON DELETE CASCADE
+);
+
+-- 电子书信息表
+CREATE TABLE ebook (
+    isbn CHAR(13) PRIMARY KEY,
+    file_format VARCHAR(10) NOT NULL,
+    file_size_mb DECIMAL(10,2) NOT NULL,
+    file_path TEXT NOT NULL,
+    CONSTRAINT fk_ebook_book
+        FOREIGN KEY (isbn) REFERENCES book(isbn)
+        ON DELETE CASCADE
+);
 
 -- 图书副本表
 CREATE TYPE copy_status_type AS ENUM ('AVAILABLE', 'BORROWED');
