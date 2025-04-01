@@ -74,13 +74,11 @@ public class GoogleBooksClient implements BookMetadataProvider {
 
         // 处理出版日期，如果格式不完整则设为null
         String publishedDateStr = volumeInfo.path("publishedDate").asText(null);
-        LocalDate publishedDate = null;
+        short year = 0;
         if (publishedDateStr != null && publishedDateStr.length() >= 4) {
             try {
                 // 只取年份部分
-                int year = Integer.parseInt(publishedDateStr.substring(0, 4));
-                // 如果只有年份，默认设为1月1日
-                publishedDate = LocalDate.of(year, 1, 1);
+                year = (short) Integer.parseInt(publishedDateStr.substring(0, 4));
             } catch (NumberFormatException e) {
                 // 如果解析失败则保持null
             }
@@ -91,7 +89,7 @@ public class GoogleBooksClient implements BookMetadataProvider {
                 .title(volumeInfo.path("title").asText("Unknown Title"))
                 .author(author)
                 .publisher(volumeInfo.path("publisher").asText("Unknown Publisher"))
-                .publishedDate(publishedDate)
+                .publishedYear(year)
                 .build();
     }
 }

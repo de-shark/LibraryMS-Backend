@@ -51,7 +51,7 @@ public class BookRepositoryImpl implements BookRepository {
                 .title(bookMetadata.getTitle())
                 .author(bookMetadata.getAuthor())
                 .publisher(bookMetadata.getPublisher())
-                .publishedDate(bookMetadata.getPublishedDate())
+                .publishedYear(bookMetadata.getPublishedYear())
                 .build();
         bookMapper.insert(bookDO);
     }
@@ -89,7 +89,7 @@ public class BookRepositoryImpl implements BookRepository {
                         .title(bookDO.getTitle())
                         .author(bookDO.getAuthor())
                         .publisher(bookDO.getPublisher())
-                        .publishedDate(bookDO.getPublishedDate())
+                        .publishedYear(bookDO.getPublishedYear())
                         .build())
                 .collect(Collectors.toList());
 

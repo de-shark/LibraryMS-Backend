@@ -17,5 +17,5 @@ public class BookMetadata {
     private String title;
     private String author;
     private String publisher;
-    private LocalDate publishedDate;
+    private short publishedYear;
 }
