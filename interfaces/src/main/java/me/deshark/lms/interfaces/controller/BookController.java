@@ -68,7 +68,7 @@ public class BookController {
         // 执行查询
         Page<BookInfo> pageData = searchBooksQueryHandler.handle(
             new SearchBooksQuery(keyword, page, size)
-        );
+        ).orElseThrow(NullPointerException::new);
 
         log.info("请求处理完成：分页查询图书");
 
