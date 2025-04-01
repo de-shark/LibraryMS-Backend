@@ -16,4 +16,5 @@ public class BookMetadata {
     private String author;
     private String publisher;
     private short publishedYear;
+    private int availableCopies;
 }

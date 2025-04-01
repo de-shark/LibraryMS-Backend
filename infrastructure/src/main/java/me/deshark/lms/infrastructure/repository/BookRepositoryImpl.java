@@ -9,6 +9,7 @@ import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookDO;
 import me.deshark.lms.infrastructure.entity.BookInventoryViewDO;
+import me.deshark.lms.infrastructure.mapper.BookInventoryMapper;
 import me.deshark.lms.infrastructure.mapper.BookMapper;
 import org.springframework.stereotype.Repository;
 
@@ -25,6 +26,7 @@ import java.util.stream.Collectors;
 public class BookRepositoryImpl implements BookRepository {
 
     private final BookMapper bookMapper;
+    private final BookInventoryMapper bookInventoryMapper;
 
     @Override
     public boolean existsByIsbn(String isbn) {
@@ -84,13 +86,21 @@ public class BookRepositoryImpl implements BookRepository {
 
         // 转换为领域模型
         List<BookMetadata> bookMetadatas = pagedDOs.stream()
-                .map(bookDO -> BookMetadata.builder()
-                        .isbn(new Isbn(bookDO.getIsbn()))
-                        .title(bookDO.getTitle())
-                        .author(bookDO.getAuthor())
-                        .publisher(bookDO.getPublisher())
-                        .publishedYear(bookDO.getPublishedYear())
-                        .build())
+                .map(bookDO -> {
+                    // 查询库存信息
+                    int availableCopies = bookInventoryMapper.findByIsbn(bookDO.getIsbn())
+                            .map(BookInventoryViewDO::getCurrentCopyCount)
+                            .orElse(0);
+                    
+                    return BookMetadata.builder()
+                            .isbn(new Isbn(bookDO.getIsbn()))
+                            .title(bookDO.getTitle())
+                            .author(bookDO.getAuthor())
+                            .publisher(bookDO.getPublisher())
+                            .publishedYear(bookDO.getPublishedYear())
+                            .availableCopies(availableCopies)
+                            .build();
+                })
                 .collect(Collectors.toList());
         Page<BookMetadata> result = new Page<>(pageNumber, pageSize);
         result.setRecords(bookMetadatas);

@@ -12,4 +12,7 @@ public class BookInfo {
     private String isbn;
     private String title;
     private String author;
+    private String publisher;
+    private short publishedYear;
+    private int availableCopies;
 }
