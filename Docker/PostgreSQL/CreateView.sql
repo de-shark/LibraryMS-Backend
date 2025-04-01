@@ -1,3 +1,7 @@
+DROP VIEW IF EXISTS user_profile_view;
+DROP VIEW IF EXISTS book_inventory_view;
+DROP VIEW IF EXISTS book_copy_loan_count_view;
+
 -- 用户信息视图
 CREATE VIEW user_profile_view AS
 SELECT
@@ -34,13 +38,3 @@ FROM book_copy bc
      loan_record lr ON bc.copy_id = lr.copy_id
          AND lr.status IN ('BORROWED', 'OVERDUE')
 GROUP BY bc.copy_id;
-
--- 触发器函数
-CREATE OR REPLACE FUNCTION update_user_modified_time()
-    RETURNS TRIGGER AS
-$$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;

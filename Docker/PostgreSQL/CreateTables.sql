@@ -1,5 +1,7 @@
 DROP TABLE IF EXISTS loan_record;
 DROP TABLE IF EXISTS book_copy;
+DROP TABLE IF EXISTS book_category_mapping;
+DROP TABLE IF EXISTS book_category;
 DROP TABLE IF EXISTS book;
 DROP TABLE IF EXISTS borrower_info;
 DROP TABLE IF EXISTS student_info;
@@ -84,13 +86,13 @@ CREATE TABLE borrower_info
 CREATE TABLE book
 (
     isbn           CHAR(13) PRIMARY KEY,
+    isbn_10        CHAR(10) UNIQUE,
     title          VARCHAR(255) NOT NULL,
     author         VARCHAR(255) NOT NULL,
     publisher      VARCHAR(100) NOT NULL,
     published_date DATE,
     language       VARCHAR(50),
     page_count     INT,
-    isbn_10        VARCHAR(10),
     cover_image    TEXT,
     description    TEXT,
     created_at     TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP
@@ -125,17 +127,6 @@ CREATE TABLE book_category_mapping (
         ON DELETE CASCADE,
     CONSTRAINT fk_book_category_mapping_category
         FOREIGN KEY (category_id) REFERENCES book_category(category_id)
-        ON DELETE CASCADE
-);
-
--- 电子书信息表
-CREATE TABLE ebook (
-    isbn CHAR(13) PRIMARY KEY,
-    file_format VARCHAR(10) NOT NULL,
-    file_size_mb DECIMAL(10,2) NOT NULL,
-    file_path TEXT NOT NULL,
-    CONSTRAINT fk_ebook_book
-        FOREIGN KEY (isbn) REFERENCES book(isbn)
         ON DELETE CASCADE
 );
 
