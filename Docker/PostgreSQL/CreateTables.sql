@@ -90,7 +90,7 @@ CREATE TABLE book
     title          VARCHAR(255) NOT NULL,
     author         VARCHAR(255) NOT NULL,
     publisher      VARCHAR(100) NOT NULL,
-    published_date DATE,
+    published_year SMALLINT,
     language       VARCHAR(50),
     page_count     INT,
     cover_image    TEXT,
@@ -102,7 +102,7 @@ COMMENT ON COLUMN book.isbn IS '国际标准书号(ISBN-13)';
 COMMENT ON COLUMN book.title IS '图书标题';
 COMMENT ON COLUMN book.author IS '作者';
 COMMENT ON COLUMN book.publisher IS '出版社';
-COMMENT ON COLUMN book.published_date IS '出版日期';
+COMMENT ON COLUMN book.published_year IS '出版日期';
 COMMENT ON COLUMN book.language IS '语言';
 COMMENT ON COLUMN book.page_count IS '页数';
 COMMENT ON COLUMN book.isbn_10 IS 'ISBN-10';
