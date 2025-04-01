@@ -2,10 +2,10 @@ package me.deshark.lms.infrastructure.repository;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.common.exception.book.BookNotFoundException;
+import me.deshark.lms.common.utils.Page;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
-import me.deshark.lms.domain.model.common.Page;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
 import me.deshark.lms.infrastructure.entity.BookDO;
 import me.deshark.lms.infrastructure.entity.BookInventoryViewDO;
@@ -92,8 +92,10 @@ public class BookRepositoryImpl implements BookRepository {
                         .publishedYear(bookDO.getPublishedYear())
                         .build())
                 .collect(Collectors.toList());
-
-        return new Page<>(bookMetadatas, pageNumber, pageSize, total);
+        Page<BookMetadata> result = new Page<>(pageNumber, pageSize);
+        result.setRecords(bookMetadatas);
+        result.setTotal(total);
+        return result;
     }
 
     @Override

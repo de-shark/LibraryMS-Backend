@@ -26,20 +26,20 @@ public class SearchBooksQueryHandler
     @Override
     public Optional<Page<BookInfo>> handle(SearchBooksQuery query) {
         // 调用仓储层进行分页查询
-        me.deshark.lms.domain.model.common.Page<BookMetadata> page = bookRepository.searchBooks(
+        Page<BookMetadata> page = bookRepository.searchBooks(
                 query.getKeyword(),
                 query.getPage() - 1,
                 query.getSize()
         );
 
         // 转换为BookInfo列表
-        List<BookInfo> bookInfos = page.getContent().stream()
+        List<BookInfo> bookInfos = page.getRecords().stream()
             .map(BookMetadataConverter.INSTANCE::entityToInfo)
             .collect(Collectors.toList());
 
         Page<BookInfo> result = new Page<>(query.getPage(), query.getSize());
         result.setRecords(bookInfos);
-        result.setTotal(page.getTotalElements());
+        result.setTotal(page.getTotal());
         return Optional.of(result);
     }
 }

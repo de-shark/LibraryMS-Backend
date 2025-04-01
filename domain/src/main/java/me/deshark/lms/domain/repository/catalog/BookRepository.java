@@ -1,9 +1,9 @@
 package me.deshark.lms.domain.repository.catalog;
 
+import me.deshark.lms.common.utils.Page;
 import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
-import me.deshark.lms.domain.model.common.Page;
 
 import java.util.List;
 
