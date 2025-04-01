@@ -1,6 +1,7 @@
 package me.deshark.lms.application.cqrs.book.query;
 
 import lombok.RequiredArgsConstructor;
+import me.deshark.lms.application.converter.BookMetadataConverter;
 import me.deshark.lms.application.cqrs.core.QueryHandler;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.common.utils.Page;
@@ -33,11 +34,7 @@ public class SearchBooksQueryHandler
 
         // 转换为BookInfo列表
         List<BookInfo> bookInfos = page.getContent().stream()
-            .map(book -> BookInfo.builder()
-                .isbn(book.getIsbn().toString())
-                .title(book.getTitle())
-                .author(book.getAuthor())
-                .build())
+            .map(BookMetadataConverter.INSTANCE::entityToInfo)
             .collect(Collectors.toList());
 
         Page<BookInfo> result = new Page<>(query.getPage(), query.getSize());
