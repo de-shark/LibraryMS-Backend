@@ -7,6 +7,7 @@ import me.deshark.lms.domain.model.catalog.entity.BookMetadata;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
+import me.deshark.lms.infrastructure.BookConverter;
 import me.deshark.lms.infrastructure.entity.BookDO;
 import me.deshark.lms.infrastructure.entity.BookInventoryViewDO;
 import me.deshark.lms.infrastructure.mapper.BookInventoryMapper;
@@ -34,16 +35,21 @@ public class BookRepositoryImpl implements BookRepository {
     }
 
     @Override
-    public BookMetadata findByIsbn(Isbn isbn) {
-        Optional<BookDO> bookCatalogDO = bookMapper.findByIsbn(isbn.toString());
-        if (bookCatalogDO.isEmpty()) {
+    public Optional<BookMetadata> findByIsbn(Isbn isbn) {
+        Optional<BookDO> bookDO = bookMapper.findByIsbn(isbn.toString());
+        if (bookDO.isEmpty()) {
             throw new BookNotFoundException("未找到ISBN为" + isbn + "的图书");
         }
-        return BookMetadata.builder()
-                .isbn(isbn)
-                .title(bookCatalogDO.get().getTitle())
-                .author(bookCatalogDO.get().getAuthor())
-                .build();
+        return bookDO.map(book -> {
+            // 查询库存信息
+            int availableCopies = bookInventoryMapper.findByIsbn(book.getIsbn())
+                    .map(BookInventoryViewDO::getCurrentCopyCount)
+                    .orElse(0);
+            // 转换为 BookMetadata 并设置所有字段
+            BookMetadata metadata = BookConverter.INSTANCE.doToEntity(book);
+            metadata.setAvailableCopies(availableCopies);
+            return metadata;
+        });
     }
 
     @Override

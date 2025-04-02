@@ -6,6 +6,7 @@ import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.model.catalog.vo.LowInventoryInfo;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author DE_SHARK
@@ -14,7 +15,7 @@ public interface BookRepository {
 
     boolean existsByIsbn(String isbn);
 
-    BookMetadata findByIsbn(Isbn isbn);
+    Optional<BookMetadata> findByIsbn(Isbn isbn);
 
     void save(BookMetadata bookMetadata);
 
