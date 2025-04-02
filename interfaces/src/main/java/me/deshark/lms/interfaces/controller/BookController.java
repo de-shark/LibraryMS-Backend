@@ -11,7 +11,9 @@ import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQuery;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQueryHandler;
 import me.deshark.lms.application.info.BookInfo;
+import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.common.utils.Page;
+import me.deshark.lms.interfaces.converter.BookDetailConverter;
 import me.deshark.lms.interfaces.dto.BookResponse;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
@@ -48,12 +50,10 @@ public class BookController {
     @GetMapping("/{isbn}")
     public ResponseEntity<ResultBody<BookResponse>> getBook(
             @PathVariable("isbn") String isbn) {
-        BookInfo bookInfo = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(isbn));
-        BookResponse book = BookResponse.builder()
-                .isbn(bookInfo.getIsbn())
-                .title(bookInfo.getTitle())
-                .author(bookInfo.getAuthor())
-                .build();
+
+        BookResponse book = getBookByIsbnQueryHandler.handle(new GetBookByIsbnQuery(isbn))
+                .map(BookDetailConverter.INSTANCE::infoToResponse)
+                .orElseThrow(() -> new BookNotFoundException(isbn));
         return ResponseEntity.ok(ResultBody.<BookResponse>builder().data(book).build());
     }
 
