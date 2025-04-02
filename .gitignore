@@ -44,6 +44,7 @@ bin/
 
 ### Docker ###
 Docker/PostgreSQL/postgresql_data
+Docker/MinIO
 
 ### Something ###
 usr/
