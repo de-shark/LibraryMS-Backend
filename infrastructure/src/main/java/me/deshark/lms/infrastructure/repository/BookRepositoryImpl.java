@@ -28,6 +28,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     private final BookMapper bookMapper;
     private final BookInventoryMapper bookInventoryMapper;
+    private final MinioStorageRepoImpl minioStorageRepo;
 
     @Override
     public boolean existsByIsbn(String isbn) {
@@ -48,6 +49,10 @@ public class BookRepositoryImpl implements BookRepository {
             // 转换为 BookMetadata 并设置所有字段
             BookMetadata metadata = BookConverter.INSTANCE.doToEntity(book);
             metadata.setAvailableCopies(availableCopies);
+            // 获取封面图片URL
+            if (book.getCoverImage() != null) {
+                metadata.setCoverImageUrl(minioStorageRepo.getFileUrl(book.getCoverImage()));
+            }
             return metadata;
         });
     }
@@ -99,6 +104,10 @@ public class BookRepositoryImpl implements BookRepository {
                             .map(BookInventoryViewDO::getCurrentCopyCount)
                             .orElse(0);
                     metadata.setAvailableCopies(availableCopies);
+                    // 获取封面图片URL
+                    if (bookDO.getCoverImage() != null) {
+                        metadata.setCoverImageUrl(minioStorageRepo.getFileUrl(bookDO.getCoverImage()));
+                    }
                     return metadata;
                 })
                 .collect(Collectors.toList());
