@@ -21,7 +21,7 @@ public class BookMetadata {
     private short publishedYear;
     private String language;
     private String pageCount;
-    private String coverImage;
+    private String coverImageUrl;
     private String description;
     private OffsetDateTime createdAt;
     private int availableCopies;
