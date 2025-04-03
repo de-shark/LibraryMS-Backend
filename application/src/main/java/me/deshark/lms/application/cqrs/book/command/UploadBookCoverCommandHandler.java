@@ -2,16 +2,22 @@ package me.deshark.lms.application.cqrs.book.command;
 
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.application.cqrs.core.CommandHandler;
+import me.deshark.lms.common.exception.FileStorageException;
 import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
+import me.deshark.lms.domain.model.common.FileData;
 import me.deshark.lms.domain.repository.catalog.BookRepository;
+import me.deshark.lms.domain.repository.FileStorageRepo;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 @RequiredArgsConstructor
 public class UploadBookCoverCommandHandler implements CommandHandler<UploadBookCoverCommand> {
 
     private final BookRepository bookRepository;
+    private final FileStorageRepo fileStorageRepo;
 
     /**
      * 上传图书封面
@@ -20,17 +26,32 @@ public class UploadBookCoverCommandHandler implements CommandHandler<UploadBookC
     @Override
     public void handle(UploadBookCoverCommand command) {
 
-        // 1. 校验ISBN
+        // 校验ISBN
         Isbn isbn = new Isbn(command.getIsbn());
 
-        // 2. 验证图书是否存在
+        // 验证图书是否存在
         if (!bookRepository.existsByIsbn(isbn.toString())) {
             throw new BookNotFoundException("ISBN为" + isbn + "的图书不存在");
         }
 
-        // 3. 上传到MinIO
+        // 转换MultipartFile为领域对象
+        FileData fileData;
+        try {
+            fileData = new FileData(
+                    command.getFile().getOriginalFilename(),
+                    command.getFile().getContentType(),
+                    command.getFile().getSize(),
+                    command.getFile().getInputStream()
+            );
+        } catch (IOException e) {
+            throw new FileStorageException("转换MultipartFile为领域对象时出错：" + e.getMessage());
+        }
 
-        // 4. 更新图书封面信息
-        bookRepository.updateCoverImage(isbn.toString(), coverImage);
+        // 上传到文件存储
+        String objectName = "book-covers/" + isbn + ".jpg";
+        fileStorageRepo.uploadFile(fileData, objectName);
+
+        // 更新图书封面信息
+        bookRepository.updateCoverImage(isbn.toString(), objectName);
     }
 }
