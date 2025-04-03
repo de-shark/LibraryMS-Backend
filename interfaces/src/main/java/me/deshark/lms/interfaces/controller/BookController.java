@@ -32,6 +32,8 @@ public class BookController {
 
     private final CreateBookCommandHandler createBookCommandHandler;
     private final SearchBooksQueryHandler searchBooksQueryHandler;
+    private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
+    private final DeleteBookCommandHandler deleteBookCommandHandler;
 
     @PostMapping
     public ResponseEntity<ResultBody<Void>> createBook(
@@ -44,8 +46,6 @@ public class BookController {
         return ResponseEntity.created(location)
                 .body(ResultBody.<Void>builder().message("入库成功").build());
     }
-
-    private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
 
     @GetMapping("/{isbn}")
     public ResponseEntity<ResultBody<BookResponse>> getBook(
@@ -76,8 +76,6 @@ public class BookController {
                 .data(pageData)
             .build());
     }
-
-    private final DeleteBookCommandHandler deleteBookCommandHandler;
 
     @DeleteMapping("/{isbn}")
     public ResponseEntity<Void> deleteBook(
