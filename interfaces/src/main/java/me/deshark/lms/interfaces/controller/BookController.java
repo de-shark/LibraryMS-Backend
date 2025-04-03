@@ -6,6 +6,8 @@ import me.deshark.lms.application.cqrs.book.command.CreateBookCommand;
 import me.deshark.lms.application.cqrs.book.command.CreateBookCommandHandler;
 import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
 import me.deshark.lms.application.cqrs.book.command.DeleteBookCommandHandler;
+import me.deshark.lms.application.cqrs.book.command.UploadBookCoverCommand;
+import me.deshark.lms.application.cqrs.book.command.UploadBookCoverCommandHandler;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
 import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
 import me.deshark.lms.application.cqrs.book.query.SearchBooksQuery;
@@ -18,6 +20,7 @@ import me.deshark.lms.interfaces.dto.BookResponse;
 import me.deshark.lms.interfaces.dto.ResultBody;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.net.URI;
 
@@ -34,6 +37,7 @@ public class BookController {
     private final SearchBooksQueryHandler searchBooksQueryHandler;
     private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
     private final DeleteBookCommandHandler deleteBookCommandHandler;
+    private final UploadBookCoverCommandHandler uploadBookCoverCommandHandler;
 
     @PostMapping
     public ResponseEntity<ResultBody<Void>> createBook(
@@ -82,5 +86,17 @@ public class BookController {
             @PathVariable("isbn") String isbn) {
         deleteBookCommandHandler.handle(new DeleteBookCommand(isbn));
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{isbn}/cover")
+    public ResponseEntity<ResultBody<Void>> uploadBookCover(
+            @PathVariable("isbn") String isbn,
+            @RequestParam("file") MultipartFile file) {
+        
+        uploadBookCoverCommandHandler.handle(
+            new UploadBookCoverCommand(isbn, file)
+        );
+        
+        return ResponseEntity.ok().body(ResultBody.success("封面图片上传成功"));
     }
 }
