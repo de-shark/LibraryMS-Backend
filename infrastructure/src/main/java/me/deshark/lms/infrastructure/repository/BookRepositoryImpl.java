@@ -127,4 +127,15 @@ public class BookRepositoryImpl implements BookRepository {
 
         return result;
     }
+
+    @Override
+    public void updateCoverImage(String isbn, String coverImage) {
+        bookMapper.updateCoverImage(isbn, coverImage);
+    }
+
+    @Override
+    public Optional<String> findCoverImageByIsbn(String isbn) {
+        return bookMapper.findByIsbn(isbn)
+                .map(BookDO::getCoverImage);
+    }
 }

@@ -62,4 +62,10 @@ public interface BookMapper {
 
     @Select("SELECT isbn, current_copy_count FROM book_inventory_view WHERE current_copy_count < #{minCopyCount}")
     List<BookInventoryViewDO> findBooksWithLowInventory(@Param("minCopyCount") int minCopyCount);
+
+    /**
+     * 更新图书封面信息
+     */
+    @Update("UPDATE book SET cover_image = #{coverImage} WHERE isbn = #{isbn}")
+    void updateCoverImage(@Param("isbn") String isbn, @Param("coverImage") String coverImage);
 }

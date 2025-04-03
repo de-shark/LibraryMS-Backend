@@ -29,4 +29,18 @@ public interface BookRepository {
      * @return 库存不足的图书ISBN列表
      */
     List<LowInventoryInfo> findBooksWithLowInventory(int minCopyCount);
+
+    /**
+     * 更新图书封面信息
+     * @param isbn 图书ISBN
+     * @param coverImage 封面对象key
+     */
+    void updateCoverImage(String isbn, String coverImage);
+
+    /**
+     * 获取图书封面对象key
+     * @param isbn 图书ISBN
+     * @return 封面对象key
+     */
+    Optional<String> findCoverImageByIsbn(String isbn);
 }
