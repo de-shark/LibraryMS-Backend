@@ -23,10 +23,8 @@ public class GetBookCoverQueryHandler implements QueryHandler<GetBookCoverQuery,
 
         Isbn isbn = new Isbn(query.getIsbn());
 
-        String objectName = bookRepository.findByIsbn(isbn)
+        return Optional.of(bookRepository.findByIsbn(isbn)
                 .map(BookMetadata::getCoverImageUrl)
-                .orElseThrow(null);
-
-        return Optional.of(fileStorageRepo.getFileUrl(objectName));
+                .orElseThrow(null));
     }
 }
