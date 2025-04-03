@@ -93,19 +93,13 @@ public class BookRepositoryImpl implements BookRepository {
         // 转换为领域模型
         List<BookMetadata> bookMetadatas = pagedDOs.stream()
                 .map(bookDO -> {
+                    BookMetadata metadata = BookConverter.INSTANCE.doToEntity(bookDO);
                     // 查询库存信息
                     int availableCopies = bookInventoryMapper.findByIsbn(bookDO.getIsbn())
                             .map(BookInventoryViewDO::getCurrentCopyCount)
                             .orElse(0);
-                    
-                    return BookMetadata.builder()
-                            .isbn(new Isbn(bookDO.getIsbn()))
-                            .title(bookDO.getTitle())
-                            .author(bookDO.getAuthor())
-                            .publisher(bookDO.getPublisher())
-                            .publishedYear(bookDO.getPublishedYear())
-                            .availableCopies(availableCopies)
-                            .build();
+                    metadata.setAvailableCopies(availableCopies);
+                    return metadata;
                 })
                 .collect(Collectors.toList());
         Page<BookMetadata> result = new Page<>(pageNumber, pageSize);
