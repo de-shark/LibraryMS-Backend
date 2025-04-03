@@ -14,6 +14,7 @@ public class FileStorageService {
 
     private final MinioClient minioClient;
     private static final String DEFAULT_BUCKET = "library-assets";
+    private static final String endpoint = "http://localhost:9000";
 
     /**
      * 上传文件到MinIO
@@ -32,7 +33,7 @@ public class FileStorageService {
                     .build());
 
             // 返回文件访问url
-            return "url";
+            return buildFileUrl(objectName);
         } catch (Exception e) {
             throw new FileStorageException("文件上传失败：" + e.getMessage());
         }
@@ -59,10 +60,16 @@ public class FileStorageService {
      * @return 文件访问URL
      */
     public String getFileUrl(String objectName) {
-        try {
-            return "url";
-        } catch (Exception e) {
-            throw new FileStorageException("获取文件URL失败: " + e.getMessage());
-        }
+        return buildFileUrl(objectName);
+    }
+
+    /**
+     * 构建文件访问URL
+     * @param objectName 对象名称
+     * @return 完整的文件访问URL
+     */
+    private String buildFileUrl(String objectName) {
+        // 构建完整的URL
+        return String.format("%s/%s/%s", endpoint, DEFAULT_BUCKET, objectName);
     }
 }
