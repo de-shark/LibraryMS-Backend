@@ -8,10 +8,7 @@ import me.deshark.lms.application.cqrs.book.command.DeleteBookCommand;
 import me.deshark.lms.application.cqrs.book.command.DeleteBookCommandHandler;
 import me.deshark.lms.application.cqrs.book.command.UploadBookCoverCommand;
 import me.deshark.lms.application.cqrs.book.command.UploadBookCoverCommandHandler;
-import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQuery;
-import me.deshark.lms.application.cqrs.book.query.GetBookByIsbnQueryHandler;
-import me.deshark.lms.application.cqrs.book.query.SearchBooksQuery;
-import me.deshark.lms.application.cqrs.book.query.SearchBooksQueryHandler;
+import me.deshark.lms.application.cqrs.book.query.*;
 import me.deshark.lms.application.info.BookInfo;
 import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.common.utils.Page;
@@ -38,6 +35,7 @@ public class BookController {
     private final GetBookByIsbnQueryHandler getBookByIsbnQueryHandler;
     private final DeleteBookCommandHandler deleteBookCommandHandler;
     private final UploadBookCoverCommandHandler uploadBookCoverCommandHandler;
+    private final GetBookCoverQueryHandler getBookCoverQueryHandler;
 
     @PostMapping
     public ResponseEntity<ResultBody<Void>> createBook(
@@ -92,11 +90,25 @@ public class BookController {
     public ResponseEntity<ResultBody<Void>> uploadBookCover(
             @PathVariable("isbn") String isbn,
             @RequestParam("file") MultipartFile file) {
-        
+
+        log.info("执行请求：上传图书封面");
+
         uploadBookCoverCommandHandler.handle(
             new UploadBookCoverCommand(isbn, file)
         );
         
         return ResponseEntity.ok().body(ResultBody.success("封面图片上传成功"));
+    }
+
+    @GetMapping("/{isbn}/cover")
+    public ResponseEntity<ResultBody<String >> downloadBookCover(
+            @PathVariable("isbn") String isbn) {
+
+        log.info("执行请求：获取图书封面url");
+
+        String url = getBookCoverQueryHandler.handle(new GetBookCoverQuery(isbn))
+                .orElseThrow(() -> new BookNotFoundException("封面不存在"));
+
+        return ResponseEntity.ok().body(ResultBody.success(url, "封面获取成功"));
     }
 }
