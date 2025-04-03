@@ -1,8 +1,10 @@
 package me.deshark.lms.infrastructure.repository;
 
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
+import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.common.exception.FileStorageException;
 import me.deshark.lms.domain.model.common.FileData;
@@ -15,7 +17,6 @@ public class MinioStorageRepoImpl implements FileStorageRepo {
 
     private final MinioClient minioClient;
     private static final String DEFAULT_BUCKET = "library-assets";
-    private static final String endpoint = "http://localhost:9000";
 
     /**
      * 上传文件到MinIO
@@ -57,16 +58,16 @@ public class MinioStorageRepoImpl implements FileStorageRepo {
      * @return 文件访问URL
      */
     public String getFileUrl(String objectName) {
-        return buildFileUrl(objectName);
-    }
-
-    /**
-     * 构建文件访问URL
-     * @param objectName 对象名称
-     * @return 完整的文件访问URL
-     */
-    private String buildFileUrl(String objectName) {
-        // 构建完整的URL
-        return String.format("%s/%s/%s", endpoint, DEFAULT_BUCKET, objectName);
+        try {
+            return minioClient.getPresignedObjectUrl(
+                    GetPresignedObjectUrlArgs.builder()
+                            .method(Method.GET)
+                            .bucket(DEFAULT_BUCKET)
+                            .object(objectName)
+                            .expiry(60 * 60 * 24) // 24小时有效期
+                            .build());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 }
