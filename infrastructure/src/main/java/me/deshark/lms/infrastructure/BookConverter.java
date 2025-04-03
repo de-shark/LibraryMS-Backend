@@ -13,6 +13,7 @@ public interface BookConverter {
     BookConverter INSTANCE = Mappers.getMapper(BookConverter.class);
 
     @Mapping(target = "isbn", source = "isbn")
+    @Mapping(target = "coverImageUrl", source = "coverImage")
     @Mapping(target = "availableCopies", ignore = true)
     BookMetadata doToEntity(BookDO bookDO);
 
