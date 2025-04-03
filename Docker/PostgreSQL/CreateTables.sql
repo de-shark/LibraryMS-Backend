@@ -106,7 +106,7 @@ COMMENT ON COLUMN book.published_year IS '出版日期';
 COMMENT ON COLUMN book.language IS '语言';
 COMMENT ON COLUMN book.page_count IS '页数';
 COMMENT ON COLUMN book.isbn_10 IS 'ISBN-10';
-COMMENT ON COLUMN book.cover_image IS '封面图URL或Base64编码';
+COMMENT ON COLUMN book.cover_image IS '封面图的MinIO对象key';
 COMMENT ON COLUMN book.description IS '图书描述';
 COMMENT ON COLUMN book.created_at IS '录入时间';
 
