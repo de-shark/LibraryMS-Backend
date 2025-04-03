@@ -1,16 +1,17 @@
-package me.deshark.lms.infrastructure.service;
+package me.deshark.lms.infrastructure.repository;
 
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.RemoveObjectArgs;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.common.exception.FileStorageException;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
+import me.deshark.lms.domain.model.common.FileData;
+import me.deshark.lms.domain.repository.FileStorageRepo;
+import org.springframework.stereotype.Repository;
 
-@Service
+@Repository
 @RequiredArgsConstructor
-public class FileStorageService {
+public class MinioStorageRepoImpl implements FileStorageRepo {
 
     private final MinioClient minioClient;
     private static final String DEFAULT_BUCKET = "library-assets";
@@ -20,9 +21,8 @@ public class FileStorageService {
      * 上传文件到MinIO
      * @param file 上传的文件
      * @param objectName 存储的对象名称(如book-covers/9781234567890.jpg)
-     * @return 文件访问URL
      */
-    public String uploadFile(MultipartFile file, String objectName) {
+    public void uploadFile(FileData file, String objectName) {
         try {
             // 上传文件
             minioClient.putObject(PutObjectArgs.builder()
@@ -31,9 +31,6 @@ public class FileStorageService {
                     .stream(file.getInputStream(), file.getSize(), -1)
                     .contentType(file.getContentType())
                     .build());
-
-            // 返回文件访问url
-            return buildFileUrl(objectName);
         } catch (Exception e) {
             throw new FileStorageException("文件上传失败：" + e.getMessage());
         }
