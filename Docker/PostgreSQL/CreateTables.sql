@@ -174,3 +174,55 @@ COMMENT ON COLUMN loan_record.loan_date IS '借出日期';
 COMMENT ON COLUMN loan_record.due_date IS '应归还日期';
 COMMENT ON COLUMN loan_record.return_date IS '实际归还日期';
 COMMENT ON COLUMN loan_record.status IS '记录状态';
+
+-- 自习区域表
+ CREATE TABLE study_area (
+     area_id UUID PRIMARY KEY,
+     name VARCHAR(100) NOT NULL,
+     location VARCHAR(255) NOT NULL,
+     description TEXT,
+     opening_hours VARCHAR(100),
+     max_capacity INT
+ );
+
+ -- 自习座位表
+ CREATE TABLE study_seat (
+     seat_id UUID PRIMARY KEY,
+     area_id UUID NOT NULL,
+     seat_number VARCHAR(20) NOT NULL,
+     seat_type VARCHAR(50) NOT NULL, -- 如普通座位/带电脑座位等
+     has_power BOOLEAN DEFAULT FALSE,
+     is_active BOOLEAN DEFAULT TRUE,
+
+     CONSTRAINT fk_seat_area
+         FOREIGN KEY (area_id) REFERENCES study_area(area_id)
+ );
+
+ -- 座位预约表
+ CREATE TABLE seat_reservation (
+     reservation_id UUID PRIMARY KEY,
+     seat_id UUID NOT NULL,
+     user_id UUID NOT NULL,
+     start_time TIMESTAMPTZ NOT NULL,
+     end_time TIMESTAMPTZ NOT NULL,
+     status VARCHAR(20) NOT NULL DEFAULT 'RESERVED', -- RESERVED/IN_USE/CANCELLED/COMPLETED
+     check_in_time TIMESTAMPTZ,
+     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+
+     CONSTRAINT fk_reservation_seat
+         FOREIGN KEY (seat_id) REFERENCES study_seat(seat_id),
+     CONSTRAINT fk_reservation_user
+         FOREIGN KEY (user_id) REFERENCES users(uuid),
+     CONSTRAINT chk_reservation_time
+         CHECK (end_time > start_time)
+ );
+
+ -- 座位使用规则表
+ CREATE TABLE seat_usage_rule (
+     rule_id UUID PRIMARY KEY,
+     name VARCHAR(100) NOT NULL,
+     max_reservation_hours INT NOT NULL,
+     max_daily_reservations INT NOT NULL,
+     min_cancel_hours INT NOT NULL, -- 提前取消的最少小时数
+     no_show_penalty_hours INT DEFAULT 0 -- 爽约惩罚时间(小时)
+ );
