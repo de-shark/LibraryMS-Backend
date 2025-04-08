@@ -1,7 +1,9 @@
 package me.deshark.lms.infrastructure.security;
 
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
+import me.deshark.lms.common.exception.auth.TokenExpiredException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,6 +63,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             );
             auth.setDetails(userId);
             SecurityContextHolder.getContext().setAuthentication(auth);
+        } catch (ExpiredJwtException e) {
+            throw new TokenExpiredException("Access Token已过期");
         } catch (Exception e) {
             logger.error("JWT解析失败: {" + e.getMessage() + "}", e);
             logger.debug("异常堆栈:", e);

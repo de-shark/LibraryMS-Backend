@@ -2,6 +2,7 @@ package me.deshark.lms.interfaces.exception;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import me.deshark.lms.common.exception.auth.TokenExpiredException;
 import me.deshark.lms.common.exception.book.BookAlreadyExistsException;
 import me.deshark.lms.common.exception.book.BookNotFoundException;
 import me.deshark.lms.interfaces.dto.ResultBody;
@@ -54,6 +55,13 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ResultBody<Void>> handleIllegalStateException(IllegalStateException e) {
         log.error(e.getMessage());
         return ResponseEntity.internalServerError().body(ResultBody.error(e.getMessage()));
+    }
+
+    // AccessToken过期
+    @ExceptionHandler(TokenExpiredException.class)
+    public ResponseEntity<ResultBody<Void>> handleExpiredJwtException(TokenExpiredException e) {
+        log.error(e.getMessage());
+        return ResponseEntity.badRequest().body(ResultBody.error(e.getMessage()));
     }
 
     // 处理其他未捕获异常
