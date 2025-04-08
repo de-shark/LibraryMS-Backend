@@ -86,17 +86,5 @@ public class StudyAreaInitializer implements ApplicationRunner {
                         .isActive(true)
                         .build()
         ).forEach(studySeatMapper::insert);
-
-        // 4. 初始化一个示例预约记录
-        SeatReservationDO sampleReservation = SeatReservationDO.builder()
-                .reservationId(GUID.v7())
-                .seatId(GUID.v7())
-                .userId(GUID.v7()) // 假设存在的用户ID
-                .startTime(Instant.now().plus(1, ChronoUnit.HOURS))
-                .endTime(Instant.now().plus(5, ChronoUnit.HOURS))
-                .status("RESERVED")
-                .createdAt(Instant.now())
-                .build();
-        seatReservationMapper.insert(sampleReservation);
     }
 }
