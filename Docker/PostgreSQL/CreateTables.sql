@@ -183,7 +183,7 @@ COMMENT ON COLUMN loan_record.status IS '记录状态';
      description TEXT,
      opening_hours VARCHAR(100),
      max_capacity INT
- );
+);
 
  -- 自习座位表
  CREATE TABLE study_seat (
@@ -196,7 +196,7 @@ COMMENT ON COLUMN loan_record.status IS '记录状态';
 
      CONSTRAINT fk_seat_area
          FOREIGN KEY (area_id) REFERENCES study_area(area_id)
- );
+);
 
  -- 座位预约表
  CREATE TABLE seat_reservation (
@@ -215,14 +215,42 @@ COMMENT ON COLUMN loan_record.status IS '记录状态';
          FOREIGN KEY (user_id) REFERENCES users(uuid),
      CONSTRAINT chk_reservation_time
          CHECK (end_time > start_time)
- );
+);
 
- -- 座位使用规则表
- CREATE TABLE seat_usage_rule (
-     rule_id UUID PRIMARY KEY,
-     name VARCHAR(100) NOT NULL,
-     max_reservation_hours INT NOT NULL,
-     max_daily_reservations INT NOT NULL,
-     min_cancel_hours INT NOT NULL, -- 提前取消的最少小时数
-     no_show_penalty_hours INT DEFAULT 0 -- 爽约惩罚时间(小时)
- );
+-- 座位使用规则表
+CREATE TABLE seat_usage_rule (
+    rule_id UUID PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    max_reservation_hours INT NOT NULL,
+    max_daily_reservations INT NOT NULL,
+    min_cancel_hours INT NOT NULL, -- 提前取消的最少小时数
+    no_show_penalty_hours INT DEFAULT 0 -- 爽约惩罚时间(小时)
+);
+
+-- 图书评论表
+CREATE TABLE book_comment (
+    comment_id UUID PRIMARY KEY,
+    isbn CHAR(13) NOT NULL,
+    user_id UUID NOT NULL,
+    parent_comment_id UUID, -- 支持回复评论
+    content TEXT NOT NULL,
+    rating SMALLINT CHECK (rating BETWEEN 1 AND 5), -- 1-5星评分
+    created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    is_deleted BOOLEAN DEFAULT FALSE,
+
+    CONSTRAINT fk_comment_book
+        FOREIGN KEY (isbn) REFERENCES book(isbn)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_comment_user
+        FOREIGN KEY (user_id) REFERENCES users(uuid)
+        ON DELETE CASCADE,
+    CONSTRAINT fk_comment_parent
+        FOREIGN KEY (parent_comment_id) REFERENCES book_comment(comment_id)
+        ON DELETE SET NULL
+);
+
+-- 为评论表添加索引
+CREATE INDEX idx_book_comment_isbn ON book_comment(isbn);
+CREATE INDEX idx_book_comment_user ON book_comment(user_id);
+CREATE INDEX idx_book_comment_parent ON book_comment(parent_comment_id) WHERE parent_comment_id IS NOT NULL;
