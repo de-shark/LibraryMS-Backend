@@ -3,7 +3,7 @@ package me.deshark.lms.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
-import me.deshark.lms.common.exception.auth.TokenExpiredException;
+import lombok.extern.slf4j.Slf4j;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,11 +16,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
  * @author DE_SHARK
  */
+@Slf4j
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
@@ -64,7 +67,14 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             auth.setDetails(userId);
             SecurityContextHolder.getContext().setAuthentication(auth);
         } catch (ExpiredJwtException e) {
-            throw new TokenExpiredException("Access Token已过期");
+            Claims claims = e.getClaims();
+            String username = claims.getSubject();
+            String userId = claims.get("userId", String.class);
+            String role = claims.get("role", String.class);
+            Date expiration = claims.getExpiration();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String expiredTime = sdf.format(expiration);
+            log.info("AccessToken已过期 - 用户ID: {}, 用户名: {}, 角色: {}, 过期时间: {}", userId, username, role, expiredTime);
         } catch (Exception e) {
             logger.error("JWT解析失败: {" + e.getMessage() + "}", e);
             logger.debug("异常堆栈:", e);
