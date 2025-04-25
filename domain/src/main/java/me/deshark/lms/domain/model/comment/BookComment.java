@@ -1,12 +1,12 @@
 package me.deshark.lms.domain.model.comment;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import me.deshark.lms.domain.model.catalog.vo.Isbn;
 
 import java.util.UUID;
 
-@Getter
+@Data
 @RequiredArgsConstructor
 public class BookComment {
     private UUID commentId;

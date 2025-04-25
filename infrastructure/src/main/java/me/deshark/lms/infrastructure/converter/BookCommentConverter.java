@@ -1,5 +1,6 @@
 package me.deshark.lms.infrastructure.converter;
 
+import me.deshark.lms.domain.model.catalog.vo.Isbn;
 import me.deshark.lms.domain.model.comment.BookComment;
 import me.deshark.lms.infrastructure.entity.BookCommentDO;
 import org.mapstruct.Mapper;
@@ -17,6 +18,9 @@ public interface BookCommentConverter {
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "isDeleted", ignore = true)
     BookCommentDO modelToDO(BookComment bookComment);
+    default Isbn mapIsbn(String value) {
+        return new Isbn(value);
+    }
 
     BookComment doToModel(BookCommentDO bookCommentDO);
 }
