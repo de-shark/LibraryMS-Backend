@@ -26,8 +26,8 @@ public interface BookMapper {
     /**
      * 插入图书信息
      */
-    @Insert("INSERT INTO book (isbn, title, author, publisher, published_date) " +
-            "VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishedDate})")
+    @Insert("INSERT INTO book (isbn, title, author, publisher, published_year) " +
+            "VALUES (#{isbn}, #{title}, #{author}, #{publisher}, #{publishedYear})")
     void insert(BookDO bookDO);
 
     /**

@@ -35,15 +35,23 @@ public class CreateBookCommandHandler {
      */
     public void handle(CreateBookCommand command) {
         // 验证ISBN
-        Isbn isbn = new Isbn(command.isbn());
+        Isbn isbn = new Isbn(command.getIsbn());
 
         // 检查图书是否已存在
         if (bookRepository.existsByIsbn(isbn.toString())) {
             throw new BookAlreadyExistsException("ISBN为" + isbn + "的图书已存在");
         }
 
-        // 调用 API 获取图书信息
-        BookMetadata bookMetadata = bookMetadataProvider.fetch(isbn);
+        // 构建领域模型
+        BookMetadata bookMetadata = BookMetadata.builder()
+                .isbn(isbn)
+                .title(command.getTitle())
+                .author(command.getAuthor())
+                .publisher(command.getPublisher())
+                .publishedYear(command.getPublishedYear())
+                .description(command.getDescription())
+                .build();
+
 
         // 保存到仓库
         bookRepository.save(bookMetadata);

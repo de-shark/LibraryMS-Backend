@@ -43,7 +43,7 @@ public class BookController {
         createBookCommandHandler.handle(command);
 
         // 构建Location header
-        URI location = URI.create("/api/books/" + command.isbn());
+        URI location = URI.create("/api/books/" + command.getIsbn());
 
         return ResponseEntity.created(location)
                 .body(ResultBody.<Void>builder().message("入库成功").build());
