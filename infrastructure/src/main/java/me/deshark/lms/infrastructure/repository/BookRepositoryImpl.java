@@ -43,12 +43,16 @@ public class BookRepositoryImpl implements BookRepository {
         }
         return bookDO.map(book -> {
             // 查询库存信息
-            int availableCopies = bookInventoryMapper.findByIsbn(book.getIsbn())
+            int currentCopyCount = bookInventoryMapper.findByIsbn(book.getIsbn())
                     .map(BookInventoryViewDO::getCurrentCopyCount)
+                    .orElse(0);
+            int availableCopyCount = bookInventoryMapper.findByIsbn(book.getIsbn())
+                    .map(BookInventoryViewDO::getAvailableCount)
                     .orElse(0);
             // 转换为 BookMetadata 并设置所有字段
             BookMetadata metadata = BookConverter.INSTANCE.doToEntity(book);
-            metadata.setAvailableCopies(availableCopies);
+            metadata.setCurrentCopyCount(currentCopyCount);
+            metadata.setAvailableCopyCount(availableCopyCount);
             // 获取封面图片URL
             if (book.getCoverImage() != null) {
                 metadata.setCoverImageUrl(minioStorageRepo.getFileUrl(book.getCoverImage()));
@@ -98,12 +102,17 @@ public class BookRepositoryImpl implements BookRepository {
         // 转换为领域模型
         List<BookMetadata> bookMetadatas = pagedDOs.stream()
                 .map(bookDO -> {
-                    BookMetadata metadata = BookConverter.INSTANCE.doToEntity(bookDO);
                     // 查询库存信息
-                    int availableCopies = bookInventoryMapper.findByIsbn(bookDO.getIsbn())
+                    int currentCopyCount = bookInventoryMapper.findByIsbn(bookDO.getIsbn())
                             .map(BookInventoryViewDO::getCurrentCopyCount)
                             .orElse(0);
-                    metadata.setAvailableCopies(availableCopies);
+                    int availableCopyCount = bookInventoryMapper.findByIsbn(bookDO.getIsbn())
+                            .map(BookInventoryViewDO::getAvailableCount)
+                            .orElse(0);
+                    // 转换为 BookMetadata 并设置所有字段
+                    BookMetadata metadata = BookConverter.INSTANCE.doToEntity(bookDO);
+                    metadata.setCurrentCopyCount(currentCopyCount);
+                    metadata.setAvailableCopyCount(availableCopyCount);
                     // 获取封面图片URL
                     if (bookDO.getCoverImage() != null) {
                         metadata.setCoverImageUrl(minioStorageRepo.getFileUrl(bookDO.getCoverImage()));

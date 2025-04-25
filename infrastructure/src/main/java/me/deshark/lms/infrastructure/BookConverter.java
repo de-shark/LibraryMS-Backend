@@ -14,7 +14,8 @@ public interface BookConverter {
 
     @Mapping(target = "isbn", source = "isbn")
     @Mapping(target = "coverImageUrl", ignore = true)
-    @Mapping(target = "availableCopies", ignore = true)
+    @Mapping(target = "currentCopyCount", ignore = true)
+    @Mapping(target = "availableCopyCount", ignore = true)
     BookMetadata doToEntity(BookDO bookDO);
 
     default Isbn mapIsbn(String value) {

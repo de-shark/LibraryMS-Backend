@@ -21,5 +21,6 @@ public class BookResponse {
     private String coverImageUrl;
     private String description;
     private OffsetDateTime createdAt;
-    private int availableCopies;
+    private int currentCopyCount;
+    private int availableCopyCount;
 }
