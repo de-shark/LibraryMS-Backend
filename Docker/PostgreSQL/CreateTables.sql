@@ -236,7 +236,7 @@ CREATE TABLE book_comment (
     content TEXT NOT NULL,
     rating SMALLINT CHECK (rating BETWEEN 1 AND 5), -- 1-5星评分
     created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMPTZ,
     is_deleted BOOLEAN DEFAULT FALSE,
 
     CONSTRAINT fk_comment_book
